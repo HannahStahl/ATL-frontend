@@ -14,10 +14,9 @@ export default function Profile() {
   useEffect(() => {
     async function onLoad() {
       try {
-        const profiles = await API.get("atl-backend", "list/captain");
-        const profile = profiles[0];
-        setOldProfile(profile || {});
-        setNewProfile(profile || {});
+        const profile = await API.get("atl-backend", "getCaptain");
+        setOldProfile(profile);
+        setNewProfile(profile);
       } catch (e) {
         onError(e);
       }
