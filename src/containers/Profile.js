@@ -30,7 +30,6 @@ export default function Profile() {
     newProfile.firstName?.length > 0
     && newProfile.lastName?.length > 0
     && newProfile.phone?.length > 0
-    && newProfile.email?.length > 0
   );
 
   const handleSubmit = async (event) => {
@@ -38,7 +37,7 @@ export default function Profile() {
     setIsLoading(true);
     try {
       if (oldProfile.captainId) {
-        await API.put("atl-backend", "update/captain", {
+        await API.put("atl-backend", `update/captain/${newProfile.captainId}`, {
           body: newProfile
         });
       } else {
@@ -80,14 +79,6 @@ export default function Profile() {
               value={newProfile.phone || ''}
               type="text"
               onChange={e => setNewProfile({ ...newProfile, phone: e.target.value })}
-            />
-          </FormGroup>
-          <FormGroup controlId="email">
-            <ControlLabel>Email Address</ControlLabel>
-            <FormControl
-              value={newProfile.email || ''}
-              type="text"
-              onChange={e => setNewProfile({ ...newProfile, email: e.target.value })}
             />
           </FormGroup>
           <LoaderButton

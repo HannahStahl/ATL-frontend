@@ -33,7 +33,7 @@ export default function Team() {
     setIsLoading(true);
     try {
       if (oldTeam.teamId) {
-        await API.put("atl-backend", "update/team", {
+        await API.put("atl-backend", `update/team/${newTeam.teamId}`, {
           body: newTeam
         });
       } else {
