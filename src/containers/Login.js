@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Auth } from "aws-amplify";
-import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { FormGroup, FormControl, ControlLabel, PageHeader } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 import { useAppContext } from "../libs/contextLib";
 import { useFormFields } from "../libs/hooksLib";
@@ -35,6 +35,7 @@ export default function Login() {
 
   return (
     <div className="Login">
+      <PageHeader>Captain Login</PageHeader>
       <form onSubmit={handleSubmit}>
         <FormGroup controlId="email" bsSize="large">
           <ControlLabel>Email</ControlLabel>
@@ -60,7 +61,7 @@ export default function Login() {
           isLoading={isLoading}
           disabled={!validateForm()}
         >
-          Login
+          Log In
         </LoaderButton>
       </form>
     </div>
