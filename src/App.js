@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Auth } from "aws-amplify";
+import { Auth, API } from "aws-amplify";
 import { Link, useHistory } from "react-router-dom";
 import { Nav, Navbar, NavItem, NavDropdown, MenuItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
@@ -13,6 +13,10 @@ function App() {
   const history = useHistory();
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, userHasAuthenticated] = useState(false);
+  const [profile, setProfile] = useState({});
+  const [team, setTeam] = useState({});
+  const [allPlayers, setAllPlayers] = useState([]);
+  const [matches, setMatches] = useState([]);
 
   useEffect(() => {
     onLoad();
@@ -22,22 +26,35 @@ function App() {
     try {
       await Auth.currentSession();
       userHasAuthenticated(true);
-    }
-    catch(e) {
-      if (e !== 'No current user') {
-        onError(e);
+      const [players, captain] = await Promise.all([
+        API.get("atl-backend", "list/player"),
+        API.get("atl-backend", "getCaptain")
+      ]);
+      setAllPlayers(players);
+      setProfile(captain);
+      const teams = await API.get("atl-backend", "list/team");
+      const { captainId } = captain;
+      const captainTeam = teams.find((teamInList) => teamInList.captainId === captainId);
+      setTeam(captainTeam || {});
+      if (captainTeam) {
+        const { teamId } = captainTeam;
+        const allMatches = await API.get("atl-backend", `list/match`);
+        const teamMatches = allMatches.filter((match) => (
+          match.homeTeamId === teamId || match.visitorTeamId === teamId
+        )); // TODO do this on the backend
+        setMatches(teamMatches);
       }
     }
-
+    catch(e) {
+      if (e !== 'No current user') onError(e);
+    }
     setIsAuthenticating(false);
   }
 
   async function handleLogout() {
     await Auth.signOut();
-
     userHasAuthenticated(false);
-
-    history.push("/login");
+    history.push("/captain-login");
   }
 
   return (
@@ -62,10 +79,10 @@ function App() {
                 </NavDropdown>
               ) : (
                 <>
-                  <LinkContainer to="/signup">
+                  <LinkContainer to="/captain-signup">
                     <NavItem>Sign up</NavItem>
                   </LinkContainer>
-                  <LinkContainer to="/login">
+                  <LinkContainer to="/captain-login">
                     <NavItem>Log in</NavItem>
                   </LinkContainer>
                 </>
@@ -74,7 +91,18 @@ function App() {
           </Navbar.Collapse>
         </Navbar>
         <ErrorBoundary>
-          <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated }}>
+          <AppContext.Provider value={{
+            isAuthenticated,
+            userHasAuthenticated,
+            profile,
+            setProfile,
+            team,
+            setTeam,
+            allPlayers,
+            setAllPlayers,
+            matches,
+            setMatches
+          }}>
             <div className="container"><Routes /></div>
           </AppContext.Provider>
         </ErrorBoundary>

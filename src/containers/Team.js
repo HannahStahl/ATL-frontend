@@ -1,30 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { API } from "aws-amplify";
 import { useHistory } from "react-router-dom";
 import { PageHeader, FormGroup, ControlLabel, FormControl } from "react-bootstrap";
 import { onError } from "../libs/errorLib";
+import { useAppContext } from "../libs/contextLib";
 import LoaderButton from "../components/LoaderButton";
 
 export default function Team() {
   const history = useHistory();
-  const [oldTeam, setOldTeam] = useState({});
-  const [newTeam, setNewTeam] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    async function onLoad() {
-      try {
-        const teams = await API.get("atl-backend", "list/team");
-        const team = teams[0];
-        setOldTeam(team || {});
-        setNewTeam(team || {});
-      } catch (e) {
-        onError(e);
-      }
-      setIsLoading(false);
-    }
-    onLoad();
-  }, []);
+  const { profile, team, setTeam } = useAppContext();
+  const { captainId } = profile;
+  const [newTeam, setNewTeam] = useState(team);
+  const [isLoading, setIsLoading] = useState(false);
 
   const validateForm = () => newTeam.teamName?.length > 0;
 
@@ -32,14 +19,16 @@ export default function Team() {
     event.preventDefault();
     setIsLoading(true);
     try {
-      if (oldTeam.teamId) {
+      if (team.teamId) {
         await API.put("atl-backend", `update/team/${newTeam.teamId}`, {
           body: newTeam
         });
+        setTeam(newTeam);
       } else {
         await API.post("atl-backend", "create/team", {
-          body: newTeam
+          body: { ...newTeam, captainId }
         });
+        setTeam(newTeam);
       }
       history.push("/");
     } catch (e) {
@@ -59,6 +48,14 @@ export default function Team() {
               value={newTeam.teamName || ''}
               type="text"
               onChange={e => setNewTeam({ ...newTeam, teamName: e.target.value })}
+            />
+          </FormGroup>
+          <FormGroup controlId="cocaptain">
+            <ControlLabel>Co-Captain</ControlLabel>
+            <FormControl
+              value={newTeam.cocaptainId || ''}
+              type="text"
+              onChange={e => setNewTeam({ ...newTeam, cocaptainId: e.target.value })}
             />
           </FormGroup>
           <FormGroup controlId="division">

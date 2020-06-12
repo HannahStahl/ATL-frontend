@@ -13,10 +13,10 @@ export default function Home() {
         <h1>Austin Tennis League</h1>
         <p>Captain's Corner</p>
         <div>
-          <Link to="/login" className="btn btn-info btn-lg">
+          <Link to="/captain-login" className="btn btn-info btn-lg">
             Log in
           </Link>
-          <Link to="/signup" className="btn btn-success btn-lg">
+          <Link to="/captain-signup" className="btn btn-success btn-lg">
             Sign up
           </Link>
         </div>
@@ -27,7 +27,7 @@ export default function Home() {
   function renderHomePage() {
     return (
       <div>
-        <PageHeader>Welcome to the Captain's Corner.</PageHeader>
+        <PageHeader>Welcome to Austin Tennis League!</PageHeader>
       </div>
     );
   }

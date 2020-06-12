@@ -11,7 +11,7 @@ export default function AuthenticatedRoute({ children, ...rest }) {
         children
       ) : (
         <Redirect to={
-          `/login?redirect=${pathname}${search}`
+          `/captain-login?redirect=${pathname}${search}`
         } />
       )}
     </Route>

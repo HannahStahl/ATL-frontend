@@ -1,29 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { API } from "aws-amplify";
 import { useHistory } from "react-router-dom";
 import { PageHeader, FormGroup, ControlLabel, FormControl } from "react-bootstrap";
 import { onError } from "../libs/errorLib";
+import { useAppContext } from "../libs/contextLib";
 import LoaderButton from "../components/LoaderButton";
 
 export default function Profile() {
   const history = useHistory();
-  const [oldProfile, setOldProfile] = useState({});
-  const [newProfile, setNewProfile] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    async function onLoad() {
-      try {
-        const profile = await API.get("atl-backend", "getCaptain");
-        setOldProfile(profile);
-        setNewProfile(profile);
-      } catch (e) {
-        onError(e);
-      }
-      setIsLoading(false);
-    }
-    onLoad();
-  }, []);
+  const { profile, setProfile } = useAppContext();
+  const [newProfile, setNewProfile] = useState(profile);
+  const [isLoading, setIsLoading] = useState(false);
 
   const validateForm = () => (
     newProfile.firstName?.length > 0
@@ -35,15 +22,10 @@ export default function Profile() {
     event.preventDefault();
     setIsLoading(true);
     try {
-      if (oldProfile.captainId) {
-        await API.put("atl-backend", `update/captain/${newProfile.captainId}`, {
-          body: newProfile
-        });
-      } else {
-        await API.post("atl-backend", "create/captain", {
-          body: newProfile
-        });
-      }
+      await API.put("atl-backend", `update/captain/${newProfile.captainId}`, {
+        body: newProfile
+      });
+      setProfile(newProfile);
       history.push("/");
     } catch (e) {
       onError(e);

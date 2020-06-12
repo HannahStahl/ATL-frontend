@@ -1,35 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { API } from "aws-amplify";
+import React, { useState } from "react";
 import { PageHeader, Table, Modal } from "react-bootstrap";
-import { onError } from "../libs/errorLib";
+import { useAppContext } from "../libs/contextLib";
 import "./Matches.css";
+import AddMatchForm from "./AddMatchForm";
 
 export default function Schedule() {
-  const [schedule, setSchedule] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { team, matches } = useAppContext();
+  let schedule = [];
+  const { teamId } = team;
+  if (teamId) {
+    schedule = matches.filter((match) => match.homeTeamId === teamId || match.visitorTeamId === teamId);
+  }
   const [matchSelected, setMatchSelected] = useState(undefined);
-
-  useEffect(() => {
-    async function onLoad() {
-      try {
-        // TODO move all API calls to App.js
-        const [teams, matches] = await Promise.all([
-          API.get("atl-backend", "list/team"),
-          API.get("atl-backend", "list/match") // TODO change backend call to return all matches, not just ones for this captain
-        ]);
-        const team = teams[0];
-        let matchesForTeam = [];
-        if (team) {
-          matchesForTeam = matches.filter((match) => match.homeTeamId === team.teamId || match.visitorTeamId === team.teamId);
-        }
-        setSchedule(matchesForTeam);
-      } catch (e) {
-        onError(e);
-      }
-      setIsLoading(false);
-    }
-    onLoad();
-  }, []);
+  const [newMatch, setNewMatch] = useState(false);
 
   const columns = {
     homeTeamId: "Home Team",
@@ -68,37 +51,41 @@ export default function Schedule() {
   return (
     <div>
       <PageHeader>Match Schedule</PageHeader>
-      {!isLoading && (
-        <div className="Matches">
-          <Table bordered hover>
-            <thead>
-              <tr>
+      <div className="Matches">
+        <Table bordered hover>
+          <thead>
+            <tr>
+              {Object.keys(columns).map((key) => (
+                <th key={key}>{columns[key]}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {schedule.map((match) => (
+              <tr key={match.matchId} onClick={() => setMatchSelected(match)}>
                 {Object.keys(columns).map((key) => (
-                  <th key={key}>{columns[key]}</th>
+                  <td key={key}>{match[key]}</td>
                 ))}
               </tr>
-            </thead>
-            <tbody>
-              {schedule.map((match) => (
-                <tr onClick={() => setMatchSelected(match)}>
-                  {Object.keys(columns).map((key) => (
-                    <td key={key}>{match[key]}</td>
-                  ))}
-                </tr>
-              ))}
-              <tr>
-                <td colSpan={Object.keys(columns).length}>+ Add new match</td>
-              </tr>
-            </tbody>
-          </Table>
-        </div>
-      )}
+            ))}
+            <tr>
+              <td colSpan={Object.keys(columns).length} onClick={() => setNewMatch(true)}>+ Add new match</td>
+            </tr>
+          </tbody>
+        </Table>
+      </div>
       <Modal show={matchSelected !== undefined} onHide={() => setMatchSelected(undefined)}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Match Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <p>Insert form here</p>
+        </Modal.Body>
+      </Modal>
+      <Modal show={newMatch} onHide={() => setNewMatch(false)}>
+        <Modal.Header closeButton />
+        <Modal.Body>
+          <AddMatchForm hideModal={() => setNewMatch(false)} />
         </Modal.Body>
       </Modal>
     </div>

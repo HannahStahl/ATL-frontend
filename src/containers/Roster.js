@@ -1,35 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { API } from "aws-amplify";
-import { PageHeader, Table, Modal } from "react-bootstrap";
-import { onError } from "../libs/errorLib";
+import { PageHeader, Table, Modal, FormControl } from "react-bootstrap";
+import { useAppContext } from "../libs/contextLib";
 import "./Roster.css";
 
 export default function Roster() {
+  const { team, allPlayers, setAllPlayers } = useAppContext();
+  const { teamId } = team;
   const [roster, setRoster] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [playerSelected, setPlayerSelected] = useState(undefined);
+  const [newPlayerIdSelected, setNewPlayerIdSelected] = useState("");
 
   useEffect(() => {
-    async function onLoad() {
-      try {
-        // TODO move all API calls to App.js
-        const [teams, players] = await Promise.all([
-          API.get("atl-backend", "list/team"),
-          API.get("atl-backend", "list/player") // TODO change backend call to return all players, not just ones for this captain
-        ]);
-        const team = teams[0];
-        let playersOnTeam = [];
-        if (team) {
-          playersOnTeam = players.filter((player) => player.teamId === team.teamId);
-        }
-        setRoster(playersOnTeam);
-      } catch (e) {
-        onError(e);
-      }
-      setIsLoading(false);
-    }
-    onLoad();
-  }, []);
+    if (teamId) setRoster(allPlayers.filter((player) => player.teamId === teamId));
+  }, [teamId, allPlayers]);
 
   const columns = {
     firstName: "First Name",
@@ -43,34 +27,59 @@ export default function Roster() {
     "comments": "Comments"
   };
 
+  const addPlayerToRoster = async (e) => {
+    const playerId = e.target.value;
+    setNewPlayerIdSelected(playerId);
+    if (playerId.length > 0) {
+      const index = allPlayers.findIndex((playerInList) => playerInList.playerId === playerId);
+      const player = allPlayers[index];
+      const updatedPlayer = { ...player, teamId };
+      await API.put("atl-backend", `update/player/${playerId}`, {
+        body: updatedPlayer
+      });
+      allPlayers[index] = updatedPlayer;
+      setAllPlayers([...allPlayers]);
+      setNewPlayerIdSelected("");
+    }
+  };
+
   return (
     <div>
       <PageHeader>Team Roster</PageHeader>
-      {!isLoading && (
-        <div className="Roster">
-          <Table bordered hover>
-            <thead>
-              <tr>
+      <div className="Roster">
+        <Table bordered hover>
+          <thead>
+            <tr>
+              {Object.keys(columns).map((key) => (
+                <th key={key}>{columns[key]}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {roster.map((player) => (
+              <tr key={player.playerId} onClick={() => setPlayerSelected(player)}>
                 {Object.keys(columns).map((key) => (
-                  <th key={key}>{columns[key]}</th>
+                  <td key={key}>{player[key]}</td>
                 ))}
               </tr>
-            </thead>
-            <tbody>
-              {roster.map((player) => (
-                <tr onClick={() => setPlayerSelected(player)}>
-                  {Object.keys(columns).map((key) => (
-                    <td key={key}>{player[key]}</td>
+            ))}
+            <tr>
+              <td colSpan={Object.keys(columns).length}>
+                <FormControl
+                  componentClass="select"
+                  value={newPlayerIdSelected}
+                  onChange={addPlayerToRoster}
+                >
+                  <option value="">+ Add new player</option>
+                  {allPlayers.map((player) => (
+                    <option key={player.playerId} value={player.playerId}>{`${player.firstName} ${player.lastName}`}</option>
                   ))}
-                </tr>
-              ))}
-              <tr>
-                <td colSpan={Object.keys(columns).length}>+ Add new player</td>
-              </tr>
-            </tbody>
-          </Table>
-        </div>
-      )}
+                </FormControl>
+              </td>
+            </tr>
+          </tbody>
+        </Table>
+      </div>
       <Modal show={playerSelected !== undefined} onHide={() => setPlayerSelected(undefined)}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Player Details</Modal.Title>

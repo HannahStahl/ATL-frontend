@@ -5,6 +5,7 @@ import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 
 import Home from "./containers/Home";
+import PlayerSignup from "./containers/PlayerSignup";
 import Login from "./containers/Login";
 import Signup from "./containers/Signup";
 import Profile from "./containers/Profile";
@@ -19,10 +20,13 @@ export default function Routes() {
       <Route exact path="/">
         <Home />
       </Route>
-      <UnauthenticatedRoute exact path="/login">
+      <Route exact path="/player-signup">
+        <PlayerSignup />
+      </Route>
+      <UnauthenticatedRoute exact path="/captain-login">
         <Login />
       </UnauthenticatedRoute>
-      <UnauthenticatedRoute exact path="/signup">
+      <UnauthenticatedRoute exact path="/captain-signup">
         <Signup />
       </UnauthenticatedRoute>
       <AuthenticatedRoute exact path="/captain-profile">
