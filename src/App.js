@@ -16,7 +16,10 @@ function App() {
   const [profile, setProfile] = useState({});
   const [team, setTeam] = useState({});
   const [allPlayers, setAllPlayers] = useState([]);
+  const [allCaptains, setAllCaptains] = useState([]);
   const [matches, setMatches] = useState([]);
+  const [locations, setLocations] = useState([]);
+  const [divisions, setDivisions] = useState([]);
 
   useEffect(() => {
     onLoad();
@@ -26,12 +29,18 @@ function App() {
     try {
       await Auth.currentSession();
       userHasAuthenticated(true);
-      const [players, captain] = await Promise.all([
+      const [players, captains, captain, locations, divisions] = await Promise.all([
         API.get("atl-backend", "list/player"),
-        API.get("atl-backend", "getCaptain")
+        API.get("atl-backend", "list/captain"),
+        API.get("atl-backend", "getCaptain"),
+        API.get("atl-backend", "list/location"),
+        API.get("atl-backend", "list/division")
       ]);
       setAllPlayers(players);
+      setAllCaptains(captains);
       setProfile(captain);
+      setLocations(locations);
+      setDivisions(divisions);
       const teams = await API.get("atl-backend", "list/team");
       const { captainId } = captain;
       const captainTeam = teams.find((teamInList) => teamInList.captainId === captainId);
@@ -101,7 +110,12 @@ function App() {
             allPlayers,
             setAllPlayers,
             matches,
-            setMatches
+            setMatches,
+            allCaptains,
+            locations,
+            setLocations,
+            divisions,
+            setDivisions
           }}>
             <div className="container"><Routes /></div>
           </AppContext.Provider>

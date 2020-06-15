@@ -12,6 +12,8 @@ import Profile from "./containers/Profile";
 import Team from "./containers/Team";
 import Roster from "./containers/Roster";
 import Matches from "./containers/Matches";
+import Locations from "./containers/Locations";
+import Divisions from "./containers/Divisions";
 import NotFound from "./containers/NotFound";
 
 export default function Routes() {
@@ -40,6 +42,12 @@ export default function Routes() {
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/match-schedule">
         <Matches />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/court-locations">
+        <Locations />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/divisions">
+        <Divisions />
       </AuthenticatedRoute>
       {/* Finally, catch all unmatched routes */}
       <Route>

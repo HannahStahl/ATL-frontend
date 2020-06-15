@@ -8,7 +8,7 @@ import LoaderButton from "../components/LoaderButton";
 
 export default function Team() {
   const history = useHistory();
-  const { profile, team, setTeam } = useAppContext();
+  const { profile, team, setTeam, allCaptains, locations, divisions } = useAppContext();
   const { captainId } = profile;
   const [newTeam, setNewTeam] = useState(team);
   const [isLoading, setIsLoading] = useState(false);
@@ -53,26 +53,47 @@ export default function Team() {
           <FormGroup controlId="cocaptain">
             <ControlLabel>Co-Captain</ControlLabel>
             <FormControl
-              value={newTeam.cocaptainId || ''}
-              type="text"
+              value={newTeam.cocaptainId || ""}
+              componentClass="select"
               onChange={e => setNewTeam({ ...newTeam, cocaptainId: e.target.value })}
-            />
+            >
+              <option value="" />
+              {allCaptains.filter((captain) => captain.captainId !== captainId).map((captain) => (
+                <option key={captain.captainId} value={captain.captainId}>
+                  {`${captain.firstName} ${captain.lastName}`}
+                </option>
+              ))}
+            </FormControl>
           </FormGroup>
           <FormGroup controlId="division">
             <ControlLabel>Division</ControlLabel>
             <FormControl
               value={newTeam.divisionId || ''}
-              type="text"
+              componentClass="select"
               onChange={e => setNewTeam({ ...newTeam, divisionId: e.target.value })}
-            />
+            >
+              <option value="" />
+              {divisions.map((division) => (
+                <option key={division.divisionId} value={division.divisionId}>
+                  {division.divisionNumber}
+                </option>
+              ))}
+            </FormControl>
           </FormGroup>
           <FormGroup controlId="location">
             <ControlLabel>Location</ControlLabel>
             <FormControl
               value={newTeam.locationId || ''}
-              type="text"
+              componentClass="select"
               onChange={e => setNewTeam({ ...newTeam, locationId: e.target.value })}
-            />
+            >
+              <option value="" />
+              {locations.map((location) => (
+                <option key={location.locationId} value={location.locationId}>
+                  {location.locationName}
+                </option>
+              ))}
+            </FormControl>
           </FormGroup>
           <FormGroup controlId="courtNumber">
             <ControlLabel>Court Number</ControlLabel>
