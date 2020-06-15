@@ -2,24 +2,17 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { PageHeader } from "react-bootstrap";
 import { useAppContext } from "../libs/contextLib";
-import "./Home.css";
 
 export default function Home() {
   const { isAuthenticated } = useAppContext();
 
   function renderLander() {
     return (
-      <div className="lander">
-        <h1>Austin Tennis League</h1>
-        <p>Captain's Corner</p>
-        <div>
-          <Link to="/captain-login" className="btn btn-info btn-lg">
-            Log in
-          </Link>
-          <Link to="/captain-signup" className="btn btn-success btn-lg">
-            Sign up
-          </Link>
-        </div>
+      <div>
+        <PageHeader>Welcome to the Austin Tennis League!</PageHeader>
+        <Link to="/player-signup" className="btn btn-info btn-lg">
+          Sign up to play
+        </Link>
       </div>
     );
   }
@@ -27,7 +20,8 @@ export default function Home() {
   function renderHomePage() {
     return (
       <div>
-        <PageHeader>Welcome to Austin Tennis League!</PageHeader>
+        <PageHeader>Welcome to the Captain's Corner!</PageHeader>
+        <p>Click the icon in the top right to view your profile and team information.</p>
       </div>
     );
   }
