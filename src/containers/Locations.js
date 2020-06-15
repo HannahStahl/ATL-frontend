@@ -23,7 +23,7 @@ export default function Roster() {
     const result = await API.put("atl-backend", `update/location/${updatedLocation.locationId}`, { body: updatedLocation });
     const index = locations.findIndex((locationInList) => locationInList.locationId === updatedLocation.locationId);
     locations[index] = result;
-    setLocations(locations);
+    setLocations([...locations]);
     setIsLoading(false);
     setLocationSelected(undefined);
   };
@@ -33,7 +33,7 @@ export default function Roster() {
     setIsLoading(true);
     const result = await API.post("atl-backend", "create/location", { body: newLocation });
     locations.push(result);
-    setLocations(locations);
+    setLocations([...locations]);
     setIsLoading(false);
     setNewLocationSelected(false);
   };

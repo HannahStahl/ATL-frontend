@@ -1,24 +1,47 @@
 import React, { useState } from "react";
+import { API } from "aws-amplify";
 import { PageHeader, Table, Modal } from "react-bootstrap";
 import { useAppContext } from "../libs/contextLib";
 import "./Matches.css";
-import AddMatchForm from "./AddMatchForm";
+import Match from "./Match";
 
 export default function Schedule() {
-  const { team, matches } = useAppContext();
+  const { team, allTeams, matches, setMatches, locations, allPlayers } = useAppContext();
   let schedule = [];
   const { teamId } = team;
   if (teamId) {
     schedule = matches.filter((match) => match.homeTeamId === teamId || match.visitorTeamId === teamId);
   }
   const [matchSelected, setMatchSelected] = useState(undefined);
-  const [newMatch, setNewMatch] = useState(false);
+  const [newMatchSelected, setNewMatchSelected] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const editMatch = async (event, updatedMatch) => {
+    event.preventDefault();
+    setIsLoading(true);
+    const result = await API.put("atl-backend", `update/match/${updatedMatch.matchId}`, { body: updatedMatch });
+    const index = matches.findIndex((matchInList) => matchInList.matchId === updatedMatch.matchId);
+    matches[index] = result;
+    setMatches([...matches]);
+    setIsLoading(false);
+    setMatchSelected(undefined);
+  };
+
+  const addMatch = async (event, newMatch) => {
+    event.preventDefault();
+    setIsLoading(true);
+    const result = await API.post("atl-backend", "create/match", { body: newMatch });
+    matches.push(result);
+    setMatches([...matches]);
+    setIsLoading(false);
+    setNewMatchSelected(false);
+  };
 
   const columns = {
+    "weekNumber": "Week",
     homeTeamId: "Home Team",
     visitorTeamId: "Visiting Team",
     locationId: "Location",
-    "weekNumber": "Week",
     "startTime": "Start Time",
     "singles1HomePlayerId": "Home Team #1 Singles Player",
     "singles1VisitorPlayerId": "Visiting Team #1 Singles Player",
@@ -55,21 +78,32 @@ export default function Schedule() {
         <Table bordered hover>
           <thead>
             <tr>
-              {Object.keys(columns).map((key) => (
-                <th key={key}>{columns[key]}</th>
-              ))}
+              {Object.keys(columns).map((key) => <th key={key}>{columns[key]}</th>)}
             </tr>
           </thead>
           <tbody>
             {schedule.map((match) => (
               <tr key={match.matchId} onClick={() => setMatchSelected(match)}>
-                {Object.keys(columns).map((key) => (
-                  <td key={key}>{match[key]}</td>
-                ))}
+                {Object.keys(columns).map((key) => {
+                  let value = match[key];
+                  if (value) {
+                    if (key === "homeTeamId" || key === "visitorTeamId") {
+                      value = allTeams.find((team) => team.teamId === value)?.teamName || "";
+                    } else if (key === "locationId") {
+                      value = locations.find((location) => location.locationId === value)?.locationName || "";
+                    } else if (key.includes("Player")) {
+                      const player = allPlayers.find((player) => player.playerId === value);
+                      value = player ? `${player.firstName} ${player.lastName}` : "";
+                    }
+                  }
+                  return <td key={key}>{value || ""}</td>;
+                })}
               </tr>
             ))}
             <tr>
-              <td colSpan={Object.keys(columns).length} onClick={() => setNewMatch(true)}>+ Add new match</td>
+              <td colSpan={Object.keys(columns).length} onClick={() => setNewMatchSelected(true)}>
+                + Add new match
+              </td>
             </tr>
           </tbody>
         </Table>
@@ -79,13 +113,28 @@ export default function Schedule() {
           <Modal.Title>Edit Match Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>Insert form here</p>
+          <Match
+            originalMatch={matchSelected}
+            saveMatch={editMatch}
+            isLoading={isLoading}
+            allTeams={allTeams}
+            locations={locations}
+            allPlayers={allPlayers}
+          />
         </Modal.Body>
       </Modal>
-      <Modal show={newMatch} onHide={() => setNewMatch(false)}>
-        <Modal.Header closeButton />
+      <Modal show={newMatchSelected} onHide={() => setNewMatchSelected(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Add New Match</Modal.Title>
+        </Modal.Header>
         <Modal.Body>
-          <AddMatchForm hideModal={() => setNewMatch(false)} />
+          <Match
+            saveMatch={addMatch}
+            isLoading={isLoading}
+            allTeams={allTeams}
+            locations={locations}
+            allPlayers={allPlayers}
+          />
         </Modal.Body>
       </Modal>
     </div>

@@ -14,6 +14,7 @@ function App() {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, userHasAuthenticated] = useState(false);
   const [profile, setProfile] = useState({});
+  const [allTeams, setAllTeams] = useState([]);
   const [team, setTeam] = useState({});
   const [allPlayers, setAllPlayers] = useState([]);
   const [allCaptains, setAllCaptains] = useState([]);
@@ -29,19 +30,20 @@ function App() {
     try {
       await Auth.currentSession();
       userHasAuthenticated(true);
-      const [players, captains, captain, locations, divisions] = await Promise.all([
+      const [players, captains, captain, teams, locations, divisions] = await Promise.all([
         API.get("atl-backend", "list/player"),
         API.get("atl-backend", "list/captain"),
         API.get("atl-backend", "getCaptain"),
+        API.get("atl-backend", "list/team"),
         API.get("atl-backend", "list/location"),
         API.get("atl-backend", "list/division")
       ]);
       setAllPlayers(players);
       setAllCaptains(captains);
       setProfile(captain);
+      setAllTeams(teams);
       setLocations(locations);
       setDivisions(divisions);
-      const teams = await API.get("atl-backend", "list/team");
       const { captainId } = captain;
       const captainTeam = teams.find((teamInList) => teamInList.captainId === captainId);
       setTeam(captainTeam || {});
@@ -115,7 +117,8 @@ function App() {
             locations,
             setLocations,
             divisions,
-            setDivisions
+            setDivisions,
+            allTeams
           }}>
             <div className="container"><Routes /></div>
           </AppContext.Provider>

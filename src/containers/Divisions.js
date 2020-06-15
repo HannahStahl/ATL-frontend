@@ -23,7 +23,7 @@ export default function Roster() {
     const result = await API.put("atl-backend", `update/division/${updatedDivision.divisionId}`, { body: updatedDivision });
     const index = divisions.findIndex((divisionInList) => divisionInList.divisionId === updatedDivision.divisionId);
     divisions[index] = result;
-    setDivisions(divisions);
+    setDivisions([...divisions]);
     setIsLoading(false);
     setDivisionSelected(undefined);
   };
@@ -33,7 +33,7 @@ export default function Roster() {
     setIsLoading(true);
     const result = await API.post("atl-backend", "create/division", { body: newDivision });
     divisions.push(result);
-    setDivisions(divisions);
+    setDivisions([...divisions]);
     setIsLoading(false);
     setNewDivisionSelected(false);
   };
