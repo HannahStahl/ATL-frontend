@@ -8,6 +8,7 @@ import { AppContext } from "./libs/contextLib";
 import { onError } from "./libs/errorLib";
 import Routes from "./Routes";
 import "./App.css";
+import config from './config';
 
 function App() {
   const history = useHistory();
@@ -35,8 +36,8 @@ function App() {
         API.get("atl-backend", "list/captain"),
         API.get("atl-backend", "getCaptain"),
         API.get("atl-backend", "list/team"),
-        API.get("atl-backend", "list/location"),
-        API.get("atl-backend", "list/division")
+        fetch(`${config.adminApi}/list/location`).then((res) => res.json()),
+        fetch(`${config.adminApi}/list/division`).then((res) => res.json()),
       ]);
       setAllPlayers(players);
       setAllCaptains(captains);
