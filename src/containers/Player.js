@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { API } from "aws-amplify";
-import { useHistory } from "react-router-dom";
 import { FormGroup, ControlLabel, FormControl } from "react-bootstrap";
 import { onError } from "../libs/errorLib";
 import LoaderButton from "../components/LoaderButton";
 
-export default function Player({ playerDetails }) {
-  const history = useHistory();
+export default function Player({ playerDetails, onFinish }) {
   const [player, setPlayer] = useState(playerDetails || {});
   const [isLoading, setIsLoading] = useState(false);
 
@@ -28,7 +26,7 @@ export default function Player({ playerDetails }) {
       } else {
         await API.post("atl-backend", "createPlayer", { body: player });
       }
-      history.push("/");
+      if (onFinish) onFinish(player);
     } catch (e) {
       onError(e);
       setIsLoading(false);

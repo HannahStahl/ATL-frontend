@@ -24,7 +24,7 @@ export default function Roster() {
     "rating": "Rating",
     "selfRated": "Self-Rated?",
     "gender": "Gender",
-    "birthYear": "Birth Year", // TODO transform to Age
+    "birthYear": "Birth Year",
     "comments": "Comments"
   };
 
@@ -42,6 +42,13 @@ export default function Roster() {
       setAllPlayers([...allPlayers]);
       setNewPlayerIdSelected("");
     }
+  };
+
+  const updatePlayer = (updatedPlayer) => {
+    const index = roster.findIndex((player) => player.playerId === playerSelected.playerId);
+    roster[index] = updatedPlayer;
+    setRoster(roster);
+    setPlayerSelected(undefined);
   };
 
   return (
@@ -86,7 +93,7 @@ export default function Roster() {
           <Modal.Title>Edit Player Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Player playerDetails={playerSelected} />
+          <Player playerDetails={playerSelected} onFinish={updatePlayer} />
         </Modal.Body>
       </Modal>
     </div>
