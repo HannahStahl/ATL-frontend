@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { API } from "aws-amplify";
 import { PageHeader, Table, Modal, FormControl } from "react-bootstrap";
 import { useAppContext } from "../libs/contextLib";

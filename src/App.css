@@ -31,3 +31,7 @@
 .App .nav .dropdown-menu a {
   text-align: right;
 }
+
+.App .nav .fa-user-circle {
+  margin-left: 10px;
+}
