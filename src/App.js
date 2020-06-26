@@ -80,23 +80,31 @@ function App() {
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav pullRight>
-              {isAuthenticated ? (
-                <NavDropdown title={<i className="fas fa-user-circle" />} id="basic-nav-dropdown">
-                  <MenuItem href="/captain-profile">My Profile</MenuItem>
-                  <MenuItem href="/team-details">Team Details</MenuItem>
-                  {team.teamId && <MenuItem href="/team-roster">Team Roster</MenuItem>}
-                  {team.teamId && <MenuItem href="/match-schedule">Match Schedule</MenuItem>}
-                  <MenuItem onClick={handleLogout}>Log out</MenuItem>
-                </NavDropdown>
-              ) : (
+              {isAuthenticated && profile.captainId ? (
                 <>
-                  <LinkContainer to="/captain-signup">
-                    <NavItem>Sign up</NavItem>
-                  </LinkContainer>
-                  <LinkContainer to="/captain-login">
-                    <NavItem>Log in</NavItem>
-                  </LinkContainer>
+                  <NavDropdown
+                    title={(
+                      <p>
+                        {`${profile.firstName} ${profile.lastName}`}
+                        <i className="fas fa-user-circle" />
+                      </p>
+                    )}
+                    id="basic-nav-dropdown"
+                  >
+                    <MenuItem href="/captain-profile">My Profile</MenuItem>
+                    <MenuItem href="/team-details">Team Details</MenuItem>
+                    {team.teamId && <MenuItem href="/team-roster">Team Roster</MenuItem>}
+                    {team.teamId && <MenuItem href="/match-schedule">Match Schedule</MenuItem>}
+                    <MenuItem onClick={handleLogout}>Log out</MenuItem>
+                  </NavDropdown>
                 </>
+              ) : (
+                <LinkContainer to="/captain-login">
+                  <NavItem>
+                    Captain Login
+                    <i className="fas fa-user-circle" />
+                  </NavItem>
+                </LinkContainer>
               )}
             </Nav>
           </Navbar.Collapse>
