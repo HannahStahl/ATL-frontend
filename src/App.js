@@ -84,8 +84,8 @@ function App() {
                 <NavDropdown title={<i className="fas fa-user-circle" />} id="basic-nav-dropdown">
                   <MenuItem href="/captain-profile">My Profile</MenuItem>
                   <MenuItem href="/team-details">Team Details</MenuItem>
-                  <MenuItem href="/team-roster">Team Roster</MenuItem>
-                  <MenuItem href="/match-schedule">Match Schedule</MenuItem>
+                  {team.teamId && <MenuItem href="/team-roster">Team Roster</MenuItem>}
+                  {team.teamId && <MenuItem href="/match-schedule">Match Schedule</MenuItem>}
                   <MenuItem onClick={handleLogout}>Log out</MenuItem>
                 </NavDropdown>
               ) : (
