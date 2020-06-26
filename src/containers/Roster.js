@@ -55,6 +55,7 @@ export default function Roster() {
   };
 
   const removePlayerFromRoster = async () => {
+    setRemoving(true);
     await API.put("atl-backend", `update/player/${playerSelectedForRemoval.playerId}`, {
       body: {
         ...playerSelectedForRemoval,
@@ -65,6 +66,7 @@ export default function Roster() {
     roster.splice(index, 1);
     setRoster([...roster]);
     setPlayerSelectedForRemoval(undefined);
+    setRemoving(false);
   };
 
   return (

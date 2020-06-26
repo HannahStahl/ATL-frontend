@@ -4,6 +4,7 @@ import { PageHeader, Table, Modal } from "react-bootstrap";
 import { useAppContext } from "../libs/contextLib";
 import "./Matches.css";
 import Match from "./Match";
+import LoaderButton from "../components/LoaderButton";
 
 export default function Schedule() {
   const { team, allTeams, matches, setMatches, locations, allPlayers } = useAppContext();
@@ -14,7 +15,9 @@ export default function Schedule() {
   }
   const [matchSelected, setMatchSelected] = useState(undefined);
   const [newMatchSelected, setNewMatchSelected] = useState(false);
+  const [matchSelectedForRemoval, setMatchSelectedForRemoval] = useState(undefined);
   const [isLoading, setIsLoading] = useState(false);
+  const [removing, setRemoving] = useState(false);
 
   const editMatch = async (event, updatedMatch) => {
     event.preventDefault();
@@ -35,6 +38,16 @@ export default function Schedule() {
     setMatches([...matches]);
     setIsLoading(false);
     setNewMatchSelected(false);
+  };
+
+  const removeMatch = async () => {
+    setRemoving(true);
+    await API.del("atl-backend", `delete/match/${matchSelectedForRemoval.matchId}`);
+    const index = matches.findIndex((match) => match.matchId === matchSelectedForRemoval.matchId);
+    matches.splice(index, 1);
+    setMatches([...matches]);
+    setRemoving(false);
+    setMatchSelectedForRemoval(undefined);
   };
 
   const columns = {
@@ -79,11 +92,17 @@ export default function Schedule() {
           <thead>
             <tr>
               {Object.keys(columns).map((key) => <th key={key}>{columns[key]}</th>)}
+              <th />
             </tr>
           </thead>
           <tbody>
             {schedule.map((match) => (
-              <tr key={match.matchId} onClick={() => setMatchSelected(match)}>
+              <tr
+                key={match.matchId}
+                onClick={(e) => {
+                  if (!e.target.className.includes("fas")) setMatchSelected(match);
+                }}
+              >
                 {Object.keys(columns).map((key) => {
                   let value = match[key];
                   if (value) {
@@ -98,10 +117,13 @@ export default function Schedule() {
                   }
                   return <td key={key}>{value || ""}</td>;
                 })}
+                <td>
+                  <i className="fas fa-times-circle" onClick={() => setMatchSelectedForRemoval(match)} />
+                </td>
               </tr>
             ))}
             <tr>
-              <td colSpan={Object.keys(columns).length} onClick={() => setNewMatchSelected(true)}>
+              <td colSpan={Object.keys(columns).length + 1} onClick={() => setNewMatchSelected(true)}>
                 + Add new match
               </td>
             </tr>
@@ -135,6 +157,34 @@ export default function Schedule() {
             locations={locations}
             allPlayers={allPlayers}
           />
+        </Modal.Body>
+      </Modal>
+      <Modal show={matchSelectedForRemoval !== undefined} onHide={() => setMatchSelectedForRemoval(undefined)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Remove Match</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {matchSelectedForRemoval && (
+            <>
+              <p>{`Are you sure you want to remove this match from your schedule?`}</p>
+              <LoaderButton
+                block
+                bsSize="large"
+                bsStyle="primary"
+                isLoading={removing}
+                onClick={removeMatch}
+              >
+                Yes, remove
+              </LoaderButton>
+              <LoaderButton
+                block
+                bsSize="large"
+                onClick={() => setMatchSelectedForRemoval(undefined)}
+              >
+                Cancel
+              </LoaderButton>
+            </>
+          )}
         </Modal.Body>
       </Modal>
     </div>
