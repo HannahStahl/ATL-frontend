@@ -3,6 +3,7 @@ import { API } from "aws-amplify";
 import { PageHeader, Table, Modal, FormControl } from "react-bootstrap";
 import { useAppContext } from "../libs/contextLib";
 import "./Roster.css";
+import Player from "./Player";
 
 export default function Roster() {
   const { team, allPlayers, setAllPlayers } = useAppContext();
@@ -85,7 +86,7 @@ export default function Roster() {
           <Modal.Title>Edit Player Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>Insert form here</p>
+          <Player playerDetails={playerSelected} />
         </Modal.Body>
       </Modal>
     </div>
