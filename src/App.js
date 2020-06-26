@@ -27,10 +27,8 @@ function App() {
     onLoad();
   }, []);
 
-  async function onLoad() {
-    try {
-      await Auth.currentSession();
-      userHasAuthenticated(true);
+  useEffect(() => {
+    async function fetchData() {
       const [players, captains, captain, teams, locations, divisions] = await Promise.all([
         API.get("atl-backend", "list/player"),
         API.get("atl-backend", "list/captain"),
@@ -57,6 +55,16 @@ function App() {
         setMatches(teamMatches);
       }
     }
+    if (isAuthenticated) {
+      fetchData();
+    }
+  }, [isAuthenticated]);
+
+  async function onLoad() {
+    try {
+      await Auth.currentSession();
+      userHasAuthenticated(true);
+    }
     catch(e) {
       if (e !== 'No current user') onError(e);
     }
@@ -81,7 +89,7 @@ function App() {
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav pullRight>
-              {isAuthenticated && profile.captainId ? (
+              {profile.captainId ? (
                 <>
                   <NavDropdown
                     title={(
