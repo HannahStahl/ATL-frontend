@@ -149,7 +149,7 @@ export default function Player({ playerDetails, onFinish }) {
         isLoading={isLoading}
         disabled={!validateForm()}
       >
-        {player.playerId ? 'Save Changes' : 'Submit'}
+        {player.playerId ? 'Save' : 'Submit'}
       </LoaderButton>
     </form>
   );
