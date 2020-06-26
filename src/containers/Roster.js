@@ -9,15 +9,10 @@ import LoaderButton from "../components/LoaderButton";
 export default function Roster() {
   const { team, allPlayers, setAllPlayers } = useAppContext();
   const { teamId } = team;
-  const [roster, setRoster] = useState([]);
   const [playerSelected, setPlayerSelected] = useState(undefined);
   const [newPlayerIdSelected, setNewPlayerIdSelected] = useState("");
   const [playerSelectedForRemoval, setPlayerSelectedForRemoval] = useState(undefined);
   const [removing, setRemoving] = useState(false);
-
-  useEffect(() => {
-    if (teamId) setRoster(allPlayers.filter((player) => player.teamId === teamId));
-  }, [teamId, allPlayers]);
 
   const columns = {
     firstName: "First Name",
@@ -48,26 +43,26 @@ export default function Roster() {
   };
 
   const updatePlayer = (updatedPlayer) => {
-    const index = roster.findIndex((player) => player.playerId === playerSelected.playerId);
-    roster[index] = updatedPlayer;
-    setRoster([...roster]);
+    const index = allPlayers.findIndex((player) => player.playerId === playerSelected.playerId);
+    allPlayers[index] = updatedPlayer;
+    setAllPlayers([...allPlayers]);
     setPlayerSelected(undefined);
   };
 
   const removePlayerFromRoster = async () => {
     setRemoving(true);
+    const updatedPlayer = { ...playerSelectedForRemoval, teamId: null };
     await API.put("atl-backend", `update/player/${playerSelectedForRemoval.playerId}`, {
-      body: {
-        ...playerSelectedForRemoval,
-        teamId: null,
-      },
+      body: updatedPlayer,
     });
-    const index = roster.findIndex((player) => player.playerId === playerSelectedForRemoval.playerId);
-    roster.splice(index, 1);
-    setRoster([...roster]);
+    const index = allPlayers.findIndex((player) => player.playerId === playerSelectedForRemoval.playerId);
+    allPlayers[index] = updatedPlayer;
+    setAllPlayers([...allPlayers]);
     setPlayerSelectedForRemoval(undefined);
     setRemoving(false);
   };
+
+  const roster = teamId ? allPlayers.filter((player) => player.teamId === teamId) : [];
 
   return (
     <div>
@@ -104,7 +99,7 @@ export default function Roster() {
                   onChange={addPlayerToRoster}
                 >
                   <option value="">+ Add new player</option>
-                  {allPlayers.map((player) => (
+                  {allPlayers.filter((player) => player.teamId !== teamId).map((player) => (
                     <option key={player.playerId} value={player.playerId}>{`${player.firstName} ${player.lastName}`}</option>
                   ))}
                 </FormControl>
