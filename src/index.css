@@ -14,6 +14,94 @@ input.form-control {
   font-size: 16px;
 }
 
+.App {
+  padding-top: 100px;
+  padding-bottom: 50px;
+}
+
+.App nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  border-radius: 0;
+}
+
+.App nav .container-fluid {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.App nav .container-fluid .navbar-brand {
+  margin-left: 0px;
+}
+
+.App .nav .dropdown-toggle .fa-user-circle {
+  font-size: 22px;
+}
+
+.App .nav .caret {
+  display: none;
+}
+
+.App .nav .dropdown-menu a {
+  text-align: right;
+}
+
+.App .nav .fa-user-circle {
+  margin-left: 10px;
+}
+
+.ErrorBoundary {
+  padding-top: 100px;
+  text-align: center;
+}
+
+.LoaderButton .spinning.glyphicon {
+  margin-right: 7px;
+  top: 2px;
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  from { transform: scale(1) rotate(0deg); }
+  to { transform: scale(1) rotate(360deg); }
+}
+
+.table-container {
+  overflow-x: scroll;
+}
+
+.remove-row {
+  width: 30px;
+}
+
+.NotFound {
+  padding-top: 100px;
+  text-align: center;
+}
+
+.Login .captain-signup-link {
+  margin-top: 25px;
+  text-align: center;
+}
+
+.Signup form span.help-block {
+  font-size: 14px;
+  padding-bottom: 10px;
+  color: #999;
+}
+
+@media all and (min-width: 480px) {
+  .Login {
+    margin: 50px 0;
+  }
+
+  .Signup {
+    margin: 50px 0;
+  }
+}
+
 @media all and (hover: hover) {
   tr:hover {
     cursor: pointer;
