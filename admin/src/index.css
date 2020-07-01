@@ -1,0 +1,109 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Open Sans", sans-serif;
+  font-size: 16px;
+  color: #333;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+select.form-control,
+textarea.form-control,
+input.form-control {
+  font-size: 16px;
+}
+
+.App {
+  padding-top: 100px;
+  padding-bottom: 50px;
+}
+
+.App nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  border-radius: 0;
+}
+
+.App nav .container-fluid {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.App nav .container-fluid .navbar-brand {
+  margin-left: 0px;
+}
+
+.App .nav .dropdown-toggle .fa-user-circle {
+  font-size: 22px;
+}
+
+.App .nav .caret {
+  display: none;
+}
+
+.App .nav .dropdown-menu a {
+  text-align: right;
+}
+
+.App .nav .fa-user-circle {
+  margin-left: 10px;
+}
+
+.Login .signup-link {
+  margin-top: 25px;
+  text-align: center;
+}
+
+.Signup form span.help-block {
+  font-size: 14px;
+  padding-bottom: 10px;
+  color: #999;
+}
+
+.NotFound {
+  padding-top: 100px;
+  text-align: center;
+}
+
+.ErrorBoundary {
+  padding-top: 100px;
+  text-align: center;
+}
+
+.LoaderButton .spinning.glyphicon {
+  margin-right: 7px;
+  top: 2px;
+  animation: spin 1s infinite linear;
+}
+
+.table-container {
+  overflow-x: scroll;
+}
+
+.remove-row {
+  width: 30px;
+}
+
+@keyframes spin {
+  from { transform: scale(1) rotate(0deg); }
+  to { transform: scale(1) rotate(360deg); }
+}
+
+@media all and (min-width: 480px) {
+  .Login {
+    margin: 50px 0;
+  }
+
+  .Signup {
+    margin: 50px 0;
+  }
+}
+
+@media all and (hover: hover) {
+  .interactive-table tr:hover {
+    cursor: pointer;
+  }
+}
