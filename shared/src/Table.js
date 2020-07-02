@@ -52,10 +52,25 @@ export default ({
 
   const capitalizedItemType = itemType.charAt(0).toUpperCase() + itemType.slice(1);
 
+  const joinValues = (obj, keys) => keys.map((key) => obj[key]).join(' ');
+
   const getValueFromJoiningTable = (key, row) => {
     const { joiningTable, joiningTableKey, joiningTableFieldNames } = columns[key];
     const value = joiningTables[joiningTable].find((item) => item[joiningTableKey] === row[key]);
-    return value ? joiningTableFieldNames.map((key) => value[key]).join(' ') : '';
+    return value ? joinValues(value, joiningTableFieldNames) : '';
+  };
+
+  const getFormFields = () => {
+    const fields = {};
+    Object.keys(columns).forEach((key) => {
+      const column = columns[key];
+      if (column.children) {
+        Object.keys(column.children).forEach((childKey) => {
+          fields[childKey] = column.children[childKey];
+        });
+      } else fields[key] = column;
+    });
+    return fields;
   };
 
   return (
@@ -93,7 +108,11 @@ export default ({
               >
                 {Object.keys(columns).map((key) => (
                   <td key={key}>
-                    {columns[key].joiningTable ? getValueFromJoiningTable(key, row) : row[key]}
+                    {columns[key].children ? (
+                      joinValues(row, Object.keys(columns[key].children))
+                    ) : (
+                      columns[key].joiningTable ? getValueFromJoiningTable(key, row) : row[key]
+                    )}
                   </td>
                 ))}
                 {setRows && (
@@ -121,7 +140,7 @@ export default ({
         </Modal.Header>
         <Modal.Body>
           <EditForm
-            fields={columns}
+            fields={getFormFields()}
             original={rowSelectedForEdit}
             save={editRow}
             isLoading={isLoading}
@@ -135,7 +154,7 @@ export default ({
         </Modal.Header>
         <Modal.Body>
           <EditForm
-            fields={columns}
+            fields={getFormFields()}
             save={addRow}
             isLoading={isLoading}
             joiningTables={joiningTables}

@@ -12,8 +12,13 @@ export default () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const columns = {
-    firstName: { label: "First Name", type: "text", required: true },
-    lastName: { label: "Last Name", type: "text", required: true },
+    "name": {
+      label: "Name",
+      children: {
+        firstName: { label: "First Name", type: "text", required: true },
+        lastName: { label: "Last Name", type: "text", required: true },
+      }
+    },
     "phone": { label: "Phone", type: "text" },
     "email": { label: "Email", type: "email", required: true },
     "rating": { label: "Rating", type: "number", required: true },
