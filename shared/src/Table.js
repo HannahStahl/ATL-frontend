@@ -77,6 +77,12 @@ export default ({
     <React.Fragment>
       <style>
         {`
+          th {
+            background-color: #e7e7e7;
+          }
+          th,td {
+            white-space: nowrap;
+          }
           .table-container {
             overflow-x: scroll;
           }
