@@ -1,7 +1,8 @@
 import React from "react";
 import { PageHeader } from "react-bootstrap";
+import { API } from "aws-amplify";
+import { Table } from "atl-components";
 import { useAppContext } from "../libs/contextLib";
-import Table from "../components/Table";
 
 export default () => {
   const { divisions, setDivisions } = useAppContext();
@@ -12,7 +13,7 @@ export default () => {
   return (
     <div>
       <PageHeader>Divisions</PageHeader>
-      <Table columns={columns} rows={divisions} setRows={setDivisions} itemType="division" />
+      <Table columns={columns} rows={divisions} setRows={setDivisions} itemType="division" API={API} />
     </div>
   );
 }

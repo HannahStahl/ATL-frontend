@@ -68,30 +68,6 @@ input.form-control {
   text-align: center;
 }
 
-.ErrorBoundary {
-  padding-top: 100px;
-  text-align: center;
-}
-
-.LoaderButton .spinning.glyphicon {
-  margin-right: 7px;
-  top: 2px;
-  animation: spin 1s infinite linear;
-}
-
-.table-container {
-  overflow-x: scroll;
-}
-
-.remove-row {
-  width: 30px;
-}
-
-@keyframes spin {
-  from { transform: scale(1) rotate(0deg); }
-  to { transform: scale(1) rotate(360deg); }
-}
-
 @media all and (min-width: 480px) {
   .Login {
     margin: 50px 0;
@@ -99,11 +75,5 @@ input.form-control {
 
   .Signup {
     margin: 50px 0;
-  }
-}
-
-@media all and (hover: hover) {
-  .interactive-table tr:hover {
-    cursor: pointer;
   }
 }

@@ -3,7 +3,7 @@ import { Auth, API } from "aws-amplify";
 import { Link, useHistory } from "react-router-dom";
 import { Nav, Navbar, NavItem, NavDropdown, MenuItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import ErrorBoundary from "./components/ErrorBoundary";
+import { ErrorBoundary } from "atl-components";
 import { AppContext } from "./libs/contextLib";
 import { onError } from "./libs/errorLib";
 import Routes from "./Routes";
@@ -71,7 +71,7 @@ function App() {
           <Navbar.Collapse>
             <Nav pullRight>
               {profile.userId ? (
-                <>
+                <React.Fragment>
                   <NavDropdown
                     title={(
                       <p>
@@ -87,7 +87,7 @@ function App() {
                     <MenuItem href="/divisions">Divisions</MenuItem>
                     <MenuItem onClick={handleLogout}>Log out</MenuItem>
                   </NavDropdown>
-                </>
+                </React.Fragment>
               ) : (
                 <LinkContainer to="/login">
                   <NavItem>

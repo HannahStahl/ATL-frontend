@@ -8,7 +8,7 @@ import {
   ControlLabel,
   PageHeader
 } from "react-bootstrap";
-import LoaderButton from "../components/LoaderButton";
+import { LoaderButton } from "atl-components";
 import { useAppContext } from "../libs/contextLib";
 import { useFormFields } from "../libs/hooksLib";
 import { onError } from "../libs/errorLib";

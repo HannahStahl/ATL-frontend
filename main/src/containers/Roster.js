@@ -1,7 +1,8 @@
 import React from "react";
 import { PageHeader } from "react-bootstrap";
+import { API } from "aws-amplify";
+import { Table } from "atl-components";
 import { useAppContext } from "../libs/contextLib";
-import Table from "../components/Table";
 
 export default () => {
   const { allPlayers, setAllPlayers, team } = useAppContext();
@@ -36,6 +37,7 @@ export default () => {
           rows={playersOnTeam}
           setRows={setAllPlayers}
           itemType="player"
+          API={API}
         />
       )}
     </div>

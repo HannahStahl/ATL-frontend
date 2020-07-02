@@ -1,7 +1,8 @@
 import React from "react";
 import { PageHeader } from "react-bootstrap";
+import { API } from "aws-amplify";
+import { Table } from "atl-components";
 import { useAppContext } from "../libs/contextLib";
-import Table from "../components/Table";
 
 export default () => {
   const { locations, setLocations } = useAppContext();
@@ -13,7 +14,7 @@ export default () => {
   return (
     <div>
       <PageHeader>Court Locations</PageHeader>
-      <Table columns={columns} rows={locations} setRows={setLocations} itemType="location" />
+      <Table columns={columns} rows={locations} setRows={setLocations} itemType="location" API={API} />
     </div>
   );
 }

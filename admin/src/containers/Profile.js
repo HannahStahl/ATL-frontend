@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { API } from "aws-amplify";
 import { PageHeader } from "react-bootstrap";
+import { EditForm } from "atl-components";
 import { useAppContext } from "../libs/contextLib";
-import EditForm from "../components/EditForm";
 
 export default function Profile() {
   const { profile, setProfile } = useAppContext();

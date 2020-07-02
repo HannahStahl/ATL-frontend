@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@sentry/browser": "^5.15.4",
+    "atl-components": "^1.1.7",
     "aws-amplify": "^3.0.6",
     "react": "^16.13.1",
     "react-bootstrap": "^0.33.1",

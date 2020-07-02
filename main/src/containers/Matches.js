@@ -1,7 +1,8 @@
 import React from "react";
 import { PageHeader } from "react-bootstrap";
+import { API } from "aws-amplify";
+import { Table } from "atl-components";
 import { useAppContext } from "../libs/contextLib";
-import Table from "../components/Table";
 
 export default () => {
   const { matches, setMatches, locations, allPlayers, allTeams, team } = useAppContext();
@@ -81,6 +82,7 @@ export default () => {
           setRows={setMatches}
           itemType="match"
           joiningTables={{ locations, players: allPlayers, teams: allTeams }}
+          API={API}
         />
       )}
     </div>
