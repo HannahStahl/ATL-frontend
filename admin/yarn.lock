@@ -3341,10 +3341,10 @@ asynckit@^0.4.0:
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
   integrity sha1-x57Zf380y48robyXkLzDZkdLS3k=
 
-atl-components@^1.1.7:
-  version "1.1.7"
-  resolved "https://registry.yarnpkg.com/atl-components/-/atl-components-1.1.7.tgz#ff48e660d9049fba391a8d55c430f56755921462"
-  integrity sha512-fTvpi+mLAOpgPc6kWaJcpen1L861ukZZmWEEWTqlXxyqhsx7P136oQGLiOH9MtbFojLxEt5e/JfiKsJcfYwrZA==
+atl-components@^1.1.8:
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/atl-components/-/atl-components-1.1.8.tgz#26a4526a24fc4d0da4cd3805ef9ea4605bc235dc"
+  integrity sha512-Da0wkcOvVq0AsIu45zcl7XlXoegbrqgKeQObblY4XL6NgrKRsJ41Q2wRmg5fZ+MQXuCxwaPOMZcVtZQGBpYagw==
 
 atob@^2.1.2:
   version "2.1.2"
