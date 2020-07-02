@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import { PageHeader, FormControl } from "react-bootstrap";
+import { PageHeader, FormControl, Modal } from "react-bootstrap";
 import { API } from "aws-amplify";
-import { Table } from "atl-components";
+import { Table, LoaderButton } from "atl-components";
 import { useAppContext } from "../libs/contextLib";
 
 export default () => {
   const { allPlayers, setAllPlayers, team } = useAppContext();
   const [dropdownOptionSelected, setDropdownOptionSelected] = useState("");
+  const [playerIdToAdd, setPlayerIdToAdd] = useState(undefined);
+  const [isLoading, setIsLoading] = useState(false);
 
   const columns = {
     firstName: { label: "First Name", type: "text", required: true },
@@ -25,17 +27,38 @@ export default () => {
   };
 
   const { teamId } = team;
+  const playersOnTeam = allPlayers.filter((player) => player.teamId === teamId);
+  const playersNotOnTeam = allPlayers.filter((player) => player.teamId !== teamId);
+  const playersOnDifferentTeam = playersNotOnTeam.filter((player) => player.teamId);
+  const playersNotOnAnyTeam = playersNotOnTeam.filter((player) => !player.teamId);
 
   const addPlayerToTeam = async (event) => {
     const playerId = event.target.value;
     setDropdownOptionSelected(playerId);
     const index = allPlayers.findIndex((rowInList) => rowInList.playerId === playerId);
     const player = allPlayers[index];
+    if (player.teamId) {
+      setPlayerIdToAdd(player.playerId);
+    } else {
+      const body = { ...player, teamId }
+      const result = await API.put("atl-backend", `update/player/${playerId}`, { body });
+      allPlayers[index] = result;
+      setAllPlayers([...allPlayers]);
+      setDropdownOptionSelected("");
+    }
+  };
+
+  const addPlayerFromOtherTeam = async () => {
+    setIsLoading(true);
+    const index = allPlayers.findIndex((rowInList) => rowInList.playerId === playerIdToAdd);
+    const player = allPlayers[index];
     const body = { ...player, teamId }
-    const result = await API.put("atl-backend", `update/player/${playerId}`, { body });
+    const result = await API.put("atl-backend", `update/player/${playerIdToAdd}`, { body });
     allPlayers[index] = result;
     setAllPlayers([...allPlayers]);
     setDropdownOptionSelected("");
+    setPlayerIdToAdd(undefined);
+    setIsLoading(false);
   };
 
   const removePlayerFromTeam = async (playerId) => {
@@ -55,11 +78,26 @@ export default () => {
         onChange={addPlayerToTeam}
       >
         <option value="" disabled>{`+ Add new player to team`}</option>
-        {allPlayers.filter((player) => player.teamId !== teamId).map((player) => (
-          <option key={player.playerId} value={player.playerId}>
-            {`${player.firstName} ${player.lastName}`}
-          </option>
-        ))}
+        {playersNotOnAnyTeam.length > 0 && (
+          <React.Fragment>
+            <option value="note" disabled>Players not yet on a team:</option>
+            {playersNotOnAnyTeam.map((player) => (
+              <option key={player.playerId} value={player.playerId}>
+                {`${player.firstName} ${player.lastName}`}
+              </option>
+            ))}
+          </React.Fragment>
+        )}
+        {playersOnDifferentTeam.length > 0 && (
+          <React.Fragment>
+            <option value="note2" disabled>Players already on a team:</option>
+            {playersOnDifferentTeam.map((player) => (
+              <option key={player.playerId} value={player.playerId}>
+                {`${player.firstName} ${player.lastName}`}
+              </option>
+            ))}
+          </React.Fragment>
+        )}
       </FormControl>
     </td>
   );
@@ -70,7 +108,7 @@ export default () => {
       {allPlayers.length > 0 && (
         <Table
           columns={columns}
-          rows={allPlayers.filter((player) => player.teamId === teamId)}
+          rows={playersOnTeam}
           setRows={setAllPlayers}
           itemType="player"
           API={API}
@@ -79,6 +117,35 @@ export default () => {
           categoryName="team"
         />
       )}
+      <Modal show={playerIdToAdd !== undefined} onHide={() => setPlayerIdToAdd(undefined)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirmation</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>
+            This player is currently on another team's roster. Are you sure you want to remove them from that roster and add them to yours?
+          </p>
+          <LoaderButton
+            block
+            bsSize="large"
+            bsStyle="primary"
+            isLoading={isLoading}
+            onClick={addPlayerFromOtherTeam}
+          >
+            Yes
+          </LoaderButton>
+          <LoaderButton
+            block
+            bsSize="large"
+            onClick={() => {
+              setPlayerIdToAdd(undefined);
+              setDropdownOptionSelected("");
+            }}
+          >
+            Cancel
+          </LoaderButton>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }
