@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { PageHeader, FormControl, Modal } from "react-bootstrap";
+import { PageHeader, FormControl } from "react-bootstrap";
 import { API } from "aws-amplify";
 import { Table } from "atl-components";
 import { useAppContext } from "./libs/contextLib";
