@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { API } from "aws-amplify";
 import { FormGroup, ControlLabel, FormControl } from "react-bootstrap";
 import { LoaderButton } from "atl-components";
-import { onError } from "../libs/errorLib";
+import { onError } from "./libs/errorLib";
 
 export default function Player({ playerDetails, onFinish }) {
   const [player, setPlayer] = useState(playerDetails || {});

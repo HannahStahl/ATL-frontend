@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { Auth } from "aws-amplify";
 import { FormGroup, FormControl, ControlLabel, PageHeader } from "react-bootstrap";
 import { LoaderButton } from "atl-components";
-import { useAppContext } from "../libs/contextLib";
-import { useFormFields } from "../libs/hooksLib";
-import { onError } from "../libs/errorLib";
+import { useAppContext } from "./libs/contextLib";
+import { useFormFields } from "./libs/hooksLib";
+import { onError } from "./libs/errorLib";
 
 export default function Login() {
   const { userHasAuthenticated } = useAppContext();
@@ -34,7 +34,7 @@ export default function Login() {
 
   return (
     <div className="Login">
-      <PageHeader>Admin Login</PageHeader>
+      <PageHeader>Captain Login</PageHeader>
       <form onSubmit={handleSubmit}>
         <FormGroup controlId="email" bsSize="large">
           <ControlLabel>Email</ControlLabel>
@@ -63,8 +63,8 @@ export default function Login() {
         >
           Log In
         </LoaderButton>
-        <div className="signup-link">
-          <a href="/signup">Don't have an account?</a>
+        <div className="captain-signup-link">
+          <a href="/captain-signup">Need to register?</a>
         </div>
       </form>
     </div>

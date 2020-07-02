@@ -2,14 +2,14 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 import { AuthenticatedRoute, UnauthenticatedRoute } from "atl-components";
 import { useAppContext } from "./libs/contextLib";
-import Home from "./containers/Home";
-import Login from "./containers/Login";
-import Signup from "./containers/Signup";
-import Profile from "./containers/Profile";
-import Locations from "./containers/Locations";
-import Divisions from "./containers/Divisions";
-import Schedules from "./containers/Schedules";
-import NotFound from "./containers/NotFound";
+import Home from "./Home";
+import Login from "./Login";
+import Signup from "./Signup";
+import Profile from "./Profile";
+import Locations from "./Locations";
+import Divisions from "./Divisions";
+import Schedules from "./Schedules";
+import NotFound from "./NotFound";
 
 export default function Routes() {
   const { isAuthenticated } = useAppContext();

@@ -2,7 +2,7 @@ import React from "react";
 import { PageHeader } from "react-bootstrap";
 import { API } from "aws-amplify";
 import { Table } from "atl-components";
-import { useAppContext } from "../libs/contextLib";
+import { useAppContext } from "./libs/contextLib";
 
 export default () => {
   const { matches, setMatches, locations, allPlayers, allTeams, team } = useAppContext();

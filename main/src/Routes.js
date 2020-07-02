@@ -2,15 +2,15 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 import { AuthenticatedRoute, UnauthenticatedRoute } from "atl-components";
 import { useAppContext } from "./libs/contextLib";
-import Home from "./containers/Home";
-import PlayerSignup from "./containers/PlayerSignup";
-import Login from "./containers/Login";
-import Signup from "./containers/Signup";
-import Profile from "./containers/Profile";
-import Team from "./containers/Team";
-import Roster from "./containers/Roster";
-import Matches from "./containers/Matches";
-import NotFound from "./containers/NotFound";
+import Home from "./Home";
+import PlayerSignup from "./PlayerSignup";
+import Login from "./Login";
+import Signup from "./Signup";
+import Profile from "./Profile";
+import Team from "./Team";
+import Roster from "./Roster";
+import Matches from "./Matches";
+import NotFound from "./NotFound";
 
 export default function Routes() {
   const { isAuthenticated } = useAppContext();

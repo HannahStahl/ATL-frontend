@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { API } from "aws-amplify";
 import { PageHeader } from "react-bootstrap";
 import { EditForm } from "atl-components";
-import { useAppContext } from "../libs/contextLib";
+import { useAppContext } from "./libs/contextLib";
 
 export default function Team() {
   const { profile, team, setTeam, allCaptains, locations, divisions } = useAppContext();

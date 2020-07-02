@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { PageHeader, FormControl, Modal } from "react-bootstrap";
 import { API } from "aws-amplify";
-import { Table, LoaderButton } from "atl-components";
-import { useAppContext } from "../libs/contextLib";
+import { Table } from "atl-components";
+import { useAppContext } from "./libs/contextLib";
+import ConfirmationModal from "./ConfirmationModal";
 
 export default () => {
   const { allPlayers, setAllPlayers, team } = useAppContext();
@@ -117,35 +118,13 @@ export default () => {
           categoryName="team"
         />
       )}
-      <Modal show={playerIdToAdd !== undefined} onHide={() => setPlayerIdToAdd(undefined)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Confirmation</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <p>
-            This player is currently on another team's roster. Are you sure you want to remove them from that roster and add them to yours?
-          </p>
-          <LoaderButton
-            block
-            bsSize="large"
-            bsStyle="primary"
-            isLoading={isLoading}
-            onClick={addPlayerFromOtherTeam}
-          >
-            Yes
-          </LoaderButton>
-          <LoaderButton
-            block
-            bsSize="large"
-            onClick={() => {
-              setPlayerIdToAdd(undefined);
-              setDropdownOptionSelected("");
-            }}
-          >
-            Cancel
-          </LoaderButton>
-        </Modal.Body>
-      </Modal>
+      <ConfirmationModal
+        playerIdToAdd={playerIdToAdd}
+        setPlayerIdToAdd={setPlayerIdToAdd}
+        isLoading={isLoading}
+        addPlayerFromOtherTeam={addPlayerFromOtherTeam}
+        setDropdownOptionSelected={setDropdownOptionSelected}
+      />
     </div>
   );
 }

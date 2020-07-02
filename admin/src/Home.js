@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { PageHeader } from "react-bootstrap";
-import { useAppContext } from "../libs/contextLib";
+import { useAppContext } from "./libs/contextLib";
 
 export default function Home() {
   const { isAuthenticated } = useAppContext();
