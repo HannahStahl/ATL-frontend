@@ -30,14 +30,16 @@ export default () => {
       type: "dropdown",
       joiningTable: "teams",
       joiningTableKey: "teamId",
-      joiningTableFieldNames: ["teamName"]
+      joiningTableFieldNames: ["teamName"],
+      required: true,
     },
     visitorTeamId: {
       label: "Visiting Team",
       type: "dropdown",
       joiningTable: "teams",
       joiningTableKey: "teamId",
-      joiningTableFieldNames: ["teamName"]
+      joiningTableFieldNames: ["teamName"],
+      required: true
     }, // TODO change these to Home boolean and Opponent name
     singles1HomePlayerId: playerColumn("Home S1"),
     singles1VisitorPlayerId: playerColumn("Visitor S1"),
@@ -68,17 +70,14 @@ export default () => {
   };
 
   const { teamId } = team;
-  const matchesForTeam = teamId
-    ? matches.filter((match) => match.homeTeamId === teamId || match.visitorTeamId === teamId)
-    : [];
 
   return (
     <div>
       <PageHeader>Match Schedule</PageHeader>
-      {matchesForTeam.length > 0 && (
+      {matches.length > 0 && (
         <Table
           columns={columns}
-          rows={matchesForTeam}
+          rows={matches.filter((match) => match.homeTeamId === teamId || match.visitorTeamId === teamId)}
           setRows={setMatches}
           itemType="match"
           joiningTables={{ locations, players: allPlayers, teams: allTeams }}
