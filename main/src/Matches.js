@@ -10,7 +10,7 @@ export default () => {
   const playerColumn = (label) => ({
     label,
     type: "dropdown",
-    joiningTable: "players",
+    joiningTable: allPlayers,
     joiningTableKey: "playerId",
     joiningTableFieldNames: ["firstName", "lastName"]
   });
@@ -27,14 +27,14 @@ export default () => {
     locationId: {
       label: "Location",
       type: "dropdown",
-      joiningTable: "locations",
+      joiningTable: locations,
       joiningTableKey: "locationId",
       joiningTableFieldNames: ["locationName"]
     },
     homeTeamId: {
       label: "Home Team",
       type: "dropdown",
-      joiningTable: "teams",
+      joiningTable: allTeams,
       joiningTableKey: "teamId",
       joiningTableFieldNames: ["teamName"],
       required: true,
@@ -42,7 +42,7 @@ export default () => {
     visitorTeamId: {
       label: "Visiting Team",
       type: "dropdown",
-      joiningTable: "teams",
+      joiningTable: allTeams,
       joiningTableKey: "teamId",
       joiningTableFieldNames: ["teamName"],
       required: true
@@ -115,7 +115,6 @@ export default () => {
           rows={matches.filter((match) => match.homeTeamId === teamId || match.visitorTeamId === teamId)}
           setRows={setMatches}
           itemType="match"
-          joiningTables={{ locations, players: allPlayers, teams: allTeams }}
           API={API}
           customEditFunction={editRow}
         />

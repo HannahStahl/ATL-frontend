@@ -13,13 +13,13 @@ export default () => {
     "startTime": { label: "Start Time" },
     homeTeamId: {
       label: "Home Team",
-      joiningTable: "teams",
+      joiningTable: teams,
       joiningTableKey: "teamId",
       joiningTableFieldNames: ["teamName"]
     },
     visitorTeamId: {
       label: "Visiting Team",
-      joiningTable: "teams",
+      joiningTable: teams,
       joiningTableKey: "teamId",
       joiningTableFieldNames: ["teamName"]
     },
@@ -45,7 +45,7 @@ export default () => {
         </FormGroup>
       </form>
       {matchesForLocation.length > 0 && (
-        <Table columns={columns} rows={matchesForLocation} itemType="match" joiningTables={{ teams }} API={API} />
+        <Table columns={columns} rows={matchesForLocation} itemType="match" API={API} />
       )}
     </div>
   );

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Form, FormGroup, ControlLabel, FormControl, Col } from "react-bootstrap";
 import LoaderButton from "./LoaderButton";
 
-export default ({ fields, original, save, isLoading, joiningTables }) => {
+export default ({ fields, original, save, isLoading }) => {
   const [updated, setUpdated] = useState(original || {});
 
   useEffect(() => {
@@ -48,7 +48,7 @@ export default ({ fields, original, save, isLoading, joiningTables }) => {
                 onChange={e => setUpdated({ ...updated, [key]: e.target.value })}
               >
                 <option value="" />
-                {joiningTables[fields[key].joiningTable].map((item) => {
+                {fields[key].joiningTable.map((item) => {
                   const { joiningTableKey, joiningTableFieldNames } = fields[key];
                   return (
                     <option key={item[joiningTableKey]} value={item[joiningTableKey]}>

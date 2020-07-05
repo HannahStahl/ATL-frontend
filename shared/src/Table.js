@@ -4,8 +4,8 @@ import EditForm from './EditForm';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 export default ({
-  columns, rows, setRows, itemType, joiningTables, API,
-  categoryName, CustomAddComponent, customEditFunction, customRemoveFunction
+  columns, rows, setRows, itemType, API, categoryName,
+  CustomAddComponent, customEditFunction, customRemoveFunction
 }) => {
   const [rowSelectedForEdit, setRowSelectedForEdit] = useState(undefined);
   const [rowSelectedForRemoval, setRowSelectedForRemoval] = useState(undefined);
@@ -59,7 +59,7 @@ export default ({
 
   const getValueFromJoiningTable = (key, obj, row) => {
     const { joiningTable, joiningTableKey, joiningTableFieldNames } = obj;
-    const value = joiningTables[joiningTable].find((item) => item[joiningTableKey] === row[key]);
+    const value = joiningTable.find((item) => item[joiningTableKey] === row[key]);
     return value ? joinValues(value, joiningTableFieldNames) : '';
   };
 
@@ -168,7 +168,6 @@ export default ({
             original={rowSelectedForEdit}
             save={editRow}
             isLoading={isLoading}
-            joiningTables={joiningTables}
           />
         </Modal.Body>
       </Modal>
@@ -181,7 +180,6 @@ export default ({
             fields={getFormFields()}
             save={addRow}
             isLoading={isLoading}
-            joiningTables={joiningTables}
           />
         </Modal.Body>
       </Modal>

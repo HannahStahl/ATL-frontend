@@ -30,21 +30,21 @@ export default function Team() {
     cocaptainId: {
       label: "Co-Captain",
       type: "dropdown",
-      joiningTable: "captains",
+      joiningTable: allCaptains,
       joiningTableKey: "captainId",
       joiningTableFieldNames: ["firstName", "lastName"]
     },
     divisionId: {
       label: "Division",
       type: "dropdown",
-      joiningTable: "divisions",
+      joiningTable: divisions,
       joiningTableKey: "divisionId",
       joiningTableFieldNames: ["divisionNumber"]
     },
     locationId: {
       label: "Location",
       type: "dropdown",
-      joiningTable: "locations",
+      joiningTable: locations,
       joiningTableKey: "locationId",
       joiningTableFieldNames: ["locationName"]
     },
@@ -61,7 +61,6 @@ export default function Team() {
         original={team}
         save={saveTeam}
         isLoading={isLoading}
-        joiningTables={{ captains: allCaptains, divisions, locations }}
       />
     </div>
   );
