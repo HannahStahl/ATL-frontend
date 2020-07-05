@@ -22,7 +22,7 @@ export default () => {
           <a
             href={value.startsWith('http') ? value : `http://${value}`}
             target="_blank"
-            rel="noopener referrer"
+            rel="noopener noreferrer"
           >
             {value}
           </a>

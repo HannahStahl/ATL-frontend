@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "atl-components": "^1.2.2",
+    "atl-components": "^1.2.3",
     "aws-amplify": "^3.0.6",
     "react": "^16.13.1",
     "react-bootstrap": "^0.33.1",
