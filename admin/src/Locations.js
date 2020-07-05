@@ -5,12 +5,12 @@ import { Table } from "atl-components";
 import { useAppContext } from "./libs/contextLib";
 
 export default () => {
-  const { locations, setLocations } = useAppContext();
+  const { locations, setLocations, loadingData } = useAppContext();
   const columns = {
     locationName: { label: "Name", type: "text", required: true },
-    area: { label: "Area", type: "text" },
+    numCourts: { label: "# of Courts", type: "number" },
     courtGrade: { label: "Court Grade", type: "text" },
-    numCourts: { label: "Number of Courts", type: "number" },
+    area: { label: "Area", type: "text" },
     address: { label: "Address", type: "text" },
     city: { label: "City", type: "text" },
     zip: { label: "Zip Code", type: "text" },
@@ -35,7 +35,9 @@ export default () => {
   return (
     <div>
       <PageHeader>Court Locations</PageHeader>
-      <Table columns={columns} rows={locations} setRows={setLocations} itemType="location" API={API} />
+      {!loadingData && (
+        <Table columns={columns} rows={locations} setRows={setLocations} itemType="location" API={API} />
+      )}
     </div>
   );
 }

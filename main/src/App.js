@@ -21,6 +21,7 @@ function App() {
   const [matches, setMatches] = useState([]);
   const [locations, setLocations] = useState([]);
   const [divisions, setDivisions] = useState([]);
+  const [loadingData, setLoadingData] = useState(true);
 
   useEffect(() => {
     onLoad();
@@ -53,6 +54,7 @@ function App() {
         )); // TODO do this on the backend
         setMatches(teamMatches);
       }
+      setLoadingData(false);
     }
     if (isAuthenticated) fetchData();
   }, [isAuthenticated]);
@@ -71,6 +73,14 @@ function App() {
   async function handleLogout() {
     await Auth.signOut();
     userHasAuthenticated(false);
+    setProfile({});
+    setAllTeams([]);
+    setTeam({});
+    setAllPlayers([]);
+    setAllCaptains([]);
+    setMatches([]);
+    setLocations([]);
+    setDivisions([]);
     history.push("/captain-login");
   }
 
@@ -132,7 +142,8 @@ function App() {
             setLocations,
             divisions,
             setDivisions,
-            allTeams
+            allTeams,
+            loadingData,
           }}>
             <div className="container"><Routes /></div>
           </AppContext.Provider>

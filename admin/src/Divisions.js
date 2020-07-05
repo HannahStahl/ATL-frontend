@@ -5,7 +5,7 @@ import { Table } from "atl-components";
 import { useAppContext } from "./libs/contextLib";
 
 export default () => {
-  const { divisions, setDivisions } = useAppContext();
+  const { divisions, setDivisions, loadingData } = useAppContext();
   const columns = {
     divisionNumber: { label: "Number", type: "number", required: true },
   };
@@ -13,7 +13,9 @@ export default () => {
   return (
     <div>
       <PageHeader>Divisions</PageHeader>
-      <Table columns={columns} rows={divisions} setRows={setDivisions} itemType="division" API={API} />
+      {!loadingData && (
+        <Table columns={columns} rows={divisions} setRows={setDivisions} itemType="division" API={API} />
+      )}
     </div>
   );
 }

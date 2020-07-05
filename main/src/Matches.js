@@ -5,7 +5,7 @@ import { Table } from "atl-components";
 import { useAppContext } from "./libs/contextLib";
 
 export default () => {
-  const { matches, setMatches, locations, allPlayers, allTeams, team } = useAppContext();
+  const { matches, setMatches, locations, allPlayers, allTeams, team, loadingData } = useAppContext();
 
   const playerColumn = (label, home) => ({
     label,
@@ -113,7 +113,7 @@ export default () => {
   return (
     <div>
       <PageHeader>Match Schedule</PageHeader>
-      {matches.length > 0 && (
+      {!loadingData && (
         <Table
           columns={columns}
           rows={matches.filter((match) => match.homeTeamId === teamId || match.visitorTeamId === teamId)}

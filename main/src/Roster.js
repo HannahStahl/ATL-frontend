@@ -6,7 +6,7 @@ import { useAppContext } from "./libs/contextLib";
 import ConfirmationModal from "./ConfirmationModal";
 
 export default () => {
-  const { allPlayers, setAllPlayers, team } = useAppContext();
+  const { allPlayers, setAllPlayers, team, loadingData } = useAppContext();
   const [dropdownOptionSelected, setDropdownOptionSelected] = useState("");
   const [playerIdToAdd, setPlayerIdToAdd] = useState(undefined);
   const [isLoading, setIsLoading] = useState(false);
@@ -111,7 +111,7 @@ export default () => {
   return (
     <div>
       <PageHeader>Team Roster</PageHeader>
-      {allPlayers.length > 0 && (
+      {!loadingData && (
         <Table
           columns={columns}
           rows={playersOnTeam}
