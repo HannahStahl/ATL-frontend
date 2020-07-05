@@ -127,18 +127,17 @@ export default ({
               <tr
                 key={row[itemId]}
                 onClick={setRows ? (e) => {
-                  if (!e.target.className.includes("fas")) setRowSelectedForEdit(row);
+                  if (!e.target.className.includes("fas") && !e.target.href) {
+                    setRowSelectedForEdit(row);
+                  }
                 } : undefined}
               >
-                {Object.keys(columns).filter((key) => !columns[key].hideFromTable).map((key) => (
-                  <td key={key}>
-                    {columns[key].children ? (
-                      joinChildren(row, columns[key])
-                    ) : (
-                      columns[key].joiningTable ? getValueFromJoiningTable(key, columns[key], row) : row[key]
-                    )}
-                  </td>
-                ))}
+                {Object.keys(columns).filter((key) => !columns[key].hideFromTable).map((key) => {
+                  const value = columns[key].children ? joinChildren(row, columns[key]) : (
+                    columns[key].joiningTable ? getValueFromJoiningTable(key, columns[key], row) : row[key]
+                  );
+                  return <td key={key}>{columns[key].render ? columns[key].render(value) : value}</td>;
+                })}
                 {setRows && (
                   <td className="remove-row">
                     <i className="fas fa-times-circle" onClick={() => setRowSelectedForRemoval(row)} />
