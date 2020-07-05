@@ -7,17 +7,21 @@ import { useAppContext } from "./libs/contextLib";
 export default () => {
   const { matches, setMatches, locations, allPlayers, allTeams, team } = useAppContext();
 
-  const playerColumn = (label) => ({
+  const playerColumn = (label, home) => ({
     label,
     type: "dropdown",
     joiningTable: allPlayers,
+    joiningTableFilter: {
+      key: home ? "homeTeamId" : "visitorTeamId",
+      joiningTableKey: "teamId"
+    },
     joiningTableKey: "playerId",
     joiningTableFieldNames: ["firstName", "lastName"]
   });
 
-  const doublesColumn = (label, children) => ({
+  const doublesColumn = (label, home, children) => ({
     label,
-    children: children.map((child) => ({ key: child.key, ...playerColumn(child.label) })),
+    children: children.map((child) => ({ key: child.key, ...playerColumn(child.label, home) })),
     childrenJoiner: ', '
   });
 
@@ -47,23 +51,23 @@ export default () => {
       joiningTableFieldNames: ["teamName"],
       required: true
     }, // TODO change these to Home boolean and Opponent name
-    singles1HomePlayerId: playerColumn("Home S1"), // TODO for all player dropdowns, only show players from selected team
-    singles1VisitorPlayerId: playerColumn("Visitor S1"),
-    singles2HomePlayerId: playerColumn("Home S2"),
-    singles2VisitorPlayerId: playerColumn("Visitor S2"),
-    doubles1HomePlayers: doublesColumn("Home D1", [
+    singles1HomePlayerId: playerColumn("Home S1", true),
+    singles1VisitorPlayerId: playerColumn("Visitor S1", false),
+    singles2HomePlayerId: playerColumn("Home S2", true),
+    singles2VisitorPlayerId: playerColumn("Visitor S2", false),
+    doubles1HomePlayers: doublesColumn("Home D1", true, [
       { key: "doubles1HomePlayer1Id", label: "Home D1" },
       { key: "doubles1HomePlayer2Id" }
     ]),
-    doubles1VisitorPlayers: doublesColumn("Visitor D1", [
+    doubles1VisitorPlayers: doublesColumn("Visitor D1", false, [
       { key: "doubles1VisitorPlayer1Id", label: "Visitor D1" },
       { key: "doubles1VisitorPlayer2Id" }
     ]),
-    doubles2HomePlayers: doublesColumn("Home D2", [
+    doubles2HomePlayers: doublesColumn("Home D2", true, [
       { key: "doubles2HomePlayer1Id", label: "Home D2" },
       { key: "doubles2HomePlayer2Id" }
     ]),
-    doubles2VisitorPlayers: doublesColumn("Visitor D2", [
+    doubles2VisitorPlayers: doublesColumn("Visitor D2", false, [
       { key: "doubles2VisitorPlayer1Id", label: "Visitor D2" },
       { key: "doubles2VisitorPlayer2Id" }
     ]),

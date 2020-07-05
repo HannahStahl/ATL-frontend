@@ -22,45 +22,54 @@ export default ({ fields, original, save, isLoading }) => {
 
   return (
     <Form horizontal onSubmit={(e) => save(e, updated)}>
-      {Object.keys(fields).map((key) => (
-        <FormGroup key={key} controlId={key}>
-          <Col componentClass={ControlLabel} sm={3}>{fields[key].label || ''}</Col>
-          <Col sm={9}>
-            {["text", "number", "email"].includes(fields[key].type) && (
-              <FormControl
-                value={updated[key] || ''}
-                type={fields[key].type}
-                onChange={e => setUpdated({ ...updated, [key]: e.target.value })}
-              />
-            )}
-            {fields[key].type === "textarea" && (
-              <FormControl
-                value={updated[key] || ''}
-                componentClass="textarea"
-                rows="3"
-                onChange={e => setUpdated({ ...updated, [key]: e.target.value })}
-              />
-            )}
-            {fields[key].type === "dropdown" && (
-              <FormControl
-                value={updated[key] || ''}
-                componentClass="select"
-                onChange={e => setUpdated({ ...updated, [key]: e.target.value })}
-              >
-                <option value="" />
-                {fields[key].joiningTable.map((item) => {
-                  const { joiningTableKey, joiningTableFieldNames } = fields[key];
-                  return (
-                    <option key={item[joiningTableKey]} value={item[joiningTableKey]}>
-                      {joiningTableFieldNames.map((fieldName) => item[fieldName]).join(' ')}
-                    </option>
-                  );
-                })}
-              </FormControl>
-            )}
-          </Col>
-        </FormGroup>
-      ))}
+      {Object.keys(fields).map((key) => {
+        const {
+          label, type, joiningTable, joiningTableFilter, joiningTableKey, joiningTableFieldNames
+        } = fields[key];
+        return (
+          <FormGroup key={key} controlId={key}>
+            <Col componentClass={ControlLabel} sm={3}>{label || ''}</Col>
+            <Col sm={9}>
+              {["text", "number", "email"].includes(type) && (
+                <FormControl
+                  value={updated[key] || ''}
+                  type={type}
+                  onChange={e => setUpdated({ ...updated, [key]: e.target.value })}
+                />
+              )}
+              {type === "textarea" && (
+                <FormControl
+                  value={updated[key] || ''}
+                  componentClass="textarea"
+                  rows="3"
+                  onChange={e => setUpdated({ ...updated, [key]: e.target.value })}
+                />
+              )}
+              {type === "dropdown" && (
+                <FormControl
+                  value={updated[key] || ''}
+                  componentClass="select"
+                  onChange={e => setUpdated({ ...updated, [key]: e.target.value })}
+                >
+                  <option value="" />
+                  {(joiningTableFilter
+                      ? joiningTable.filter((row) => (
+                        updated[joiningTableFilter.key] && row[joiningTableFilter.joiningTableKey] === updated[joiningTableFilter.key]
+                      )) : joiningTable
+                    ).map((item) => {
+                      return (
+                        <option key={item[joiningTableKey]} value={item[joiningTableKey]}>
+                          {joiningTableFieldNames.map((fieldName) => item[fieldName]).join(' ')}
+                        </option>
+                      );
+                    })
+                  }
+                </FormControl>
+              )}
+            </Col>
+          </FormGroup>
+        );
+      })}
       <LoaderButton
         block
         type="submit"
