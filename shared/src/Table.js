@@ -163,7 +163,7 @@ export default ({
       </div>
       <Modal show={rowSelectedForEdit !== undefined} onHide={() => setRowSelectedForEdit(undefined)}>
         <Modal.Header closeButton>
-          <Modal.Title>{`Edit ${capitalizedItemType} Details`}</Modal.Title>
+          <h2>{`Edit ${capitalizedItemType} Details`}</h2>
         </Modal.Header>
         <Modal.Body>
           <EditForm
@@ -176,7 +176,7 @@ export default ({
       </Modal>
       <Modal show={addingRow} onHide={() => setAddingRow(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>{`Add New ${capitalizedItemType}`}</Modal.Title>
+          <h2>{`Add New ${capitalizedItemType}`}</h2>
         </Modal.Header>
         <Modal.Body>
           <EditForm

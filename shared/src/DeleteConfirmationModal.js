@@ -8,7 +8,7 @@ export default ({
 }) => (
   <Modal show={rowSelectedForRemoval !== undefined} onHide={() => setRowSelectedForRemoval(undefined)}>
     <Modal.Header closeButton>
-      <Modal.Title>{`Remove ${capitalizedItemType}`}</Modal.Title>
+      <h2>{`Remove ${capitalizedItemType}`}</h2>
     </Modal.Header>
     <Modal.Body>
       {rowSelectedForRemoval && (

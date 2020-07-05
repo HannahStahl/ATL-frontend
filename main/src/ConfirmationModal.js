@@ -7,7 +7,7 @@ export default ({
 }) => (
   <Modal show={playerIdToAdd !== undefined} onHide={() => setPlayerIdToAdd(undefined)}>
     <Modal.Header closeButton>
-      <Modal.Title>Confirmation</Modal.Title>
+      <h2>Confirm new player</h2>
     </Modal.Header>
     <Modal.Body>
       <p>
