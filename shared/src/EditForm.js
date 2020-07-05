@@ -28,8 +28,8 @@ export default ({ fields, original, save, isLoading }) => {
         } = fields[key];
         return (
           <FormGroup key={key} controlId={key}>
-            <Col componentClass={ControlLabel} sm={3}>{label || ''}</Col>
-            <Col sm={9}>
+            <Col componentClass={ControlLabel} sm={4}>{label || ''}</Col>
+            <Col sm={8}>
               {["text", "number", "email"].includes(type) && (
                 <FormControl
                   value={updated[key] || ''}

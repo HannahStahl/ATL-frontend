@@ -51,40 +51,40 @@ export default () => {
       joiningTableFieldNames: ["teamName"],
       required: true
     }, // TODO change these to Home boolean and Opponent name
-    singles1HomePlayerId: playerColumn("Home S1", true),
-    singles1VisitorPlayerId: playerColumn("Visitor S1", false),
-    singles2HomePlayerId: playerColumn("Home S2", true),
-    singles2VisitorPlayerId: playerColumn("Visitor S2", false),
-    doubles1HomePlayers: doublesColumn("Home D1", true, [
-      { key: "doubles1HomePlayer1Id", label: "Home D1" },
+    singles1HomePlayerId: playerColumn("S1 Home Player", true),
+    singles1VisitorPlayerId: playerColumn("S1 Visitor Player", false),
+    singles2HomePlayerId: playerColumn("S2 Home Player", true),
+    singles2VisitorPlayerId: playerColumn("S2 Visitor Player", false),
+    doubles1HomePlayers: doublesColumn("D1 Home Players", true, [
+      { key: "doubles1HomePlayer1Id", label: "D1 Home Players" },
       { key: "doubles1HomePlayer2Id" }
     ]),
-    doubles1VisitorPlayers: doublesColumn("Visitor D1", false, [
-      { key: "doubles1VisitorPlayer1Id", label: "Visitor D1" },
+    doubles1VisitorPlayers: doublesColumn("D1 Visitor Players", false, [
+      { key: "doubles1VisitorPlayer1Id", label: "D1 Visitor Players" },
       { key: "doubles1VisitorPlayer2Id" }
     ]),
-    doubles2HomePlayers: doublesColumn("Home D2", true, [
-      { key: "doubles2HomePlayer1Id", label: "Home D2" },
+    doubles2HomePlayers: doublesColumn("D2 Home Players", true, [
+      { key: "doubles2HomePlayer1Id", label: "D2 Home Players" },
       { key: "doubles2HomePlayer2Id" }
     ]),
-    doubles2VisitorPlayers: doublesColumn("Visitor D2", false, [
-      { key: "doubles2VisitorPlayer1Id", label: "Visitor D2" },
+    doubles2VisitorPlayers: doublesColumn("D2 Visitor Players", false, [
+      { key: "doubles2VisitorPlayer1Id", label: "D2 Visitor Players" },
       { key: "doubles2VisitorPlayer2Id" }
     ]),
     singles1Score: { label: "S1 Score", type: "text" },
     singles2Score: { label: "S2 Score", type: "text" },
     doubles1Score: { label: "D1 Score", type: "text" },
     doubles2Score: { label: "D2 Score", type: "text" },
-    singles1HomeSetsWon: { label: "Home S1 Sets Won", type: "number" },
-    singles1VisitorSetsWon: { label: "Visitor S1 Sets Won", type: "number" },
-    singles2HomeSetsWon: { label: "Home S2 Sets Won", type: "number" },
-    singles2VisitorSetsWon: { label: "Visitor S2 Sets Won", type: "number" },
-    doubles1HomeSetsWon: { label: "Home D1 Sets Won", type: "number" },
-    doubles1VisitorSetsWon: { label: "Visitor D1 Sets Won", type: "number" },
-    doubles2HomeSetsWon: { label: "Home D2 Sets Won", type: "number" },
-    doubles2VisitorSetsWon: { label: "Visitor D2 Sets Won", type: "number" },
-    totalHomeSetsWon: { label: "Home Total Sets Won", type: "number", readOnly: true },
-    totalVisitorSetsWon: { label: "Visitor Total Sets Won", type: "number", readOnly: true }
+    singles1HomeSetsWon: { label: "S1 Home Sets Won", type: "number", hideFromTable: true },
+    singles1VisitorSetsWon: { label: "S1 Visitor Sets Won", type: "number", hideFromTable: true },
+    singles2HomeSetsWon: { label: "S2 Home Sets Won", type: "number", hideFromTable: true },
+    singles2VisitorSetsWon: { label: "S2 Visitor Sets Won", type: "number", hideFromTable: true },
+    doubles1HomeSetsWon: { label: "D1 Home Sets Won", type: "number", hideFromTable: true },
+    doubles1VisitorSetsWon: { label: "D1 Visitor Sets Won", type: "number", hideFromTable: true },
+    doubles2HomeSetsWon: { label: "D2 Home Sets Won", type: "number", hideFromTable: true },
+    doubles2VisitorSetsWon: { label: "D2 Visitor Sets Won", type: "number", hideFromTable: true },
+    totalHomeSetsWon: { label: "Home Sets Won", type: "number", readOnly: true },
+    totalVisitorSetsWon: { label: "Visitor Sets Won", type: "number", readOnly: true }
   };
 
   const editRow = async (rowId, body) => {

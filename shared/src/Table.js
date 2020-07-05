@@ -118,7 +118,7 @@ export default ({
         <Table bordered hover className={setRows ? 'interactive-table' : undefined}>
           <thead>
             <tr>
-              {Object.keys(columns).map((key) => <th key={key}>{columns[key].label}</th>)}
+              {Object.keys(columns).filter((key) => !columns[key].hideFromTable).map((key) => <th key={key}>{columns[key].label}</th>)}
               {setRows && <th />}
             </tr>
           </thead>
@@ -130,7 +130,7 @@ export default ({
                   if (!e.target.className.includes("fas")) setRowSelectedForEdit(row);
                 } : undefined}
               >
-                {Object.keys(columns).map((key) => (
+                {Object.keys(columns).filter((key) => !columns[key].hideFromTable).map((key) => (
                   <td key={key}>
                     {columns[key].children ? (
                       joinChildren(row, columns[key])
@@ -149,7 +149,10 @@ export default ({
             <tr>
               {setRows && (
                 CustomAddComponent ? <CustomAddComponent /> : (
-                  <td colSpan={Object.keys(columns).length + 1} onClick={() => setAddingRow(true)}>
+                  <td
+                    colSpan={Object.keys(columns).filter((key) => !columns[key].hideFromTable).length + 1}
+                    onClick={() => setAddingRow(true)}
+                  >
                     {`+ Add new ${itemType}`}
                   </td>
                 )
