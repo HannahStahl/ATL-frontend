@@ -54,10 +54,23 @@ export default ({
 
   const joinValues = (obj, keys) => keys.map((key) => obj[key]).join(' ');
 
-  const getValueFromJoiningTable = (key, row) => {
-    const { joiningTable, joiningTableKey, joiningTableFieldNames } = columns[key];
+  const getValueFromJoiningTable = (key, obj, row) => {
+    const { joiningTable, joiningTableKey, joiningTableFieldNames } = obj;
     const value = joiningTables[joiningTable].find((item) => item[joiningTableKey] === row[key]);
     return value ? joinValues(value, joiningTableFieldNames) : '';
+  };
+
+  const joinChildren = (obj, row) => {
+    let value = '';
+    let joiner = row.childrenJoiner ? row.childrenJoiner : ' ';
+    row.children.forEach((child) => {
+      const childValue = child.joiningTable
+        ? getValueFromJoiningTable(child.key, child, obj)
+        : obj[child.key];
+      if (value.length > 0 && childValue.length > 0) value += joiner;
+      value += childValue;
+    });
+    return value;
   };
 
   const getFormFields = () => {
@@ -65,8 +78,8 @@ export default ({
     Object.keys(columns).forEach((key) => {
       const column = columns[key];
       if (column.children) {
-        Object.keys(column.children).forEach((childKey) => {
-          fields[childKey] = column.children[childKey];
+        column.children.forEach((child) => {
+          fields[child.key] = child;
         });
       } else fields[key] = column;
     });
@@ -115,9 +128,9 @@ export default ({
                 {Object.keys(columns).map((key) => (
                   <td key={key}>
                     {columns[key].children ? (
-                      joinValues(row, Object.keys(columns[key].children))
+                      joinChildren(row, columns[key])
                     ) : (
-                      columns[key].joiningTable ? getValueFromJoiningTable(key, row) : row[key]
+                      columns[key].joiningTable ? getValueFromJoiningTable(key, columns[key], row) : row[key]
                     )}
                   </td>
                 ))}

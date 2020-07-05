@@ -14,10 +14,10 @@ export default () => {
   const columns = {
     "name": {
       label: "Name",
-      children: {
-        firstName: { label: "First Name", type: "text", required: true },
-        lastName: { label: "Last Name", type: "text", required: true },
-      }
+      children: [
+        { key: "firstName", label: "First Name", type: "text", required: true },
+        { key: "lastName", label: "Last Name", type: "text", required: true },
+      ]
     },
     "phone": { label: "Phone", type: "text" },
     "email": { label: "Email", type: "email", required: true },

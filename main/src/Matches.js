@@ -8,11 +8,17 @@ export default () => {
   const { matches, setMatches, locations, allPlayers, allTeams, team } = useAppContext();
 
   const playerColumn = (label) => ({
-    label: label,
+    label,
     type: "dropdown",
     joiningTable: "players",
     joiningTableKey: "playerId",
     joiningTableFieldNames: ["firstName", "lastName"]
+  });
+
+  const doublesColumn = (label, children) => ({
+    label,
+    children: children.map((child) => ({ key: child.key, ...playerColumn(child.label) })),
+    childrenJoiner: ', '
   });
 
   const columns = {
@@ -45,14 +51,22 @@ export default () => {
     singles1VisitorPlayerId: playerColumn("Visitor S1"),
     singles2HomePlayerId: playerColumn("Home S2"),
     singles2VisitorPlayerId: playerColumn("Visitor S2"),
-    doubles1HomePlayer1Id: playerColumn("Home D1 1"),
-    doubles1HomePlayer2Id: playerColumn("Home D1 2"), // TODO combine with above
-    doubles1VisitorPlayer1Id: playerColumn("Visitor D1 1"),
-    doubles1VisitorPlayer2Id: playerColumn("Visitor D1 2"), // TODO combine with above
-    doubles2HomePlayer1Id: playerColumn("Home D2 1"),
-    doubles2HomePlayer2Id: playerColumn("Home D2 2"), // TODO combine with above
-    doubles2VisitorPlayer1Id: playerColumn("Visitor D2 1"),
-    doubles2VisitorPlayer2Id: playerColumn("Visitor D2 2"), // TODO combine with above
+    doubles1HomePlayers: doublesColumn("Home D1", [
+      { key: "doubles1HomePlayer1Id", label: "Home D1" },
+      { key: "doubles1HomePlayer2Id" }
+    ]),
+    doubles1VisitorPlayers: doublesColumn("Visitor D1", [
+      { key: "doubles1VisitorPlayer1Id", label: "Visitor D1" },
+      { key: "doubles1VisitorPlayer2Id" }
+    ]),
+    doubles2HomePlayers: doublesColumn("Home D2", [
+      { key: "doubles2HomePlayer1Id", label: "Home D2" },
+      { key: "doubles2HomePlayer2Id" }
+    ]),
+    doubles2VisitorPlayers: doublesColumn("Visitor D2", [
+      { key: "doubles2VisitorPlayer1Id", label: "Visitor D2" },
+      { key: "doubles2VisitorPlayer2Id" }
+    ]),
     singles1Score: { label: "S1 Score", type: "text" }, // TODO instead of text input, have separate number inputs for set scores, then remove individual sets won fields
     singles2Score: { label: "S2 Score", type: "text" },
     doubles1Score: { label: "D1 Score", type: "text" },
