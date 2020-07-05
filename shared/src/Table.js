@@ -5,7 +5,7 @@ import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 export default ({
   columns, rows, setRows, itemType, joiningTables, API,
-  categoryName, CustomAddComponent, customRemoveFunction
+  categoryName, CustomAddComponent, customEditFunction, customRemoveFunction
 }) => {
   const [rowSelectedForEdit, setRowSelectedForEdit] = useState(undefined);
   const [rowSelectedForRemoval, setRowSelectedForRemoval] = useState(undefined);
@@ -28,10 +28,13 @@ export default ({
     event.preventDefault();
     setIsLoading(true);
     const rowId = body[itemId];
-    const result = await API.put("atl-backend", `update/${itemType}/${rowId}`, { body });
-    const index = rows.findIndex((rowInList) => rowInList[itemId] === rowId);
-    rows[index] = result;
-    setRows([...rows]);
+    if (customEditFunction) await customEditFunction(rowId, body);
+    else {
+      const result = await API.put("atl-backend", `update/${itemType}/${rowId}`, { body });
+      const index = rows.findIndex((rowInList) => rowInList[itemId] === rowId);
+      rows[index] = result;
+      setRows([...rows]);
+    }
     setIsLoading(false);
     setRowSelectedForEdit(undefined);
   };
@@ -77,11 +80,13 @@ export default ({
     const fields = {};
     Object.keys(columns).forEach((key) => {
       const column = columns[key];
-      if (column.children) {
-        column.children.forEach((child) => {
-          fields[child.key] = child;
-        });
-      } else fields[key] = column;
+      if (!column.readOnly) {
+        if (column.children) {
+          column.children.forEach((child) => {
+            if (!child.readOnly) fields[child.key] = child;
+          });
+        } else fields[key] = column;
+      }
     });
     return fields;
   };
