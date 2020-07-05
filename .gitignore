@@ -3,18 +3,24 @@
 # dependencies
 /main/node_modules
 /admin/node_modules
+/shared/node_modules
 
 # testing
 /main/coverage
 /admin/coverage
+/shared/coverage
 
 # production
 /main/build
 /admin/build
+/shared/build
+/shared/dist
 
 # misc
 .DS_Store
-.env
+/main/.env
+/admin/.env
+/shared/.env
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

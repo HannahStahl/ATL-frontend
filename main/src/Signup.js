@@ -48,7 +48,7 @@ export default function Signup() {
   async function handleSubmit(event) {
     event.preventDefault();
     setIsLoading(true);
-    if (fields.accessCode !== "abc123") { // TODO pull access code from Netlify env variable
+    if (fields.accessCode !== process.env.REACT_APP_ACCESS_CODE) {
       onError("Incorrect access code");
       setIsLoading(false);
     } else {
