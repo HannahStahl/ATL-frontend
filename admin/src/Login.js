@@ -1,30 +1,25 @@
 import React, { useState } from "react";
 import { Auth } from "aws-amplify";
-import { FormGroup, FormControl, ControlLabel, PageHeader } from "react-bootstrap";
+import { FormControl, PageHeader } from "react-bootstrap";
 import { LoaderButton } from "atl-components";
 import { useAppContext } from "./libs/contextLib";
-import { useFormFields } from "./libs/hooksLib";
 import { onError } from "./libs/errorLib";
 
 export default function Login() {
   const { userHasAuthenticated } = useAppContext();
   const [isLoading, setIsLoading] = useState(false);
-  const [fields, handleFieldChange] = useFormFields({
-    email: "",
-    password: ""
-  });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   function validateForm() {
-    return fields.email.length > 0 && fields.password.length > 0;
+    return email.length > 0 && password.length > 0;
   }
 
   async function handleSubmit(event) {
     event.preventDefault();
-
     setIsLoading(true);
-
     try {
-      await Auth.signIn(fields.email, fields.password);
+      await Auth.signIn(email, password);
       userHasAuthenticated(true);
     } catch (e) {
       onError(e);
@@ -36,23 +31,31 @@ export default function Login() {
     <div className="Login">
       <PageHeader>Admin Login</PageHeader>
       <form onSubmit={handleSubmit}>
-        <FormGroup controlId="email" bsSize="large">
-          <ControlLabel>Email</ControlLabel>
-          <FormControl
-            autoFocus
-            type="email"
-            value={fields.email}
-            onChange={handleFieldChange}
-          />
-        </FormGroup>
-        <FormGroup controlId="password" bsSize="large">
-          <ControlLabel>Password</ControlLabel>
-          <FormControl
-            type="password"
-            value={fields.password}
-            onChange={handleFieldChange}
-          />
-        </FormGroup>
+        <table className="form-table">
+          <tbody>
+            <tr>
+              <td className="form-label">Email</td>
+              <td className="form-field">
+                <FormControl
+                  autoFocus
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td className="form-label">Password</td>
+              <td className="form-field">
+                <FormControl
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
         <LoaderButton
           block
           type="submit"

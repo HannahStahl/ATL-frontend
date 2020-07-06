@@ -1,59 +1,52 @@
 import React, { useState } from "react";
 import { Auth, API } from "aws-amplify";
 import { useHistory } from "react-router-dom";
-import {
-  HelpBlock,
-  FormGroup,
-  FormControl,
-  ControlLabel,
-  PageHeader
-} from "react-bootstrap";
+import { FormControl, PageHeader, HelpBlock } from "react-bootstrap";
 import { LoaderButton } from "atl-components";
 import { useAppContext } from "./libs/contextLib";
-import { useFormFields } from "./libs/hooksLib";
 import { onError } from "./libs/errorLib";
 
 export default function Signup() {
-  const [fields, handleFieldChange] = useFormFields({
-    accessCode: "",
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    confirmationCode: "",
-  });
   const history = useHistory();
   const [newUser, setNewUser] = useState(null);
   const { userHasAuthenticated } = useAppContext();
   const [isLoading, setIsLoading] = useState(false);
+  const [accessCode, setAccessCode] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmationCode, setConfirmationCode] = useState("");
 
   function validateForm() {
     return (
-      fields.accessCode.length > 0 &&
-      fields.firstName.length > 0 &&
-      fields.lastName.length > 0 &&
-      fields.email.length > 0 &&
-      fields.password.length > 0 &&
-      fields.password === fields.confirmPassword
+      accessCode.length > 0 &&
+      firstName.length > 0 &&
+      lastName.length > 0 &&
+      email.length > 0 &&
+      password.length > 0 &&
+      confirmPassword.length > 0
     );
   }
 
   function validateConfirmationForm() {
-    return fields.confirmationCode.length > 0;
+    return confirmationCode.length > 0;
   }
 
   async function handleSubmit(event) {
     event.preventDefault();
     setIsLoading(true);
-    if (fields.accessCode !== process.env.REACT_APP_ACCESS_CODE) {
+    if (accessCode !== process.env.REACT_APP_ACCESS_CODE) {
       onError("Incorrect access code");
+      setIsLoading(false);
+    } else if (password !== confirmPassword) {
+      onError("Passwords do not match");
       setIsLoading(false);
     } else {
       try {
         const newUser = await Auth.signUp({
-          username: fields.email,
-          password: fields.password,
+          username: email, password: password,
         });
         setIsLoading(false);
         setNewUser(newUser);
@@ -68,15 +61,12 @@ export default function Signup() {
     event.preventDefault();
     setIsLoading(true);
     try {
-      await Auth.confirmSignUp(fields.email, fields.confirmationCode);
-      await Auth.signIn(fields.email, fields.password);
-      userHasAuthenticated(true);
+      await Auth.confirmSignUp(email, confirmationCode);
+      await Auth.signIn(email, password);
       await API.post("atl-backend", "create/user", {
-        body: {
-          firstName: fields.firstName,
-          lastName: fields.lastName,
-        }
+        body: { firstName, lastName }
       });
+      userHasAuthenticated(true);
       history.push("/");
     } catch (e) {
       onError(e);
@@ -87,16 +77,22 @@ export default function Signup() {
   function renderConfirmationForm() {
     return (
       <form onSubmit={handleConfirmationSubmit}>
-        <FormGroup controlId="confirmationCode" bsSize="large">
-          <ControlLabel>Confirmation Code</ControlLabel>
-          <FormControl
-            autoFocus
-            type="tel"
-            onChange={handleFieldChange}
-            value={fields.confirmationCode}
-          />
-          <HelpBlock>Please check your email for the code.</HelpBlock>
-        </FormGroup>
+        <table className="form-table">
+          <tbody>
+            <tr>
+              <td className="form-label">Confirmation Code</td>
+              <td className="form-field">
+                <FormControl
+                  autoFocus
+                  type="tel"
+                  onChange={(e) => setConfirmationCode(e.target.value)}
+                  value={confirmationCode}
+                />
+              </td>
+            </tr>
+            <tr><td colSpan={2}><HelpBlock>Check your email for the code.</HelpBlock></td></tr>
+          </tbody>
+        </table>
         <LoaderButton
           block
           type="submit"
@@ -114,55 +110,71 @@ export default function Signup() {
   function renderForm() {
     return (
       <form onSubmit={handleSubmit}>
-        <FormGroup controlId="accessCode" bsSize="large">
-          <ControlLabel>Access Code</ControlLabel>
-          <FormControl
-            autoFocus
-            type="text"
-            value={fields.accessCode}
-            onChange={handleFieldChange}
-          />
-        </FormGroup>
-        <FormGroup controlId="firstName" bsSize="large">
-          <ControlLabel>First Name</ControlLabel>
-          <FormControl
-            type="text"
-            value={fields.firstName}
-            onChange={handleFieldChange}
-          />
-        </FormGroup>
-        <FormGroup controlId="lastName" bsSize="large">
-          <ControlLabel>Last Name</ControlLabel>
-          <FormControl
-            type="text"
-            value={fields.lastName}
-            onChange={handleFieldChange}
-          />
-        </FormGroup>
-        <FormGroup controlId="email" bsSize="large">
-          <ControlLabel>Email Address</ControlLabel>
-          <FormControl
-            type="email"
-            value={fields.email}
-            onChange={handleFieldChange}
-          />
-        </FormGroup>
-        <FormGroup controlId="password" bsSize="large">
-          <ControlLabel>Password</ControlLabel>
-          <FormControl
-            type="password"
-            value={fields.password}
-            onChange={handleFieldChange}
-          />
-        </FormGroup>
-        <FormGroup controlId="confirmPassword" bsSize="large">
-          <ControlLabel>Confirm Password</ControlLabel>
-          <FormControl
-            type="password"
-            onChange={handleFieldChange}
-            value={fields.confirmPassword}
-          />
-        </FormGroup>
+        <table className="form-table">
+          <tbody>
+            <tr>
+              <td className="form-label">Access Code</td>
+              <td className="form-field">
+                <FormControl
+                  autoFocus
+                  type="text"
+                  value={accessCode}
+                  onChange={(e) => setAccessCode(e.target.value)}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td className="form-label">First Name</td>
+              <td className="form-field">
+                <FormControl
+                  type="text"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td className="form-label">Last Name</td>
+              <td className="form-field">
+                <FormControl
+                  type="text"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td className="form-label">Email</td>
+              <td className="form-field">
+                <FormControl
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td className="form-label">Password</td>
+              <td className="form-field">
+                <FormControl
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td className="form-label">Confirm Password</td>
+              <td className="form-field">
+                <FormControl
+                  type="password"
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  value={confirmPassword}
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
         <LoaderButton
           block
           type="submit"

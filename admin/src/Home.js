@@ -21,7 +21,7 @@ export default function Home() {
     return (
       <div>
         <PageHeader>Welcome to the ATL Admin Portal.</PageHeader>
-        <p>Click the icon in the top right to view your profile and league information.</p>
+        <p>Click the icon in the top right to edit your profile and website content.</p>
       </div>
     );
   }
