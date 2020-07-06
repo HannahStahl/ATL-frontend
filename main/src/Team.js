@@ -15,12 +15,12 @@ export default function Team() {
     setIsLoading(true);
     if (teamId) {
       await API.put("atl-backend", `update/team/${teamId}`, { body });
-      setTeam(body);
+      setTeam({ ...body });
     }
     else {
       body.captainId = captainId;
       await API.post("atl-backend", "create/team", { body });
-      setTeam({ body });
+      setTeam({ ...body });
     }
     setIsLoading(false);
   };
