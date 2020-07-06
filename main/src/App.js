@@ -44,7 +44,9 @@ function App() {
       setLocations(locations);
       setDivisions(divisions);
       const { captainId } = captain;
-      const captainTeam = teams.find((teamInList) => teamInList.captainId === captainId);
+      const captainTeam = teams.find((teamInList) => (
+        teamInList.captainId === captainId || teamInList.cocaptainId === captainId
+      ));
       setTeam(captainTeam || {});
       if (captainTeam) {
         const { teamId } = captainTeam;

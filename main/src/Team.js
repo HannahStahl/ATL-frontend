@@ -27,6 +27,13 @@ export default function Team() {
 
   const columns = {
     teamName: { label: "Team Name", type: "text", required: true },
+    captainId: {
+      label: "Captain",
+      type: "dropdown",
+      joiningTable: allCaptains,
+      joiningTableKey: "captainId",
+      joiningTableFieldNames: ["firstName", "lastName"]
+    },
     cocaptainId: {
       label: "Co-Captain",
       type: "dropdown",
