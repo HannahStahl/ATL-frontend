@@ -75,7 +75,7 @@ input.form-control {
   margin-left: 10px;
 }
 
-.Home p {
+.Home * {
   text-align: center;
 }
 

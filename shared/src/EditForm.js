@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { FormControl } from "react-bootstrap";
+import {
+  FormControl, Checkbox, FormGroup, ControlLabel, HelpBlock
+} from "react-bootstrap";
 import LoaderButton from "./LoaderButton";
 
-export default ({ fields, original, save, isLoading }) => {
+export default ({ fields, original, save, isLoading, buttonText, labelsAbove }) => {
   const [updated, setUpdated] = useState(original || {});
 
   useEffect(() => {
@@ -18,6 +20,65 @@ export default ({ fields, original, save, isLoading }) => {
       }
     });
     return valid;
+  };
+
+  const renderValue = (key) => {
+    const {
+      type, joiningTable, joiningTableFilter, joiningTableKey,
+      joiningTableFieldNames, options, placeholder, helpText
+    } = fields[key];
+    return (
+      <React.Fragment>
+        {helpText && <HelpBlock>{helpText}</HelpBlock>}
+        {["text", "number", "email", "date"].includes(type) && (
+          <FormControl
+            value={updated[key] || ''}
+            type={type}
+            onChange={e => setUpdated({ ...updated, [key]: e.target.value })}
+            placeholder={placeholder}
+          />
+        )}
+        {type === "checkbox" && (
+          <Checkbox
+            checked={updated[key] || false}
+            onChange={e => setUpdated({ ...updated, [key]: e.target.checked })}
+          />
+        )}
+        {type === "textarea" && (
+          <FormControl
+            value={updated[key] || ''}
+            componentClass="textarea"
+            rows="3"
+            onChange={e => setUpdated({ ...updated, [key]: e.target.value })}
+            placeholder={placeholder}
+          />
+        )}
+        {type === "dropdown" && (
+          <FormControl
+            value={updated[key] || ''}
+            componentClass="select"
+            onChange={e => setUpdated({ ...updated, [key]: e.target.value })}
+          >
+            <option value="" />
+            {options ? options.map((option) => (
+              <option key={option} value={option}>{option}</option>
+            )) : (
+              joiningTableFilter
+                ? joiningTable.filter((row) => (
+                  updated[joiningTableFilter.key] && row[joiningTableFilter.joiningTableKey] === updated[joiningTableFilter.key]
+                )) : joiningTable
+              ).map((item) => {
+                return (
+                  <option key={item[joiningTableKey]} value={item[joiningTableKey]}>
+                    {joiningTableFieldNames.map((fieldName) => item[fieldName]).join(' ')}
+                  </option>
+                );
+              }
+            )}
+          </FormControl>
+        )}
+      </React.Fragment>
+    );
   };
 
   return (
@@ -39,61 +100,39 @@ export default ({ fields, original, save, isLoading }) => {
           .form-field {
             width: 100%;
           }
+          .help-block {
+            margin-top: 0px;
+          }
         `}
       </style>
       <form onSubmit={(e) => save(e, updated)}>
-        <table className='form-table'>
-          <tbody>
+        {labelsAbove ? (
+          <React.Fragment>
             {Object.keys(fields).map((key) => {
-              const {
-                label, type, joiningTable, joiningTableFilter, joiningTableKey, joiningTableFieldNames
-              } = fields[key];
+              const { label } = fields[key];
               return (
-                <tr key={key}>
-                  <td className='form-label'>{label || ''}</td>
-                  <td className='form-field'>
-                    {["text", "number", "email", "date"].includes(type) && (
-                      <FormControl
-                        value={updated[key] || ''}
-                        type={type}
-                        onChange={e => setUpdated({ ...updated, [key]: e.target.value })}
-                      />
-                    )}
-                    {type === "textarea" && (
-                      <FormControl
-                        value={updated[key] || ''}
-                        componentClass="textarea"
-                        rows="3"
-                        onChange={e => setUpdated({ ...updated, [key]: e.target.value })}
-                      />
-                    )}
-                    {type === "dropdown" && (
-                      <FormControl
-                        value={updated[key] || ''}
-                        componentClass="select"
-                        onChange={e => setUpdated({ ...updated, [key]: e.target.value })}
-                      >
-                        <option value="" />
-                        {(joiningTableFilter
-                            ? joiningTable.filter((row) => (
-                              updated[joiningTableFilter.key] && row[joiningTableFilter.joiningTableKey] === updated[joiningTableFilter.key]
-                            )) : joiningTable
-                          ).map((item) => {
-                            return (
-                              <option key={item[joiningTableKey]} value={item[joiningTableKey]}>
-                                {joiningTableFieldNames.map((fieldName) => item[fieldName]).join(' ')}
-                              </option>
-                            );
-                          })
-                        }
-                      </FormControl>
-                    )}
-                  </td>
-                </tr>
+                <FormGroup>
+                  {label && <ControlLabel>{label}</ControlLabel>}
+                  {renderValue(key)}
+                </FormGroup>
               );
             })}
-          </tbody>
-        </table>
+          </React.Fragment>
+        ) : (
+          <table className='form-table'>
+            <tbody>
+              {Object.keys(fields).map((key) => {
+                const { label } = fields[key];
+                return (
+                  <tr key={key}>
+                    <td className='form-label'>{label || ''}</td>
+                    <td className='form-field'>{renderValue(key)}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        )}
         <LoaderButton
           block
           type="submit"
@@ -102,7 +141,7 @@ export default ({ fields, original, save, isLoading }) => {
           isLoading={isLoading}
           disabled={!validateForm()}
         >
-          Save
+          {buttonText || "Save"}
         </LoaderButton>
       </form>
     </React.Fragment>
