@@ -6,6 +6,7 @@ import Home from "./Home";
 import Login from "./Login";
 import Signup from "./Signup";
 import Profile from "./Profile";
+import Season from "./Season";
 import Locations from "./Locations";
 import Divisions from "./Divisions";
 import Schedules from "./Schedules";
@@ -26,6 +27,9 @@ export default function Routes() {
       </UnauthenticatedRoute>
       <AuthenticatedRoute exact path="/user-profile" isAuthenticated={isAuthenticated}>
         <Profile />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/season-details" isAuthenticated={isAuthenticated}>
+        <Season />
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/court-locations" isAuthenticated={isAuthenticated}>
         <Locations />

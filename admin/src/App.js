@@ -14,6 +14,7 @@ function App() {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, userHasAuthenticated] = useState(false);
   const [profile, setProfile] = useState({});
+  const [season, setSeason] = useState({});
   const [teams, setTeams] = useState([]);
   const [matches, setMatches] = useState([]);
   const [locations, setLocations] = useState([]);
@@ -26,13 +27,15 @@ function App() {
 
   useEffect(() => {
     async function fetchData() {
-      const [teams, matches, profile, locations, divisions] = await Promise.all([
+      const [season, teams, matches, profile, locations, divisions] = await Promise.all([
+        API.get("atl-backend", "get/season/1"),
         fetch(`${config.captainApi}/list/team`).then((res) => res.json()),
         fetch(`${config.captainApi}/list/match`).then((res) => res.json()),
         API.get("atl-backend", "getUser"),
         API.get("atl-backend", "list/location"),
         API.get("atl-backend", "list/division"),
       ]);
+      setSeason(season);
       setTeams(teams);
       setMatches(matches);
       setProfile(profile);
@@ -58,6 +61,7 @@ function App() {
     await Auth.signOut();
     userHasAuthenticated(false);
     setProfile({});
+    setSeason({});
     setTeams([]);
     setMatches([]);
     setLocations([]);
@@ -89,6 +93,7 @@ function App() {
                     id="basic-nav-dropdown"
                   >
                     <MenuItem href="/user-profile">My Profile</MenuItem>
+                    <MenuItem href="/season-details">Season Details</MenuItem>
                     <MenuItem href="/court-locations">Court Locations</MenuItem>
                     <MenuItem href="/match-schedules">Match Schedules</MenuItem>
                     <MenuItem href="/divisions">Divisions</MenuItem>
@@ -112,6 +117,8 @@ function App() {
             userHasAuthenticated,
             profile,
             setProfile,
+            season,
+            setSeason,
             teams,
             matches,
             locations,

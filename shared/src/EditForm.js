@@ -52,7 +52,7 @@ export default ({ fields, original, save, isLoading }) => {
                 <tr key={key}>
                   <td className='form-label'>{label || ''}</td>
                   <td className='form-field'>
-                    {["text", "number", "email"].includes(type) && (
+                    {["text", "number", "email", "date"].includes(type) && (
                       <FormControl
                         value={updated[key] || ''}
                         type={type}

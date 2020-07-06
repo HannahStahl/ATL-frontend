@@ -14,6 +14,10 @@ input.form-control {
   font-size: 16px;
 }
 
+.page-header {
+  text-align: center;
+}
+
 .form-table {
   width: 100%;
 }
@@ -69,6 +73,10 @@ input.form-control {
 
 .App .nav .fa-user-circle {
   margin-left: 10px;
+}
+
+.Home p {
+  text-align: center;
 }
 
 .NotFound {
