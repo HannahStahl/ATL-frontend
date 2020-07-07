@@ -35,6 +35,21 @@ export default () => {
       }
     },
     directions: { label: "Directions", type: "textarea" },
+    websiteUrl: {
+      label: "Website Link",
+      type: "text",
+      render: (value) => {
+        return value && (
+          <a
+            href={value.startsWith('http') ? value : `http://${value}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {value}
+          </a>
+        );
+      }
+    },
   };
 
   return (
