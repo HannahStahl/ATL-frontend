@@ -8,6 +8,7 @@ import Signup from "./Signup";
 import Profile from "./Profile";
 import Season from "./Season";
 import Locations from "./Locations";
+import Associations from "./Associations";
 import Divisions from "./Divisions";
 import Schedules from "./Schedules";
 import ChangePassword from "./ChangePassword";
@@ -34,6 +35,9 @@ export default function Routes() {
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/court-locations" isAuthenticated={isAuthenticated}>
         <Locations />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/associations" isAuthenticated={isAuthenticated}>
+        <Associations />
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/match-schedules" isAuthenticated={isAuthenticated}>
         <Schedules />

@@ -18,6 +18,7 @@ function App() {
   const [teams, setTeams] = useState([]);
   const [matches, setMatches] = useState([]);
   const [locations, setLocations] = useState([]);
+  const [associations, setAssociations] = useState([]);
   const [divisions, setDivisions] = useState([]);
   const [loadingData, setLoadingData] = useState(true);
 
@@ -27,12 +28,13 @@ function App() {
 
   useEffect(() => {
     async function fetchData() {
-      const [season, teams, matches, profile, locations, divisions] = await Promise.all([
+      const [season, teams, matches, profile, locations, associations, divisions] = await Promise.all([
         API.get("atl-backend", "get/season/1"),
         fetch(`${config.captainApi}/list/team`).then((res) => res.json()),
         fetch(`${config.captainApi}/list/match`).then((res) => res.json()),
         API.get("atl-backend", "getUser"),
         API.get("atl-backend", "list/location"),
+        API.get("atl-backend", "list/association"),
         API.get("atl-backend", "list/division"),
       ]);
       setSeason(season);
@@ -40,6 +42,7 @@ function App() {
       setMatches(matches);
       setProfile(profile);
       setLocations(locations);
+      setAssociations(associations);
       setDivisions(divisions);
       setLoadingData(false);
     }
@@ -65,6 +68,7 @@ function App() {
     setTeams([]);
     setMatches([]);
     setLocations([]);
+    setAssociations([]);
     setDivisions([]);
     history.push("/login");
   }
@@ -95,6 +99,7 @@ function App() {
                     <MenuItem href="/user-profile">My Profile</MenuItem>
                     <MenuItem href="/season-details">Season Details</MenuItem>
                     <MenuItem href="/court-locations">Court Locations</MenuItem>
+                    <MenuItem href="/associations">Associations</MenuItem>
                     <MenuItem href="/match-schedules">Match Schedules</MenuItem>
                     <MenuItem href="/divisions">Divisions</MenuItem>
                     <MenuItem onClick={handleLogout}>Log out</MenuItem>
@@ -123,6 +128,8 @@ function App() {
             matches,
             locations,
             setLocations,
+            associations,
+            setAssociations,
             divisions,
             setDivisions,
             loadingData,
