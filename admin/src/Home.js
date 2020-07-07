@@ -9,9 +9,9 @@ export default function Home() {
   function renderLander() {
     return (
       <div>
-        <PageHeader>Welcome to the Austin Tennis League!</PageHeader>
-        <Link to="/player-signup" className="btn btn-info btn-lg">
-          Sign up to play
+        <PageHeader>Welcome to the ATL Admin Portal.</PageHeader>
+        <Link to="/login" className="btn btn-info btn-lg">
+          Log in
         </Link>
       </div>
     );
