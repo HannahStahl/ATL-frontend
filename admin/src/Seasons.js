@@ -30,6 +30,10 @@ export default () => {
       type: "date",
       render: (value) => value && moment(value).format("MMM. D")
     },
+    seasonId: {
+      label: "",
+      render: (value) => <a href={`/season-calendars?seasonId=${value}`}>View Events</a>
+    }
   };
 
   return (

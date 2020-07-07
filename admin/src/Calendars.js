@@ -6,6 +6,7 @@ import { Table } from "atl-components";
 import { useAppContext } from "./libs/contextLib";
 
 export default () => {
+  const selectedSeasonId = window.location.search.split('?seasonId=')[1];
   const { seasons, events, setEvents, loadingData } = useAppContext();
   const [eventsWithLeagueDates, setEventsWithLeagueDates] = useState([]);
   const [sortedSeasons, setSortedSeasons] = useState([]);
@@ -16,7 +17,11 @@ export default () => {
       const reversedSeasons = [...seasons];
       reversedSeasons.reverse();
       setSortedSeasons(reversedSeasons);
-      setSeason(reversedSeasons[0]);
+      let index = 0;
+      if (selectedSeasonId) {
+        index = reversedSeasons.findIndex((seasonInList) => seasonInList.seasonId === selectedSeasonId);
+      }
+      setSeason(reversedSeasons[index]);
     }
   }, [seasons]);
 
