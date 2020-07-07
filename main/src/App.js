@@ -98,24 +98,26 @@ function App() {
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav pullRight>
-              {profile.captainId ? (
-                <React.Fragment>
-                  <NavDropdown
-                    title={(
-                      <p>
-                        {`${profile.firstName} ${profile.lastName}`}
-                        <i className="fas fa-user-circle" />
-                      </p>
-                    )}
-                    id="basic-nav-dropdown"
-                  >
-                    <MenuItem href="/captain-profile">My Profile</MenuItem>
-                    <MenuItem href="/team-details">Team Details</MenuItem>
-                    {team.teamId && <MenuItem href="/team-roster">Team Roster</MenuItem>}
-                    {team.teamId && <MenuItem href="/match-schedule">Match Schedule</MenuItem>}
-                    <MenuItem onClick={handleLogout}>Log out</MenuItem>
-                  </NavDropdown>
-                </React.Fragment>
+              {isAuthenticated ? (
+                profile.captainId ? (
+                  <React.Fragment>
+                    <NavDropdown
+                      title={(
+                        <p>
+                          {`${profile.firstName} ${profile.lastName}`}
+                          <i className="fas fa-user-circle" />
+                        </p>
+                      )}
+                      id="basic-nav-dropdown"
+                    >
+                      <MenuItem href="/captain-profile">My Profile</MenuItem>
+                      <MenuItem href="/team-details">Team Details</MenuItem>
+                      {team.teamId && <MenuItem href="/team-roster">Team Roster</MenuItem>}
+                      {team.teamId && <MenuItem href="/match-schedule">Match Schedule</MenuItem>}
+                      <MenuItem onClick={handleLogout}>Log out</MenuItem>
+                    </NavDropdown>
+                  </React.Fragment>
+                ) : <React.Fragment />
               ) : (
                 <LinkContainer to="/login">
                   <NavItem>

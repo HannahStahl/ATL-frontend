@@ -89,27 +89,29 @@ function App() {
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav pullRight>
-              {profile.userId ? (
-                <React.Fragment>
-                  <NavDropdown
-                    title={(
-                      <p>
-                        {`${profile.firstName} ${profile.lastName}`}
-                        <i className="fas fa-user-circle" />
-                      </p>
-                    )}
-                    id="basic-nav-dropdown"
-                  >
-                    <MenuItem href="/user-profile">My Profile</MenuItem>
-                    <MenuItem href="/seasons">Seasons</MenuItem>
-                    <MenuItem href="/season-calendars">Season Calendars</MenuItem>
-                    <MenuItem href="/court-locations">Court Locations</MenuItem>
-                    <MenuItem href="/associations">Associations</MenuItem>
-                    <MenuItem href="/match-schedules">Match Schedules</MenuItem>
-                    <MenuItem href="/divisions">Divisions</MenuItem>
-                    <MenuItem onClick={handleLogout}>Log out</MenuItem>
-                  </NavDropdown>
-                </React.Fragment>
+              {isAuthenticated ? (
+                profile.userId ? (
+                  <React.Fragment>
+                    <NavDropdown
+                      title={(
+                        <p>
+                          {`${profile.firstName} ${profile.lastName}`}
+                          <i className="fas fa-user-circle" />
+                        </p>
+                      )}
+                      id="basic-nav-dropdown"
+                    >
+                      <MenuItem href="/user-profile">My Profile</MenuItem>
+                      <MenuItem href="/seasons">Seasons</MenuItem>
+                      <MenuItem href="/season-calendars">Season Calendars</MenuItem>
+                      <MenuItem href="/court-locations">Court Locations</MenuItem>
+                      <MenuItem href="/associations">Associations</MenuItem>
+                      <MenuItem href="/match-schedules">Match Schedules</MenuItem>
+                      <MenuItem href="/divisions">Divisions</MenuItem>
+                      <MenuItem onClick={handleLogout}>Log out</MenuItem>
+                    </NavDropdown>
+                  </React.Fragment>
+                ) : <React.Fragment />
               ) : (
                 <LinkContainer to="/login">
                   <NavItem>
