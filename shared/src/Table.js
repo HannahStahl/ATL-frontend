@@ -5,7 +5,7 @@ import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 export default ({
   columns, rows, filterRows, getRows, setRows, itemType, API, categoryName,
-  CustomAddComponent, customEditFunction, customRemoveFunction
+  CustomAddComponent, customAddFunction, customEditFunction, customRemoveFunction
 }) => {
   const [rowSelectedForEdit, setRowSelectedForEdit] = useState(undefined);
   const [rowSelectedForRemoval, setRowSelectedForRemoval] = useState(undefined);
@@ -17,9 +17,12 @@ export default ({
   const addRow = async (event, body) => {
     event.preventDefault();
     setIsLoading(true);
-    await API.post("atl-backend", `create/${itemType}`, { body });
-    const newRows = await getRows();
-    setRows([...newRows]);
+    if (customAddFunction) await customAddFunction(body);
+    else {
+      await API.post("atl-backend", `create/${itemType}`, { body });
+      const newRows = await getRows();
+      setRows([...newRows]);
+    }
     setIsLoading(false);
     setAddingRow(false);
   };

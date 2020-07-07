@@ -14,7 +14,8 @@ function App() {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, userHasAuthenticated] = useState(false);
   const [profile, setProfile] = useState({});
-  const [season, setSeason] = useState({});
+  const [seasons, setSeasons] = useState([]);
+  const [events, setEvents] = useState([]);
   const [teams, setTeams] = useState([]);
   const [matches, setMatches] = useState([]);
   const [locations, setLocations] = useState([]);
@@ -28,8 +29,9 @@ function App() {
 
   useEffect(() => {
     async function fetchData() {
-      const [season, teams, matches, profile, locations, associations, divisions] = await Promise.all([
-        API.get("atl-backend", "get/season/1"),
+      const [seasons, events, teams, matches, profile, locations, associations, divisions] = await Promise.all([
+        API.get("atl-backend", "list/season"),
+        API.get("atl-backend", "list/event"),
         fetch(`${config.captainApi}/list/team`).then((res) => res.json()),
         fetch(`${config.captainApi}/list/match`).then((res) => res.json()),
         API.get("atl-backend", "getUser"),
@@ -37,7 +39,8 @@ function App() {
         API.get("atl-backend", "list/association"),
         API.get("atl-backend", "list/division"),
       ]);
-      setSeason(season);
+      setSeasons(seasons);
+      setEvents(events);
       setTeams(teams);
       setMatches(matches);
       setProfile(profile);
@@ -64,7 +67,8 @@ function App() {
     await Auth.signOut();
     userHasAuthenticated(false);
     setProfile({});
-    setSeason({});
+    setSeasons([]);
+    setEvents([]);
     setTeams([]);
     setMatches([]);
     setLocations([]);
@@ -97,7 +101,8 @@ function App() {
                     id="basic-nav-dropdown"
                   >
                     <MenuItem href="/user-profile">My Profile</MenuItem>
-                    <MenuItem href="/season-details">Season Details</MenuItem>
+                    <MenuItem href="/seasons">Seasons</MenuItem>
+                    <MenuItem href="/season-calendars">Season Calendars</MenuItem>
                     <MenuItem href="/court-locations">Court Locations</MenuItem>
                     <MenuItem href="/associations">Associations</MenuItem>
                     <MenuItem href="/match-schedules">Match Schedules</MenuItem>
@@ -122,8 +127,10 @@ function App() {
             userHasAuthenticated,
             profile,
             setProfile,
-            season,
-            setSeason,
+            seasons,
+            setSeasons,
+            events,
+            setEvents,
             teams,
             matches,
             locations,
