@@ -33,7 +33,6 @@ export default () => {
   };
 
   const { teamId } = team;
-  const playersOnTeam = allPlayers.filter((player) => player.teamId === teamId);
   const playersNotOnTeam = allPlayers.filter((player) => player.teamId !== teamId);
   const playersOnDifferentTeam = playersNotOnTeam.filter((player) => player.teamId);
   const playersNotOnAnyTeam = playersNotOnTeam.filter((player) => !player.teamId);
@@ -108,14 +107,18 @@ export default () => {
     </td>
   );
 
+  const filterPlayers = (list) => list.filter((player) => player.teamId === teamId);
+
   return (
     <div>
       <PageHeader>Team Roster</PageHeader>
       {!loadingData && (
         <Table
           columns={columns}
-          rows={playersOnTeam}
+          rows={allPlayers}
+          filterRows={filterPlayers}
           setRows={setAllPlayers}
+          getRows={() => API.get("atl-backend", "list/player")}
           itemType="player"
           API={API}
           CustomAddComponent={AddPlayerComponent}

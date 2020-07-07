@@ -162,6 +162,7 @@ export default function Signup() {
                   type="text"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
+                  placeholder="xxx-xxx-xxxx"
                 />
               </td>
             </tr>

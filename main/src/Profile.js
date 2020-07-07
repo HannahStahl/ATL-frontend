@@ -52,7 +52,7 @@ export default function Profile() {
     firstName: { label: "First Name", type: "text", required: true },
     lastName: { label: "Last Name", type: "text", required: true },
     email: { label: "Email", type: "email", required: true },
-    phone: { label: "Phone Number", type: "text", required: true }
+    phone: { label: "Phone Number", type: "text", required: true, placeholder: "xxx-xxx-xxxx" }
   };
 
   const renderEmailConfirmationForm = () => (

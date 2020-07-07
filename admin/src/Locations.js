@@ -36,7 +36,14 @@ export default () => {
     <div>
       <PageHeader>Court Locations</PageHeader>
       {!loadingData && (
-        <Table columns={columns} rows={locations} setRows={setLocations} itemType="location" API={API} />
+        <Table
+          columns={columns}
+          rows={locations}
+          setRows={setLocations}
+          getRows={() => API.get("atl-backend", "list/location")}
+          itemType="location"
+          API={API}
+        />
       )}
     </div>
   );

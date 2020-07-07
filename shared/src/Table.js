@@ -4,7 +4,7 @@ import EditForm from './EditForm';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 export default ({
-  columns, rows, setRows, itemType, API, categoryName,
+  columns, rows, filterRows, getRows, setRows, itemType, API, categoryName,
   CustomAddComponent, customEditFunction, customRemoveFunction
 }) => {
   const [rowSelectedForEdit, setRowSelectedForEdit] = useState(undefined);
@@ -17,9 +17,9 @@ export default ({
   const addRow = async (event, body) => {
     event.preventDefault();
     setIsLoading(true);
-    const result = await API.post("atl-backend", `create/${itemType}`, { body });
-    rows.push(result);
-    setRows([...rows]);
+    await API.post("atl-backend", `create/${itemType}`, { body });
+    const newRows = await getRows();
+    setRows([...newRows]);
     setIsLoading(false);
     setAddingRow(false);
   };
@@ -123,7 +123,7 @@ export default ({
             </tr>
           </thead>
           <tbody>
-            {rows.map((row) => (
+            {(filterRows ? filterRows(rows) : rows).map((row) => (
               <tr
                 key={row[itemId]}
                 onClick={setRows ? (e) => {

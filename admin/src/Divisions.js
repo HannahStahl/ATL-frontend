@@ -14,7 +14,14 @@ export default () => {
     <div>
       <PageHeader>Divisions</PageHeader>
       {!loadingData && (
-        <Table columns={columns} rows={divisions} setRows={setDivisions} itemType="division" API={API} />
+        <Table
+          columns={columns}
+          rows={divisions}
+          setRows={setDivisions}
+          getRows={() => API.get("atl-backend", "list/division")}
+          itemType="division"
+          API={API}
+        />
       )}
     </div>
   );

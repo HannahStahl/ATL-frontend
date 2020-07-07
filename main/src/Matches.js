@@ -110,14 +110,20 @@ export default () => {
 
   const { teamId } = team;
 
+  const filterMatches = (list) => list.filter(
+    (match) => match.homeTeamId === teamId || match.visitorTeamId === teamId
+  );
+
   return (
     <div>
       <PageHeader>Match Schedule</PageHeader>
       {!loadingData && (
         <Table
           columns={columns}
-          rows={matches.filter((match) => match.homeTeamId === teamId || match.visitorTeamId === teamId)}
+          rows={matches}
+          filterRows={filterMatches}
           setRows={setMatches}
+          getRows={() => API.get("atl-backend", "list/match")}
           itemType="match"
           API={API}
           customEditFunction={editRow}
