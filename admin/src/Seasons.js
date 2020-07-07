@@ -23,13 +23,12 @@ export default () => {
       label: "Start Date",
       type: "date",
       required: true,
-      render: (value) => moment(value).format("MMM. D")
+      render: (value) => value && moment(value).format("MMM. D")
     },
     endDate: {
       label: "End Date",
       type: "date",
-      required: true,
-      render: (value) => moment(value).format("MMM. D")
+      render: (value) => value && moment(value).format("MMM. D")
     },
   };
 

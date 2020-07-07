@@ -20,13 +20,18 @@ export default () => {
   }, [seasons]);
 
   const columns = {
-    eventDate: {
-      label: "Date",
+    eventName: { label: "Event", type: "text", required: true },
+    startDate: {
+      label: "Start Date",
       type: "date",
       required: true,
-      render: (value) => moment(value).format("MMM. D")
+      render: (value) => value && moment(value).format("MMM. D")
     },
-    eventName: { label: "Event", type: "text", required: true }
+    endDate: {
+      label: "End Date",
+      type: "date",
+      render: (value) => value && moment(value).format("MMM. D")
+    },
   };
 
   const filterEvents = (list) => list.filter((event) => event.seasonId === season.seasonId);
