@@ -21,7 +21,7 @@ export default () => {
   }, [seasons]);
 
   useEffect(() => {
-    if (events.length > 0) {
+    if (events.length > 0 && !events.find((event) => event.eventId === "season-start")) {
       let eventsWithLeagueDates = events.concat([
         {
           eventId: "season-start",
@@ -45,7 +45,7 @@ export default () => {
       });
       setEventsWithLeagueDates(eventsWithLeagueDates);
     }
-  }, [events]);
+  }, [events, season]);
 
   const columns = {
     eventName: { label: "Event", type: "text", required: true },
@@ -79,7 +79,7 @@ export default () => {
           <FormControl
             value={(season && season.seasonId) || ''}
             componentClass="select"
-            onChange={e => setSeason({ ...season, seasonId: e.target.value })}
+            onChange={e => setSeason(seasons.find((seasonInList) => seasonInList.seasonId === e.target.value))}
           >
             <option value="" disabled>Select season</option>
             {sortedSeasons.map((season) => (

@@ -102,10 +102,9 @@ export default () => {
     visitorSets.forEach((visitorSet) => {
       if (visitorSet && parseInt(visitorSet)) body.totalVisitorSetsWon += parseInt(visitorSet);
     });
-    const result = await API.put("atl-backend", `update/match/${rowId}`, { body });
-    const index = matches.findIndex((rowInList) => rowInList.matchId === rowId);
-    matches[index] = result;
-    setMatches([...matches]);
+    await API.put("atl-backend", `update/match/${rowId}`, { body });
+    const newMatches = await API.get("atl-backend", "list/match");
+    setMatches([...newMatches]);
   };
 
   const { teamId } = team;

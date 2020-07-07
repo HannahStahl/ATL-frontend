@@ -59,9 +59,9 @@ export default () => {
       setPlayerIdToAdd(player.playerId);
     } else {
       const body = { ...player, teamId }
-      const result = await API.put("atl-backend", `update/player/${playerId}`, { body });
-      allPlayers[index] = result;
-      setAllPlayers([...allPlayers]);
+      await API.put("atl-backend", `update/player/${playerId}`, { body });
+      const newAllPlayers = await API.get("atl-backend", "list/player");
+      setAllPlayers([...newAllPlayers]);
       setDropdownOptionSelected("");
     }
   };
@@ -71,9 +71,9 @@ export default () => {
     const index = allPlayers.findIndex((rowInList) => rowInList.playerId === playerIdToAdd);
     const player = allPlayers[index];
     const body = { ...player, teamId }
-    const result = await API.put("atl-backend", `update/player/${playerIdToAdd}`, { body });
-    allPlayers[index] = result;
-    setAllPlayers([...allPlayers]);
+    await API.put("atl-backend", `update/player/${playerIdToAdd}`, { body });
+    const newAllPlayers = await API.get("atl-backend", "list/player");
+    setAllPlayers([...newAllPlayers]);
     setDropdownOptionSelected("");
     setPlayerIdToAdd(undefined);
     setIsLoading(false);
@@ -83,9 +83,9 @@ export default () => {
     const index = allPlayers.findIndex((player) => player.playerId === playerId);
     const body = allPlayers[index];
     body.teamId = undefined;
-    const result = await API.put("atl-backend", `update/player/${playerId}`, { body });
-    allPlayers[index] = result;
-    setAllPlayers([...allPlayers]);
+    await API.put("atl-backend", `update/player/${playerId}`, { body });
+    const newAllPlayers = await API.get("atl-backend", "list/player");
+    setAllPlayers([...newAllPlayers]);
   };
 
   const AddPlayerComponent = () => (

@@ -33,10 +33,9 @@ export default ({
     const rowId = body[itemId];
     if (customEditFunction) await customEditFunction(rowId, body);
     else {
-      const result = await API.put("atl-backend", `update/${itemType}/${rowId}`, { body });
-      const index = rows.findIndex((rowInList) => rowInList[itemId] === rowId);
-      rows[index] = result;
-      setRows([...rows]);
+      await API.put("atl-backend", `update/${itemType}/${rowId}`, { body });
+      const newRows = await getRows();
+      setRows([...newRows]);
     }
     setIsLoading(false);
     setRowSelectedForEdit(undefined);
@@ -48,9 +47,8 @@ export default ({
     if (customRemoveFunction) await customRemoveFunction(rowId);
     else {
       await API.del("atl-backend", `delete/${itemType}/${rowId}`);
-      const index = rows.findIndex((rowInList) => rowInList[itemId] === rowId);
-      rows.splice(index, 1);
-      setRows([...rows]);
+      const newRows = await getRows();
+      setRows([...newRows]);
     }
     setIsLoading(false);
     setRowSelectedForRemoval(undefined);
@@ -145,11 +143,13 @@ export default ({
                   );
                   return <td key={key}>{columns[key].render ? columns[key].render(value) : value}</td>;
                 })}
-                <td className="remove-row">
-                  {!row.readOnly && setRows && (
-                    <i className="fas fa-times-circle" onClick={() => setRowSelectedForRemoval(row)} />
-                  )}
-                </td>
+                {setRows && (
+                  <td className="remove-row">
+                    {!row.readOnly && (
+                      <i className="fas fa-times-circle" onClick={() => setRowSelectedForRemoval(row)} />
+                    )}
+                  </td>
+                )}
               </tr>
             ))}
             <tr>

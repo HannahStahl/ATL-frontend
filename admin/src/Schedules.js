@@ -35,7 +35,7 @@ export default () => {
           <FormControl
             value={location.locationId || ''}
             componentClass="select"
-            onChange={e => setLocation({ ...location, locationId: e.target.value })}
+            onChange={e => setLocation(locations.find((locationInList) => locationInList.locationId === e.target.value))}
           >
             <option value="" disabled>Select location</option>
             {locations.map((location) => (
