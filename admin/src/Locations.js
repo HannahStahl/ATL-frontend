@@ -8,6 +8,11 @@ export default () => {
   const { locations, setLocations, loadingData } = useAppContext();
   const columns = {
     locationName: { label: "Name", type: "text", required: true },
+    locationType: {
+      label: "Type",
+      type: "dropdown",
+      options: [{ value: "Center", name: "Center" }, { value: "Club", name: "Club" }]
+    },
     numCourts: { label: "# of Courts", type: "number" },
     courtGrade: { label: "Court Grade", type: "text" },
     area: { label: "Area", type: "text" },
