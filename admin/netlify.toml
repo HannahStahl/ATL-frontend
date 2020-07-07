@@ -1,0 +1,18 @@
+[build]
+  base    = "admin"
+  publish = "build"
+  command = "REACT_APP_STAGE=dev yarn run build"
+
+[context.production]
+  command = "REACT_APP_STAGE=prod yarn run build"
+
+[context.deploy-preview]
+  command = "REACT_APP_STAGE=dev yarn run build"
+
+[context.branch-deploy]
+  command = "REACT_APP_STAGE=dev yarn run build"
+
+[[redirects]]
+    from    = "/*"
+    to      = "/index.html"
+    status  = 200
