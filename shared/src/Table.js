@@ -114,6 +114,9 @@ export default ({
             .interactive-table td:hover {
               cursor: pointer;
             }
+            .interactive-table tr.disabled td:hover {
+              cursor: auto;
+            }
           }
         `}
       </style>
@@ -129,11 +132,12 @@ export default ({
             {(filterRows ? filterRows(rows) : rows).map((row) => (
               <tr
                 key={row[itemId]}
-                onClick={setRows ? (e) => {
+                onClick={!row.readOnly && setRows ? (e) => {
                   if (!e.target.className.includes("fas") && !e.target.href) {
                     setRowSelectedForEdit(row);
                   }
                 } : undefined}
+                className={row.readOnly ? "disabled" : undefined}
               >
                 {Object.keys(columns).filter((key) => !columns[key].hideFromTable).map((key) => {
                   const value = columns[key].children ? joinChildren(row, columns[key]) : (
@@ -141,11 +145,11 @@ export default ({
                   );
                   return <td key={key}>{columns[key].render ? columns[key].render(value) : value}</td>;
                 })}
-                {setRows && (
-                  <td className="remove-row">
+                <td className="remove-row">
+                  {!row.readOnly && setRows && (
                     <i className="fas fa-times-circle" onClick={() => setRowSelectedForRemoval(row)} />
-                  </td>
-                )}
+                  )}
+                </td>
               </tr>
             ))}
             <tr>

@@ -7,6 +7,7 @@ import { useAppContext } from "./libs/contextLib";
 
 export default () => {
   const { seasons, events, setEvents, loadingData } = useAppContext();
+  const [eventsWithLeagueDates, setEventsWithLeagueDates] = useState([]);
   const [sortedSeasons, setSortedSeasons] = useState([]);
   const [season, setSeason] = useState({});
 
@@ -18,6 +19,33 @@ export default () => {
       setSeason(reversedSeasons[0]);
     }
   }, [seasons]);
+
+  useEffect(() => {
+    if (events.length > 0) {
+      let eventsWithLeagueDates = events.concat([
+        {
+          eventId: "season-start",
+          eventName: "League Begins",
+          startDate: season.startDate,
+          seasonId: season.seasonId,
+          readOnly: true
+        },
+        {
+          eventId: "season-end",
+          eventName: "League Ends",
+          startDate: season.endDate,
+          seasonId: season.seasonId,
+          readOnly: true
+        }
+      ]);
+      eventsWithLeagueDates = eventsWithLeagueDates.sort((a, b) => {
+        if (a.startDate < b.startDate) return -1;
+        if (a.startDate > b.startDate) return 1;
+        return 0;
+      });
+      setEventsWithLeagueDates(eventsWithLeagueDates);
+    }
+  }, [events]);
 
   const columns = {
     eventName: { label: "Event", type: "text", required: true },
@@ -61,16 +89,21 @@ export default () => {
         </FormGroup>
       </form>
       {!loadingData && (
-        <Table
-          columns={columns}
-          rows={events}
-          filterRows={filterEvents}
-          setRows={setEvents}
-          getRows={() => API.get("atl-backend", "list/event")}
-          itemType="event"
-          API={API}
-          customAddFunction={addEvent}
-        />
+        <React.Fragment>
+          <Table
+            columns={columns}
+            rows={eventsWithLeagueDates}
+            filterRows={filterEvents}
+            setRows={setEvents}
+            getRows={() => API.get("atl-backend", "list/event")}
+            itemType="event"
+            API={API}
+            customAddFunction={addEvent}
+          />
+          <div className="link-below-button">
+            <p>To edit the "League Begins" and "League Ends" events, visit the <a href="/seasons">Seasons</a> page.</p>
+          </div>
+        </React.Fragment>
       )}
     </div>
   );

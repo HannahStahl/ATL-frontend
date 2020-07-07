@@ -20,13 +20,13 @@ export default () => {
   const columns = {
     seasonName: { label: "Name", type: "text", required: true },
     startDate: {
-      label: "Start Date",
+      label: "League Start Date",
       type: "date",
       required: true,
       render: (value) => value && moment(value).format("MMM. D")
     },
     endDate: {
-      label: "End Date",
+      label: "League End Date",
       type: "date",
       render: (value) => value && moment(value).format("MMM. D")
     },
