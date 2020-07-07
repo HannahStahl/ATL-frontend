@@ -22,10 +22,23 @@ export default () => {
     "phone": { label: "Phone", type: "text", placeholder: "xxx-xxx-xxxx" },
     "email": { label: "Email", type: "email", required: true },
     "rating": { label: "Rating", type: "number", required: true },
-    "selfRated": { label: "Rating Type", type: "dropdown", options: ["USTA Rating", "Self Rating"] },
-    "gender": { label: "Gender", type: "dropdown", required: true, options: ["Female", "Male"] },
+    "ratingType": {
+      label: "Rating Type",
+      type: "dropdown",
+      options: [{ value: "U", name: "USTA Rating" }, { value: "S", name: "Self Rating" }]
+    },
+    "gender": {
+      label: "Gender",
+      type: "dropdown",
+      required: true,
+      options: [{ value: "F", name: "Female" }, {value: "M", name: "Male" }],
+    },
     "birthYear": { label: "Birth Year", type: "number", required: true },
-    "usta": { label: "USTA?", type: "dropdown", options: ["Yes", "No"] },
+    "usta": {
+      label: "USTA?",
+      type: "dropdown",
+      options: [{ value: "Y", name: "Yes" }, { value: "N", name: "No" }]
+    },
     "ustaLevel": { label: "USTA Level", type: "text" },
     "ustaYear": { label: "USTA Year", type: "number" },
     "experience": { label: "Experience", type: "textarea" },

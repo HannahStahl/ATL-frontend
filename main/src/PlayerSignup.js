@@ -18,16 +18,23 @@ export default function PlayerSignup() {
       required: true,
       helpText: <span>This is used to approximate the division that would be competitive for you. If you don't know or are unfamiliar with the ratings, you can learn more about them <a href="http://www.atltennis.org/austin/Ratings.shtml">here</a>.</span>
     },
-    "selfRated": { label: "Rating Type", type: "dropdown", options: ["USTA Rating", "Self Rating"] },
+    "ratingType": {
+      label: "Rating Type",
+      type: "dropdown",
+      options: [{ value: "U", name: "USTA Rating"}, { value: "S", name: "Self Rating" }] },
     "gender": {
       label: "Gender",
       type: "dropdown",
       required: true,
-      options: ["Female", "Male"],
+      options: [{ value: "F", name: "Female" }, {value: "M", name: "Male" }],
       helpText: "Your gender and age will help prospective captains know if you would be a good fit for their teams. ATL is a gender-blind league, but many ATL players also participate in other leagues that do have gender and age limits. This info will help captains in those leagues know more about you."
     },
     "birthYear": { label: "Birth Year", type: "number", required: true },
-    "usta": { label: "Have you played any USTA adult leagues?", type: "dropdown", options: ["Yes", "No"] },
+    "usta": {
+      label: "Have you played any USTA adult leagues?",
+      type: "dropdown",
+      options: [{ value: "Y", name: "Yes" }, { value: "N", name: "No" }]
+    },
     "ustaLevel": { label: "If so, at what USTA level?", type: "text" },
     "ustaYear": { label: "What was the last year you played USTA?", type: "number" },
     "experience": {
@@ -55,7 +62,7 @@ export default function PlayerSignup() {
       {playerRegistered ? (
         <React.Fragment>
           <PageHeader>Thanks for signing up!</PageHeader>
-          <div>
+          <div className="link-below-button">
             <p>We'll be in touch soon.</p>
             <a href="/">Back to home page</a>
           </div>

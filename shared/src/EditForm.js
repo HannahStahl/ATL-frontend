@@ -61,7 +61,7 @@ export default ({ fields, original, save, isLoading, buttonText, labelsAbove }) 
           >
             <option value="" />
             {options ? options.map((option) => (
-              <option key={option} value={option}>{option}</option>
+              <option key={option.value} value={option.value}>{option.name}</option>
             )) : (
               joiningTableFilter
                 ? joiningTable.filter((row) => (
