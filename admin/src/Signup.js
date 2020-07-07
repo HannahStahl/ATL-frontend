@@ -64,7 +64,7 @@ export default function Signup() {
       await Auth.confirmSignUp(email, confirmationCode);
       await Auth.signIn(email, password);
       await API.post("atl-backend", "create/user", {
-        body: { firstName, lastName }
+        body: { firstName, lastName, email }
       });
       userHasAuthenticated(true);
       history.push("/");

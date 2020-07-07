@@ -83,7 +83,7 @@ function App() {
     setMatches([]);
     setLocations([]);
     setDivisions([]);
-    history.push("/captain-login");
+    history.push("/login");
   }
 
   return (
@@ -117,7 +117,7 @@ function App() {
                   </NavDropdown>
                 </React.Fragment>
               ) : (
-                <LinkContainer to="/captain-login">
+                <LinkContainer to="/login">
                   <NavItem>
                     Captain Login
                     <i className="fas fa-user-circle" />

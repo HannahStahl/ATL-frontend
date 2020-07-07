@@ -66,7 +66,7 @@ export default function Login() {
         >
           Log In
         </LoaderButton>
-        <div className="captain-signup-link">
+        <div className="link-below-button">
           <a href="/captain-signup">Need to register?</a>
         </div>
       </form>

@@ -10,6 +10,7 @@ import Profile from "./Profile";
 import Team from "./Team";
 import Roster from "./Roster";
 import Matches from "./Matches";
+import ChangePassword from "./ChangePassword";
 import NotFound from "./NotFound";
 
 export default function Routes() {
@@ -22,7 +23,7 @@ export default function Routes() {
       <Route exact path="/player-signup" isAuthenticated={isAuthenticated}>
         <PlayerSignup />
       </Route>
-      <UnauthenticatedRoute exact path="/captain-login" isAuthenticated={isAuthenticated}>
+      <UnauthenticatedRoute exact path="/login" isAuthenticated={isAuthenticated}>
         <Login />
       </UnauthenticatedRoute>
       <UnauthenticatedRoute exact path="/captain-signup" isAuthenticated={isAuthenticated}>
@@ -39,6 +40,9 @@ export default function Routes() {
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/match-schedule" isAuthenticated={isAuthenticated}>
         <Matches />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/change-password" isAuthenticated={isAuthenticated}>
+        <ChangePassword />
       </AuthenticatedRoute>
       {/* Finally, catch all unmatched routes */}
       <Route>
