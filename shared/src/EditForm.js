@@ -81,6 +81,14 @@ export default ({ fields, original, save, isLoading, buttonText, labelsAbove }) 
     );
   };
 
+  const isEditable = (key) => {
+    const field = fields[key];
+    if (field.readOnlyConditional) {
+      return field.readOnlyConditional(updated);
+    }
+    return true;
+  };
+
   return (
     <React.Fragment>
       <style>
@@ -108,7 +116,7 @@ export default ({ fields, original, save, isLoading, buttonText, labelsAbove }) 
       <form onSubmit={(e) => save(e, updated)}>
         {labelsAbove ? (
           <React.Fragment>
-            {Object.keys(fields).map((key) => {
+            {Object.keys(fields).filter(isEditable).map((key) => {
               const { label } = fields[key];
               return (
                 <FormGroup>
@@ -121,7 +129,7 @@ export default ({ fields, original, save, isLoading, buttonText, labelsAbove }) 
         ) : (
           <table className='form-table'>
             <tbody>
-              {Object.keys(fields).map((key) => {
+              {Object.keys(fields).filter(isEditable).map((key) => {
                 const { label } = fields[key];
                 return (
                   <tr key={key}>

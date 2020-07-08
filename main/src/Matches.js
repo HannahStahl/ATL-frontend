@@ -22,7 +22,11 @@ export default () => {
       joiningTableKey: "teamId"
     },
     joiningTableKey: "playerId",
-    joiningTableFieldNames: ["firstName", "lastName"]
+    joiningTableFieldNames: ["firstName", "lastName"],
+    readOnlyConditional: (match) => (
+      (home && match.homeTeamId === team.teamId) ||
+      (!home && match.visitorTeamId === team.teamId)
+    )
   });
 
   const doublesColumn = (label, home, children) => ({
