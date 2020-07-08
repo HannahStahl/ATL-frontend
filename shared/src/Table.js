@@ -33,8 +33,8 @@ export default ({
     const rowId = body[itemId];
     if (customEditFunction) await customEditFunction(rowId, body);
     else {
-      await API.put("atl-backend", `update/${itemType}/${rowId}`, { body });
-      const newRows = await getRows();
+      const result = await API.put("atl-backend", `update/${itemType}/${rowId}`, { body });
+      const newRows = await getRows(result);
       setRows([...newRows]);
     }
     setIsLoading(false);

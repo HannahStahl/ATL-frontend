@@ -15,10 +15,10 @@ export default ({ columns, allPlayers, setAllPlayers, teamId, addingPlayer, setA
     const { playerId } = player;
     if (player.teamId) setPlayerIdToAdd(player.playerId);
     else {
-      const body = { ...player, teamId }
-      await API.put("atl-backend", `update/player/${playerId}`, { body });
-      const newAllPlayers = await API.get("atl-backend", "list/player");
-      setAllPlayers([...newAllPlayers]);
+      const index = allPlayers.findIndex((playerInList) => playerInList.playerId === playerId);
+      allPlayers[index].teamId = teamId;
+      await API.put("atl-backend", `update/player/${playerId}`, { body: allPlayers[index] });
+      setAllPlayers([...allPlayers]);
       setAddingPlayer(false);
       setPlayerLastName(undefined);
       setPlayersWithLastName([]);
@@ -27,10 +27,9 @@ export default ({ columns, allPlayers, setAllPlayers, teamId, addingPlayer, setA
 
   const addPlayerFromOtherTeam = async () => {
     setIsLoading(true);
-    const index = allPlayers.findIndex((rowInList) => rowInList.playerId === playerIdToAdd);
-    const player = allPlayers[index];
-    const body = { ...player, teamId }
-    await API.put("atl-backend", `update/player/${playerIdToAdd}`, { body });
+    const index = allPlayers.findIndex((playerInList) => playerInList.playerId === playerIdToAdd);
+    allPlayers[index].teamId = teamId;
+    await API.put("atl-backend", `update/player/${playerIdToAdd}`, { body: allPlayers[index] });
     const newAllPlayers = await API.get("atl-backend", "list/player");
     setAllPlayers([...newAllPlayers]);
     setPlayerIdToAdd(undefined);

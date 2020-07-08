@@ -16,7 +16,6 @@ function App() {
   const [profile, setProfile] = useState({});
   const [allTeams, setAllTeams] = useState([]);
   const [team, setTeam] = useState({});
-  const [allPlayers, setAllPlayers] = useState([]);
   const [allCaptains, setAllCaptains] = useState([]);
   const [matches, setMatches] = useState([]);
   const [locations, setLocations] = useState([]);
@@ -29,15 +28,13 @@ function App() {
 
   useEffect(() => {
     async function fetchData() {
-      const [players, captains, captain, teams, locations, divisions] = await Promise.all([
-        API.get("atl-backend", "list/player"),
+      const [captains, captain, teams, locations, divisions] = await Promise.all([
         API.get("atl-backend", "list/captain"),
         API.get("atl-backend", "getCaptain"),
         API.get("atl-backend", "list/team"),
         fetch(`${config.adminApi}/list/location`).then((res) => res.json()),
         fetch(`${config.adminApi}/list/division`).then((res) => res.json()),
       ]);
-      setAllPlayers(players);
       setAllCaptains(captains);
       setProfile(captain);
       setAllTeams(teams);
@@ -78,7 +75,6 @@ function App() {
     setProfile({});
     setAllTeams([]);
     setTeam({});
-    setAllPlayers([]);
     setAllCaptains([]);
     setMatches([]);
     setLocations([]);
@@ -137,8 +133,6 @@ function App() {
             setProfile,
             team,
             setTeam,
-            allPlayers,
-            setAllPlayers,
             matches,
             setMatches,
             allCaptains,

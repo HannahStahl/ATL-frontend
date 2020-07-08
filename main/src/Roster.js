@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { PageHeader } from "react-bootstrap";
 import { API } from "aws-amplify";
 import { Table } from "atl-components";
@@ -6,8 +6,13 @@ import { useAppContext } from "./libs/contextLib";
 import AddPlayerModal from "./AddPlayerModal";
 
 export default () => {
-  const { allPlayers, setAllPlayers, team, loadingData } = useAppContext();
+  const { team, loadingData } = useAppContext();
+  const [allPlayers, setAllPlayers] = useState([]);
   const [addingPlayer, setAddingPlayer] = useState(false);
+
+  useEffect(() => {
+    API.get("atl-backend", "list/player").then(setAllPlayers);
+  }, []);
 
   const columns = {
     "name": {
@@ -47,11 +52,9 @@ export default () => {
 
   const removePlayerFromTeam = async (playerId) => {
     const index = allPlayers.findIndex((player) => player.playerId === playerId);
-    const body = allPlayers[index];
-    body.teamId = undefined;
-    await API.put("atl-backend", `update/player/${playerId}`, { body });
-    const newAllPlayers = await API.get("atl-backend", "list/player");
-    setAllPlayers([...newAllPlayers]);
+    allPlayers[index].teamId = undefined;
+    await API.put("atl-backend", `update/player/${playerId}`, { body: allPlayers[index] });
+    setAllPlayers([...allPlayers]);
   };
 
   const AddPlayerComponent = () => (
@@ -74,7 +77,11 @@ export default () => {
           rows={allPlayers}
           filterRows={filterPlayers}
           setRows={setAllPlayers}
-          getRows={() => API.get("atl-backend", "list/player")}
+          getRows={(result) => {
+            const index = allPlayers.findIndex((playerInList) => playerInList.playerId === result.playerId);
+            allPlayers[index] = result;
+            return allPlayers;
+          }}
           itemType="player"
           API={API}
           CustomAddComponent={AddPlayerComponent}
