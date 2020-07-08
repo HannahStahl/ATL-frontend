@@ -13,10 +13,11 @@ export default function Team() {
 
   const saveTeam = async (event, body) => {
     event.preventDefault();
-    if (
-      (body.captainId === captainId || body.cocaptainId === captainId) &&
-      (body.captainId !== body.cocaptainId)
-    ) {
+    if (body.captainId === body.cocaptainId) {
+      onError("Captain and co-captain cannot be the same.");
+    } else if (body.captainId !== captainId && body.cocaptainId !== captainId) {
+      onError("You must be either the captain or co-captain of this team.");
+    } else {
       setIsLoading(true);
       if (teamId) {
         const result = await API.put("atl-backend", `update/team/${teamId}`, { body });
@@ -27,9 +28,6 @@ export default function Team() {
         const result = await API.post("atl-backend", "create/team", { body });
         setTeam(result);
       }
-      setIsLoading(false);
-    } else {
-      onError("You must be either the captain or co-captain of this team.");
       setIsLoading(false);
     }
   };

@@ -3,6 +3,7 @@ import { PageHeader } from "react-bootstrap";
 import { API } from "aws-amplify";
 import { Table } from "atl-components";
 import { useAppContext } from "./libs/contextLib";
+import { onError } from "./libs/errorLib";
 
 export default () => {
   const { matches, setMatches, locations, allTeams, team, loadingData } = useAppContext();
@@ -92,6 +93,19 @@ export default () => {
     totalVisitorSetsWon: { label: "Visitor Sets Won", type: "number", readOnly: true }
   };
 
+  const validate = (body) => {
+    const { homeTeamId, visitorTeamId } = body;
+    if (homeTeamId === visitorTeamId) {
+      onError("Home team and visiting team must be different.");
+      return false;
+    }
+    if (homeTeamId !== teamId && visitorTeamId !== teamId) {
+      onError("Your team must be either the home team or the visiting team.");
+      return false;
+    }
+    return true;
+  };
+
   const editRow = async (rowId, body) => {
     const {
       singles1HomeSetsWon, singles2HomeSetsWon, doubles1HomeSetsWon, doubles2HomeSetsWon,
@@ -130,6 +144,7 @@ export default () => {
           getRows={() => API.get("atl-backend", "list/match")}
           itemType="match"
           API={API}
+          validate={validate}
           customEditFunction={editRow}
         />
       )}

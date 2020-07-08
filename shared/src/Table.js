@@ -5,7 +5,7 @@ import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 export default ({
   columns, rows, filterRows, getRows, setRows, itemType, API, categoryName, customSelect,
-  CustomAddComponent, customAddFunction, customEditFunction, customRemoveFunction
+  CustomAddComponent, customAddFunction, customEditFunction, customRemoveFunction, validate
 }) => {
   const [rowSelectedForEdit, setRowSelectedForEdit] = useState(undefined);
   const [rowSelectedForRemoval, setRowSelectedForRemoval] = useState(undefined);
@@ -16,6 +16,7 @@ export default ({
 
   const addRow = async (event, body) => {
     event.preventDefault();
+    if (validate && !validate(body)) return;
     setIsLoading(true);
     if (customAddFunction) await customAddFunction(body);
     else {
@@ -29,6 +30,7 @@ export default ({
 
   const editRow = async (event, body) => {
     event.preventDefault();
+    if (validate && !validate(body)) return;
     setIsLoading(true);
     const rowId = body[itemId];
     if (customEditFunction) await customEditFunction(rowId, body);
