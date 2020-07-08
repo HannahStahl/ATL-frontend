@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Auth, API } from "aws-amplify";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { Nav, Navbar, NavItem, NavDropdown, MenuItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { ErrorBoundary } from "atl-components";
