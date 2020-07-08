@@ -3,6 +3,7 @@ import { API } from "aws-amplify";
 import { PageHeader } from "react-bootstrap";
 import { EditForm } from "atl-components";
 import { useAppContext } from "./libs/contextLib";
+import { onError } from "./libs/errorLib";
 
 export default function Team() {
   const { profile, team, setTeam, allCaptains, locations, divisions } = useAppContext();
@@ -12,17 +13,25 @@ export default function Team() {
 
   const saveTeam = async (event, body) => {
     event.preventDefault();
-    setIsLoading(true);
-    if (teamId) {
-      const result = await API.put("atl-backend", `update/team/${teamId}`, { body });
-      setTeam(result);
+    if (
+      (body.captainId === captainId || body.cocaptainId === captainId) &&
+      (body.captainId !== body.cocaptainId)
+    ) {
+      setIsLoading(true);
+      if (teamId) {
+        const result = await API.put("atl-backend", `update/team/${teamId}`, { body });
+        setTeam(result);
+      }
+      else {
+        body.captainId = captainId;
+        const result = await API.post("atl-backend", "create/team", { body });
+        setTeam(result);
+      }
+      setIsLoading(false);
+    } else {
+      onError("You must be either the captain or co-captain of this team.");
+      setIsLoading(false);
     }
-    else {
-      body.captainId = captainId;
-      const result = await API.post("atl-backend", "create/team", { body });
-      setTeam(result);
-    }
-    setIsLoading(false);
   };
 
   const columns = {
