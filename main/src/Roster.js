@@ -1,15 +1,13 @@
 import React, { useState } from "react";
-import { PageHeader, FormControl } from "react-bootstrap";
+import { PageHeader } from "react-bootstrap";
 import { API } from "aws-amplify";
 import { Table } from "atl-components";
 import { useAppContext } from "./libs/contextLib";
-import ConfirmationModal from "./ConfirmationModal";
+import AddPlayerModal from "./AddPlayerModal";
 
 export default () => {
   const { allPlayers, setAllPlayers, team, loadingData } = useAppContext();
-  const [dropdownOptionSelected, setDropdownOptionSelected] = useState("");
-  const [playerIdToAdd, setPlayerIdToAdd] = useState(undefined);
-  const [isLoading, setIsLoading] = useState(false);
+  const [addingPlayer, setAddingPlayer] = useState(false);
 
   const columns = {
     "name": {
@@ -46,38 +44,6 @@ export default () => {
   };
 
   const { teamId } = team;
-  const playersNotOnTeam = allPlayers.filter((player) => player.teamId !== teamId);
-  const playersOnDifferentTeam = playersNotOnTeam.filter((player) => player.teamId);
-  const playersNotOnAnyTeam = playersNotOnTeam.filter((player) => !player.teamId);
-
-  const addPlayerToTeam = async (event) => {
-    const playerId = event.target.value;
-    setDropdownOptionSelected(playerId);
-    const index = allPlayers.findIndex((rowInList) => rowInList.playerId === playerId);
-    const player = allPlayers[index];
-    if (player.teamId) {
-      setPlayerIdToAdd(player.playerId);
-    } else {
-      const body = { ...player, teamId }
-      await API.put("atl-backend", `update/player/${playerId}`, { body });
-      const newAllPlayers = await API.get("atl-backend", "list/player");
-      setAllPlayers([...newAllPlayers]);
-      setDropdownOptionSelected("");
-    }
-  };
-
-  const addPlayerFromOtherTeam = async () => {
-    setIsLoading(true);
-    const index = allPlayers.findIndex((rowInList) => rowInList.playerId === playerIdToAdd);
-    const player = allPlayers[index];
-    const body = { ...player, teamId }
-    await API.put("atl-backend", `update/player/${playerIdToAdd}`, { body });
-    const newAllPlayers = await API.get("atl-backend", "list/player");
-    setAllPlayers([...newAllPlayers]);
-    setDropdownOptionSelected("");
-    setPlayerIdToAdd(undefined);
-    setIsLoading(false);
-  };
 
   const removePlayerFromTeam = async (playerId) => {
     const index = allPlayers.findIndex((player) => player.playerId === playerId);
@@ -89,34 +55,11 @@ export default () => {
   };
 
   const AddPlayerComponent = () => (
-    <td colSpan={Object.keys(columns).length + 1}>
-      <FormControl
-        componentClass="select"
-        value={dropdownOptionSelected}
-        onChange={addPlayerToTeam}
-      >
-        <option value="" disabled>{`+ Add new player to team`}</option>
-        {playersNotOnAnyTeam.length > 0 && (
-          <React.Fragment>
-            <option value="note" disabled>Players not yet on a team:</option>
-            {playersNotOnAnyTeam.map((player) => (
-              <option key={player.playerId} value={player.playerId}>
-                {`${player.firstName} ${player.lastName}`}
-              </option>
-            ))}
-          </React.Fragment>
-        )}
-        {playersOnDifferentTeam.length > 0 && (
-          <React.Fragment>
-            <option value="note2" disabled>Players already on a team:</option>
-            {playersOnDifferentTeam.map((player) => (
-              <option key={player.playerId} value={player.playerId}>
-                {`${player.firstName} ${player.lastName}`}
-              </option>
-            ))}
-          </React.Fragment>
-        )}
-      </FormControl>
+    <td
+      colSpan={Object.keys(columns).filter((key) => !columns[key].hideFromTable).length + 1}
+      onClick={() => setAddingPlayer(true)}
+    >
+      + Add new player
     </td>
   );
 
@@ -139,12 +82,13 @@ export default () => {
           categoryName="team"
         />
       )}
-      <ConfirmationModal
-        playerIdToAdd={playerIdToAdd}
-        setPlayerIdToAdd={setPlayerIdToAdd}
-        isLoading={isLoading}
-        addPlayerFromOtherTeam={addPlayerFromOtherTeam}
-        setDropdownOptionSelected={setDropdownOptionSelected}
+      <AddPlayerModal
+        columns={columns}
+        allPlayers={allPlayers}
+        setAllPlayers={setAllPlayers}
+        teamId={teamId}
+        addingPlayer={addingPlayer}
+        setAddingPlayer={setAddingPlayer}
       />
     </div>
   );

@@ -4,7 +4,7 @@ import EditForm from './EditForm';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 export default ({
-  columns, rows, filterRows, getRows, setRows, itemType, API, categoryName,
+  columns, rows, filterRows, getRows, setRows, itemType, API, categoryName, customSelect,
   CustomAddComponent, customAddFunction, customEditFunction, customRemoveFunction
 }) => {
   const [rowSelectedForEdit, setRowSelectedForEdit] = useState(undefined);
@@ -119,7 +119,7 @@ export default ({
         `}
       </style>
       <div className="table-container">
-        <Table bordered hover className={setRows ? 'interactive-table' : undefined}>
+        <Table bordered hover className={setRows || customSelect ? 'interactive-table' : undefined}>
           <thead>
             <tr>
               {Object.keys(columns).filter((key) => !columns[key].hideFromTable).map((key) => <th key={key}>{columns[key].label}</th>)}
@@ -130,9 +130,9 @@ export default ({
             {(filterRows ? filterRows(rows) : rows).map((row) => (
               <tr
                 key={row[itemId]}
-                onClick={!row.readOnly && setRows ? (e) => {
+                onClick={!row.readOnly && (setRows || customSelect) ? (e) => {
                   if (!e.target.className.includes("fas") && !e.target.href) {
-                    setRowSelectedForEdit(row);
+                    customSelect ? customSelect(row) : setRowSelectedForEdit(row);
                   }
                 } : undefined}
                 className={row.readOnly ? "disabled" : undefined}

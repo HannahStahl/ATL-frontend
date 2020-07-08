@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { PageHeader, FormGroup, FormControl } from "react-bootstrap";
-import { API } from "aws-amplify";
 import { Table } from "atl-components";
 import { useAppContext } from "./libs/contextLib";
 
@@ -45,7 +44,7 @@ export default () => {
         </FormGroup>
       </form>
       {matchesForLocation.length > 0 && (
-        <Table columns={columns} rows={matchesForLocation} itemType="match" API={API} />
+        <Table columns={columns} rows={matchesForLocation} itemType="match" />
       )}
     </div>
   );

@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal } from "react-bootstrap";
+import { Modal, FormGroup } from "react-bootstrap";
 import LoaderButton from "./LoaderButton";
 
 export default ({
@@ -16,22 +16,26 @@ export default ({
           <p>
             {`Are you sure you want to remove this ${itemType}${categoryName ? ` from the ${categoryName}` : ''}?`}
           </p>
-          <LoaderButton
-            block
-            bsSize="large"
-            bsStyle="primary"
-            isLoading={isLoading}
-            onClick={removeRow}
-          >
-            Yes, remove
-          </LoaderButton>
-          <LoaderButton
-            block
-            bsSize="large"
-            onClick={() => setRowSelectedForRemoval(undefined)}
-          >
-            Cancel
-          </LoaderButton>
+          <FormGroup>
+            <LoaderButton
+              block
+              bsSize="large"
+              bsStyle="primary"
+              isLoading={isLoading}
+              onClick={removeRow}
+            >
+              Yes, remove
+            </LoaderButton>
+          </FormGroup>
+          <FormGroup>
+            <LoaderButton
+              block
+              bsSize="large"
+              onClick={() => setRowSelectedForRemoval(undefined)}
+            >
+              Cancel
+            </LoaderButton>
+          </FormGroup>
         </React.Fragment>
       )}
     </Modal.Body>

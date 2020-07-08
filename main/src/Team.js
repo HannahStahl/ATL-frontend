@@ -14,13 +14,13 @@ export default function Team() {
     event.preventDefault();
     setIsLoading(true);
     if (teamId) {
-      await API.put("atl-backend", `update/team/${teamId}`, { body });
-      setTeam({ ...body });
+      const result = await API.put("atl-backend", `update/team/${teamId}`, { body });
+      setTeam(result);
     }
     else {
       body.captainId = captainId;
-      await API.post("atl-backend", "create/team", { body });
-      setTeam({ ...body });
+      const result = await API.post("atl-backend", "create/team", { body });
+      setTeam(result);
     }
     setIsLoading(false);
   };
