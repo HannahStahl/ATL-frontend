@@ -85,14 +85,14 @@ function App() {
   return (
     !isAuthenticating && (
       <div className="App">
-        <Navbar fluid collapseOnSelect>
+        <Navbar fluid>
           <Navbar.Header>
             <Navbar.Brand>
               <Link to="/">ATL</Link>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
-          <Navbar.Collapse>
+          <Navbar fluid>
             <Nav pullRight>
               {isAuthenticated ? (
                 profile.captainId ? (
@@ -123,7 +123,7 @@ function App() {
                 </LinkContainer>
               )}
             </Nav>
-          </Navbar.Collapse>
+          </Navbar>
         </Navbar>
         <ErrorBoundary>
           <AppContext.Provider value={{

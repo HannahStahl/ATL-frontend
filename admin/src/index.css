@@ -50,13 +50,14 @@ input.form-control {
   border-radius: 0;
 }
 
+.App nav .navbar-nav {
+  text-align: right;
+  padding-right: 15px;
+}
+
 .App nav .container-fluid {
   padding-left: 0px;
   padding-right: 0px;
-}
-
-.App nav .container-fluid .navbar-brand {
-  margin-left: 0px;
 }
 
 .App .nav .dropdown-toggle .fa-user-circle {

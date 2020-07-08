@@ -80,48 +80,40 @@ function App() {
   return (
     !isAuthenticating && (
       <div className="App">
-        <Navbar fluid collapseOnSelect>
-          <Navbar.Header>
-            <Navbar.Brand>
-              <Link to="/">ATL</Link>
-            </Navbar.Brand>
-            <Navbar.Toggle />
-          </Navbar.Header>
-          <Navbar.Collapse>
-            <Nav pullRight>
-              {isAuthenticated ? (
-                profile.userId ? (
-                  <React.Fragment>
-                    <NavDropdown
-                      title={(
-                        <p>
-                          {`${profile.firstName} ${profile.lastName}`}
-                          <i className="fas fa-user-circle" />
-                        </p>
-                      )}
-                      id="basic-nav-dropdown"
-                    >
-                      <MenuItem href="/user-profile">My Profile</MenuItem>
-                      <MenuItem href="/seasons">Seasons</MenuItem>
-                      <MenuItem href="/season-calendars">Season Calendars</MenuItem>
-                      <MenuItem href="/court-locations">Court Locations</MenuItem>
-                      <MenuItem href="/associations">Associations</MenuItem>
-                      <MenuItem href="/match-schedules">Match Schedules</MenuItem>
-                      <MenuItem href="/divisions">Divisions</MenuItem>
-                      <MenuItem onClick={handleLogout}>Log out</MenuItem>
-                    </NavDropdown>
-                  </React.Fragment>
-                ) : <React.Fragment />
-              ) : (
-                <LinkContainer to="/login">
-                  <NavItem>
-                    Admin Login
-                    <i className="fas fa-user-circle" />
-                  </NavItem>
-                </LinkContainer>
-              )}
-            </Nav>
-          </Navbar.Collapse>
+        <Navbar fluid>
+          <Nav pullRight>
+            {isAuthenticated ? (
+              profile.userId ? (
+                <React.Fragment>
+                  <NavDropdown
+                    title={(
+                      <p>
+                        {`${profile.firstName} ${profile.lastName}`}
+                        <i className="fas fa-user-circle" />
+                      </p>
+                    )}
+                    id="basic-nav-dropdown"
+                  >
+                    <MenuItem href="/user-profile">My Profile</MenuItem>
+                    <MenuItem href="/seasons">Seasons</MenuItem>
+                    <MenuItem href="/season-calendars">Season Calendars</MenuItem>
+                    <MenuItem href="/court-locations">Court Locations</MenuItem>
+                    <MenuItem href="/associations">Associations</MenuItem>
+                    <MenuItem href="/match-schedules">Match Schedules</MenuItem>
+                    <MenuItem href="/divisions">Divisions</MenuItem>
+                    <MenuItem onClick={handleLogout}>Log out</MenuItem>
+                  </NavDropdown>
+                </React.Fragment>
+              ) : <React.Fragment />
+            ) : (
+              <LinkContainer to="/login">
+                <NavItem>
+                  Admin Login
+                  <i className="fas fa-user-circle" />
+                </NavItem>
+              </LinkContainer>
+            )}
+          </Nav>
         </Navbar>
         <ErrorBoundary>
           <AppContext.Provider value={{
