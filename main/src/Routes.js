@@ -16,6 +16,7 @@ import Locations from "./Locations";
 import Associations from "./Associations";
 import Divisions from "./Divisions";
 import Schedules from "./Schedules";
+import Users from "./Users";
 import ChangePassword from "./ChangePassword";
 import NotFound from "./NotFound";
 
@@ -64,6 +65,9 @@ export default function Routes() {
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/divisions" isAuthenticated={isAuthenticated}>
         <Divisions />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/users" isAuthenticated={isAuthenticated}>
+        <Users />
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/change-password" isAuthenticated={isAuthenticated}>
         <ChangePassword />

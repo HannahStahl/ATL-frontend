@@ -15,6 +15,7 @@ function App() {
   const [profile, setProfile] = useState({});
   const [allTeams, setAllTeams] = useState([]);
   const [team, setTeam] = useState({});
+  const [users, setUsers] = useState([]);
   const [allCaptains, setAllCaptains] = useState([]);
   const [matches, setMatches] = useState([]);
   const [locations, setLocations] = useState([]);
@@ -40,6 +41,7 @@ function App() {
         API.get("atl-backend", "list/season"),
         API.get("atl-backend", "list/event"),
       ]);
+      setUsers(users);
       setAllCaptains(users.filter((user) => user.isCaptain));
       setProfile(user);
       setAllTeams(teams);
@@ -105,7 +107,7 @@ function App() {
           <Navbar fluid>
             <Nav pullRight>
               {isAuthenticated ? (
-                profile.userId ? (
+                profile && profile.userId ? (
                   <React.Fragment>
                     <NavDropdown
                       title={(
@@ -126,6 +128,7 @@ function App() {
                       {profile.isAdmin && <MenuItem href="/associations">Associations</MenuItem>}
                       {profile.isAdmin && <MenuItem href="/match-schedules">Match Schedules</MenuItem>}
                       {profile.isAdmin && <MenuItem href="/divisions">Divisions</MenuItem>}
+                      {profile.isAdmin && <MenuItem href="/users">Users</MenuItem>}
                       <MenuItem onClick={handleLogout}>Log out</MenuItem>
                     </NavDropdown>
                   </React.Fragment>
@@ -151,6 +154,8 @@ function App() {
             setTeam,
             matches,
             setMatches,
+            users,
+            setUsers,
             allCaptains,
             locations,
             setLocations,

@@ -5,7 +5,8 @@ import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 export default ({
   columns, rows, filterRows, getRows, setRows, itemType, API, categoryName, customSelect,
-  CustomAddComponent, customAddFunction, customEditFunction, customRemoveFunction, validate
+  CustomAddComponent, customAddFunction, customEditFunction, customRemoveFunction, validate,
+  disableCreate
 }) => {
   const [rowSelectedForEdit, setRowSelectedForEdit] = useState(undefined);
   const [rowSelectedForRemoval, setRowSelectedForRemoval] = useState(undefined);
@@ -155,7 +156,7 @@ export default ({
               </tr>
             ))}
             <tr>
-              {setRows && (
+              {setRows && !disableCreate && (
                 CustomAddComponent ? <CustomAddComponent /> : (
                   <td
                     colSpan={Object.keys(columns).filter((key) => !columns[key].hideFromTable).length + 1}
