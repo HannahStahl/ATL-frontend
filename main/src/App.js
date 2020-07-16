@@ -93,6 +93,7 @@ function App() {
     setDivisions([]);
     history.push("/login");
   }
+  handleLogout();
 
   return (
     !isAuthenticating && (
