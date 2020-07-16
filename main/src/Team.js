@@ -7,7 +7,7 @@ import { onError } from "./libs/errorLib";
 
 export default function Team() {
   const { profile, team, setTeam, allCaptains, locations, divisions } = useAppContext();
-  const { captainId } = profile;
+  const { userId } = profile;
   const [isLoading, setIsLoading] = useState(false);
   const { teamId } = team;
 
@@ -15,7 +15,7 @@ export default function Team() {
     event.preventDefault();
     if (body.captainId === body.cocaptainId) {
       onError("Captain and co-captain cannot be the same.");
-    } else if (body.captainId !== captainId && body.cocaptainId !== captainId) {
+    } else if (body.captainId !== userId && body.cocaptainId !== userId) {
       onError("You must be either the captain or co-captain of this team.");
     } else {
       setIsLoading(true);
@@ -24,7 +24,6 @@ export default function Team() {
         setTeam(result);
       }
       else {
-        body.captainId = captainId;
         const result = await API.post("atl-backend", "create/team", { body });
         setTeam(result);
       }
@@ -38,14 +37,14 @@ export default function Team() {
       label: "Captain",
       type: "dropdown",
       joiningTable: allCaptains,
-      joiningTableKey: "captainId",
+      joiningTableKey: "userId",
       joiningTableFieldNames: ["firstName", "lastName"]
     },
     cocaptainId: {
       label: "Co-Captain",
       type: "dropdown",
       joiningTable: allCaptains,
-      joiningTableKey: "captainId",
+      joiningTableKey: "userId",
       joiningTableFieldNames: ["firstName", "lastName"]
     },
     divisionId: {

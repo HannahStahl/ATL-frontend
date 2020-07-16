@@ -29,7 +29,7 @@ export default function Login() {
 
   return (
     <div className="Login">
-      <PageHeader>Captain Login</PageHeader>
+      <PageHeader>Login</PageHeader>
       <form onSubmit={handleSubmit}>
         <table className="form-table">
           <tbody>
@@ -67,7 +67,7 @@ export default function Login() {
           Log In
         </LoaderButton>
         <div className="link-below-button">
-          <a href="/captain-signup">Need to register?</a>
+          <a href="/signup">Need to create an account?</a>
         </div>
       </form>
     </div>

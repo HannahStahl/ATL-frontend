@@ -4,7 +4,7 @@ import { PageHeader } from "react-bootstrap";
 import { useAppContext } from "./libs/contextLib";
 
 export default function Home() {
-  const { isAuthenticated } = useAppContext();
+  const { isAuthenticated, profile } = useAppContext();
 
   function renderLander() {
     return (
@@ -20,8 +20,10 @@ export default function Home() {
   function renderHomePage() {
     return (
       <div>
-        <PageHeader>Welcome to the Captain's Corner!</PageHeader>
-        <p>Click the icon in the top right to view your profile and team information.</p>
+        <PageHeader>
+          {profile.isAdmin ? "Welcome to the ATL Admin Portal." : "Welcome to the Captain's Corner!"}
+        </PageHeader>
+        <p>Click the icon in the top right to view your profile and league information.</p>
       </div>
     );
   }

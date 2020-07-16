@@ -9,7 +9,7 @@ const dev = {
     APP_CLIENT_ID: "6os8angd0et8eudg7hqpfbqrfg",
     IDENTITY_POOL_ID: "us-east-1:f572a19a-4feb-407a-ae2e-d2eb4e7d087f"
   },
-  captainApi: "https://xb2xxard1i.execute-api.us-east-1.amazonaws.com/dev"
+  captainApi: "https://74w86cvgdk.execute-api.us-east-1.amazonaws.com/dev"
 };
 
 const prod = {

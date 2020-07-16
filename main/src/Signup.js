@@ -65,7 +65,7 @@ export default function Signup() {
     try {
       await Auth.confirmSignUp(email, confirmationCode);
       await Auth.signIn(email, password);
-      await API.post("atl-backend", "create/captain", {
+      await API.post("atl-backend", "create/user", {
         body: { firstName, lastName, email, phone }
       });
       userHasAuthenticated(true);
@@ -204,7 +204,7 @@ export default function Signup() {
 
   return (
     <div className="Signup">
-      <PageHeader>New Captain Registration</PageHeader>
+      <PageHeader>Create an Account</PageHeader>
       {newUser === null ? renderForm() : renderConfirmationForm()}
     </div>
   );

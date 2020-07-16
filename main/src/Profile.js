@@ -15,7 +15,7 @@ export default function Profile() {
   const completeSaveProfile = async (newProfile) => {
     setIsLoading(true);
     const body = newProfile || updatedProfile;
-    await API.put("atl-backend", `update/captain/${body.captainId}`, { body });
+    await API.put("atl-backend", `update/user/${body.userId}`, { body });
     setProfile(body);
     setEmailCodeSent(false);
     setIsLoading(false);

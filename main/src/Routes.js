@@ -10,6 +10,12 @@ import Profile from "./Profile";
 import Team from "./Team";
 import Roster from "./Roster";
 import Matches from "./Matches";
+import Seasons from "./Seasons";
+import Calendars from "./Calendars";
+import Locations from "./Locations";
+import Associations from "./Associations";
+import Divisions from "./Divisions";
+import Schedules from "./Schedules";
 import ChangePassword from "./ChangePassword";
 import NotFound from "./NotFound";
 
@@ -26,10 +32,10 @@ export default function Routes() {
       <UnauthenticatedRoute exact path="/login" isAuthenticated={isAuthenticated}>
         <Login />
       </UnauthenticatedRoute>
-      <UnauthenticatedRoute exact path="/captain-signup" isAuthenticated={isAuthenticated}>
+      <UnauthenticatedRoute exact path="/signup" isAuthenticated={isAuthenticated}>
         <Signup />
       </UnauthenticatedRoute>
-      <AuthenticatedRoute exact path="/captain-profile" isAuthenticated={isAuthenticated}>
+      <AuthenticatedRoute exact path="/profile" isAuthenticated={isAuthenticated}>
         <Profile />
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/team-details" isAuthenticated={isAuthenticated}>
@@ -40,6 +46,24 @@ export default function Routes() {
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/match-schedule" isAuthenticated={isAuthenticated}>
         <Matches />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/seasons" isAuthenticated={isAuthenticated}>
+        <Seasons />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/season-calendars" isAuthenticated={isAuthenticated}>
+        <Calendars />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/court-locations" isAuthenticated={isAuthenticated}>
+        <Locations />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/associations" isAuthenticated={isAuthenticated}>
+        <Associations />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/match-schedules" isAuthenticated={isAuthenticated}>
+        <Schedules />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/divisions" isAuthenticated={isAuthenticated}>
+        <Divisions />
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/change-password" isAuthenticated={isAuthenticated}>
         <ChangePassword />

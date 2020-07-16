@@ -140,17 +140,23 @@ export default () => {
     <div>
       <PageHeader>Match Schedule</PageHeader>
       {!loadingData && (
-        <Table
-          columns={columns}
-          rows={matches}
-          filterRows={filterMatches}
-          setRows={setMatches}
-          getRows={() => API.get("atl-backend", "list/match")}
-          itemType="match"
-          API={API}
-          validate={validate}
-          customEditFunction={editRow}
-        />
+        teamId ? (
+          <Table
+            columns={columns}
+            rows={matches}
+            filterRows={filterMatches}
+            setRows={setMatches}
+            getRows={() => API.get("atl-backend", "list/match")}
+            itemType="match"
+            API={API}
+            validate={validate}
+            customEditFunction={editRow}
+          />
+        ) : (
+          <p className="link-below-button">
+            Head over to the <a href="/team-details">Team Details</a> page to create your team, then you will be able to view your match schedule.
+          </p>
+        )
       )}
     </div>
   );

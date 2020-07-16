@@ -7,7 +7,6 @@ import { ErrorBoundary } from "atl-components";
 import { AppContext } from "./libs/contextLib";
 import { onError } from "./libs/errorLib";
 import Routes from "./Routes";
-import config from './config';
 
 function App() {
   const history = useHistory();
@@ -20,6 +19,9 @@ function App() {
   const [matches, setMatches] = useState([]);
   const [locations, setLocations] = useState([]);
   const [divisions, setDivisions] = useState([]);
+  const [associations, setAssociations] = useState([]);
+  const [seasons, setSeasons] = useState([]);
+  const [events, setEvents] = useState([]);
   const [loadingData, setLoadingData] = useState(true);
 
   useEffect(() => {
@@ -28,30 +30,38 @@ function App() {
 
   useEffect(() => {
     async function fetchData() {
-      const [captains, captain, teams, locations, divisions] = await Promise.all([
-        API.get("atl-backend", "list/captain"),
-        API.get("atl-backend", "getCaptain"),
+      const [users, user, teams, locations, divisions, associations, seasons, events] = await Promise.all([
+        API.get("atl-backend", "list/user"),
+        API.get("atl-backend", "getUser"),
         API.get("atl-backend", "list/team"),
-        fetch(`${config.adminApi}/list/location`).then((res) => res.json()),
-        fetch(`${config.adminApi}/list/division`).then((res) => res.json()),
+        API.get("atl-backend", "list/location"),
+        API.get("atl-backend", "list/division"),
+        API.get("atl-backend", "list/association"),
+        API.get("atl-backend", "list/season"),
+        API.get("atl-backend", "list/event"),
       ]);
-      setAllCaptains(captains);
-      setProfile(captain);
+      setAllCaptains(users.filter((user) => user.isCaptain));
+      setProfile(user);
       setAllTeams(teams);
       setLocations(locations);
       setDivisions(divisions);
-      const { captainId } = captain;
-      const captainTeam = teams.find((teamInList) => (
-        teamInList.captainId === captainId || teamInList.cocaptainId === captainId
-      ));
-      setTeam(captainTeam || {});
-      if (captainTeam) {
-        const { teamId } = captainTeam;
-        const allMatches = await API.get("atl-backend", `list/match`);
-        const teamMatches = allMatches.filter((match) => (
-          match.homeTeamId === teamId || match.visitorTeamId === teamId
-        )); // TODO do this on the backend
-        setMatches(teamMatches);
+      setAssociations(associations);
+      setSeasons(seasons);
+      setEvents(events);
+      const { userId } = user;
+      if (user.isCaptain) {
+        const captainTeam = teams.find((teamInList) => (
+          teamInList.captainId === userId || teamInList.cocaptainId === userId
+        ));
+        setTeam(captainTeam || {});
+        if (captainTeam) {
+          const { teamId } = captainTeam;
+          const allMatches = await API.get("atl-backend", `list/match`);
+          const teamMatches = allMatches.filter((match) => (
+            match.homeTeamId === teamId || match.visitorTeamId === teamId
+          )); // TODO do this on the backend
+          setMatches(teamMatches);
+        }
       }
       setLoadingData(false);
     }
@@ -95,7 +105,7 @@ function App() {
           <Navbar fluid>
             <Nav pullRight>
               {isAuthenticated ? (
-                profile.captainId ? (
+                profile.userId ? (
                   <React.Fragment>
                     <NavDropdown
                       title={(
@@ -106,10 +116,16 @@ function App() {
                       )}
                       id="basic-nav-dropdown"
                     >
-                      <MenuItem href="/captain-profile">My Profile</MenuItem>
-                      <MenuItem href="/team-details">Team Details</MenuItem>
-                      {team.teamId && <MenuItem href="/team-roster">Team Roster</MenuItem>}
-                      {team.teamId && <MenuItem href="/match-schedule">Match Schedule</MenuItem>}
+                      <MenuItem href="/profile">My Profile</MenuItem>
+                      {profile.isCaptain && <MenuItem href="/team-details">Team Details</MenuItem>}
+                      {profile.isCaptain && <MenuItem href="/team-roster">Team Roster</MenuItem>}
+                      {profile.isCaptain && <MenuItem href="/match-schedule">Match Schedule</MenuItem>}
+                      {profile.isAdmin && <MenuItem href="/seasons">Seasons</MenuItem>}
+                      {profile.isAdmin && <MenuItem href="/season-calendars">Season Calendars</MenuItem>}
+                      {profile.isAdmin && <MenuItem href="/court-locations">Court Locations</MenuItem>}
+                      {profile.isAdmin && <MenuItem href="/associations">Associations</MenuItem>}
+                      {profile.isAdmin && <MenuItem href="/match-schedules">Match Schedules</MenuItem>}
+                      {profile.isAdmin && <MenuItem href="/divisions">Divisions</MenuItem>}
                       <MenuItem onClick={handleLogout}>Log out</MenuItem>
                     </NavDropdown>
                   </React.Fragment>
@@ -117,7 +133,7 @@ function App() {
               ) : (
                 <LinkContainer to="/login">
                   <NavItem>
-                    Captain Login
+                    Login
                     <i className="fas fa-user-circle" />
                   </NavItem>
                 </LinkContainer>
@@ -140,6 +156,12 @@ function App() {
             setLocations,
             divisions,
             setDivisions,
+            associations,
+            setAssociations,
+            seasons,
+            setSeasons,
+            events,
+            setEvents,
             allTeams,
             loadingData,
           }}>

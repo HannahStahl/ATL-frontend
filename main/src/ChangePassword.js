@@ -30,7 +30,7 @@ export default function ChangePassword() {
     try {
       const currentUser = await Auth.currentAuthenticatedUser();
       await Auth.changePassword(currentUser, oldPassword, password);
-      history.push("/captain-profile");
+      history.push("/profile");
     } catch (error) {
       onError(error);
       setIsChanging(false);

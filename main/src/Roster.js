@@ -72,22 +72,28 @@ export default () => {
     <div>
       <PageHeader>Team Roster</PageHeader>
       {!loadingData && (
-        <Table
-          columns={columns}
-          rows={allPlayers}
-          filterRows={filterPlayers}
-          setRows={setAllPlayers}
-          getRows={(result) => {
-            const index = allPlayers.findIndex((playerInList) => playerInList.playerId === result.playerId);
-            allPlayers[index] = result;
-            return allPlayers;
-          }}
-          itemType="player"
-          API={API}
-          CustomAddComponent={AddPlayerComponent}
-          customRemoveFunction={removePlayerFromTeam}
-          categoryName="team"
-        />
+        teamId ? (
+          <Table
+            columns={columns}
+            rows={allPlayers}
+            filterRows={filterPlayers}
+            setRows={setAllPlayers}
+            getRows={(result) => {
+              const index = allPlayers.findIndex((playerInList) => playerInList.playerId === result.playerId);
+              allPlayers[index] = result;
+              return allPlayers;
+            }}
+            itemType="player"
+            API={API}
+            CustomAddComponent={AddPlayerComponent}
+            customRemoveFunction={removePlayerFromTeam}
+            categoryName="team"
+          />
+        ) : (
+          <p className="link-below-button">
+            Head over to the <a href="/team-details">Team Details</a> page to create your team, then you will be able to add players.
+          </p>
+        )
       )}
       <AddPlayerModal
         columns={columns}
