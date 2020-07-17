@@ -7,6 +7,7 @@ import { AppContext } from "./libs/contextLib";
 import { onError } from "./libs/errorLib";
 import ErrorBoundary from "./ErrorBoundary";
 import Routes from "./Routes";
+import Footer from "./Footer";
 
 function App() {
   const history = useHistory();
@@ -183,6 +184,7 @@ function App() {
             <Routes />
           </AppContext.Provider>
         </ErrorBoundary>
+        <Footer />
       </div>
     )
   );
