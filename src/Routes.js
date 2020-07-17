@@ -14,6 +14,7 @@ import Matches from "./Matches";
 import Seasons from "./Seasons";
 import Calendars from "./Calendars";
 import Teams from "./Teams";
+import Players from "./Players";
 import Locations from "./Locations";
 import Associations from "./Associations";
 import Divisions from "./Divisions";
@@ -58,6 +59,9 @@ export default function Routes() {
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/teams" isAuthenticated={isAuthenticated}>
         <Teams />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/players" isAuthenticated={isAuthenticated}>
+        <Players />
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/court-locations" isAuthenticated={isAuthenticated}>
         <Locations />

@@ -78,11 +78,7 @@ export default () => {
             rows={allPlayers}
             filterRows={filterPlayers}
             setRows={setAllPlayers}
-            getRows={(result) => {
-              const index = allPlayers.findIndex((playerInList) => playerInList.playerId === result.playerId);
-              allPlayers[index] = result;
-              return allPlayers;
-            }}
+            getRows={() => API.get("atl-backend", "/list/player")}
             itemType="player"
             API={API}
             CustomAddComponent={AddPlayerComponent}
