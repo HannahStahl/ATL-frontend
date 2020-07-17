@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Auth } from "aws-amplify";
 import { FormControl, PageHeader } from "react-bootstrap";
-import { LoaderButton } from "atl-components";
+import LoaderButton from "./LoaderButton";
 import { useAppContext } from "./libs/contextLib";
 import { onError } from "./libs/errorLib";
 

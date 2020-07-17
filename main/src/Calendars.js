@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import moment from "moment";
 import { PageHeader, FormGroup, FormControl } from "react-bootstrap";
 import { API } from "aws-amplify";
-import { Table } from "atl-components";
+import Table from "./Table";
 import { useAppContext } from "./libs/contextLib";
 
 export default () => {
@@ -94,7 +94,7 @@ export default () => {
         </FormGroup>
       </form>
       {!loadingData && (
-        <React.Fragment>
+        <>
           <Table
             columns={columns}
             rows={eventsWithLeagueDates}
@@ -108,7 +108,7 @@ export default () => {
           <div className="link-below-button">
             <p>To edit the "League Begins" and "League Ends" events, visit the <a href="/seasons">Seasons</a> page.</p>
           </div>
-        </React.Fragment>
+        </>
       )}
     </div>
   );

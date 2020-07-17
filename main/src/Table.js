@@ -96,31 +96,7 @@ export default ({
   };
 
   return (
-    <React.Fragment>
-      <style>
-        {`
-          th {
-            background-color: #e7e7e7;
-          }
-          th,td {
-            white-space: nowrap;
-          }
-          .table-container {
-            overflow-x: scroll;
-          }
-          .remove-row {
-            width: 30px;
-          }
-          @media all and (hover: hover) {
-            .interactive-table td:hover {
-              cursor: pointer;
-            }
-            .interactive-table tr.disabled td:hover {
-              cursor: auto;
-            }
-          }
-        `}
-      </style>
+    <>
       <div className="table-container">
         <Table bordered hover className={setRows || customSelect ? 'interactive-table' : undefined}>
           <thead>
@@ -204,6 +180,6 @@ export default ({
         capitalizedItemType={capitalizedItemType}
         categoryName={categoryName}
       />
-    </React.Fragment>
+    </>
   );
 };

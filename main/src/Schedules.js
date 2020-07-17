@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { PageHeader, FormGroup, FormControl } from "react-bootstrap";
-import { Table } from "atl-components";
+import Table from "./Table";
 import { useAppContext } from "./libs/contextLib";
 
 export default () => {

@@ -28,8 +28,8 @@ export default ({ fields, original, save, isLoading, buttonText, labelsAbove }) 
       joiningTableFieldNames, options, placeholder, helpText
     } = fields[key];
     return (
-      <React.Fragment>
-        {helpText && <HelpBlock>{helpText}</HelpBlock>}
+      <>
+        {helpText && <HelpBlock className="helper-text">{helpText}</HelpBlock>}
         {["text", "number", "email", "date"].includes(type) && (
           <FormControl
             value={updated[key] || ''}
@@ -77,7 +77,7 @@ export default ({ fields, original, save, isLoading, buttonText, labelsAbove }) 
             )}
           </FormControl>
         )}
-      </React.Fragment>
+      </>
     );
   };
 
@@ -90,68 +90,44 @@ export default ({ fields, original, save, isLoading, buttonText, labelsAbove }) 
   };
 
   return (
-    <React.Fragment>
-      <style>
-        {`
-          .form-table {
-            width: 100%;
-          }
-          .form-table td {
-            padding-bottom: 10px;
-          }
-          .form-label {
-            text-align: right;
-            white-space: nowrap;
-            padding-right: 10px;
-            font-weight: bold;
-          }
-          .form-field {
-            width: 100%;
-          }
-          .help-block {
-            margin-top: 0px;
-          }
-        `}
-      </style>
-      <form onSubmit={(e) => save(e, updated)}>
-        {labelsAbove ? (
-          <React.Fragment>
+    <form onSubmit={(e) => save(e, updated)}>
+      {labelsAbove ? (
+        <>
+          {Object.keys(fields).filter(isEditable).map((key) => {
+            const { label } = fields[key];
+            return (
+              <FormGroup>
+                {label && <ControlLabel>{label}</ControlLabel>}
+                {renderValue(key)}
+              </FormGroup>
+            );
+          })}
+        </>
+      ) : (
+        <table className='form-table'>
+          <tbody>
             {Object.keys(fields).filter(isEditable).map((key) => {
               const { label } = fields[key];
               return (
-                <FormGroup>
-                  {label && <ControlLabel>{label}</ControlLabel>}
-                  {renderValue(key)}
-                </FormGroup>
+                <tr key={key}>
+                  <td className='form-label'>{label || ''}</td>
+                  <td className='form-field'>{renderValue(key)}</td>
+                </tr>
               );
             })}
-          </React.Fragment>
-        ) : (
-          <table className='form-table'>
-            <tbody>
-              {Object.keys(fields).filter(isEditable).map((key) => {
-                const { label } = fields[key];
-                return (
-                  <tr key={key}>
-                    <td className='form-label'>{label || ''}</td>
-                    <td className='form-field'>{renderValue(key)}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        )}
-        <LoaderButton
-          block
-          type="submit"
-          bsSize="large"
-          bsStyle="primary"
-          isLoading={isLoading}
-          disabled={!validateForm()}
-        >
-          {buttonText || "Save"}
-        </LoaderButton>
-      </form>
-    </React.Fragment>
+          </tbody>
+        </table>
+      )}
+      <LoaderButton
+        block
+        type="submit"
+        bsSize="large"
+        bsStyle="primary"
+        isLoading={isLoading}
+        disabled={!validateForm()}
+      >
+        {buttonText || "Save"}
+      </LoaderButton>
+    </form>
   );
 };

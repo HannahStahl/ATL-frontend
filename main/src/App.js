@@ -3,9 +3,9 @@ import { Auth, API } from "aws-amplify";
 import { Link, useHistory } from "react-router-dom";
 import { Nav, Navbar, NavItem, NavDropdown, MenuItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import { ErrorBoundary } from "atl-components";
 import { AppContext } from "./libs/contextLib";
 import { onError } from "./libs/errorLib";
+import ErrorBoundary from "./ErrorBoundary";
 import Routes from "./Routes";
 
 function App() {
@@ -108,7 +108,7 @@ function App() {
             <Nav pullRight>
               {isAuthenticated ? (
                 profile && profile.userId ? (
-                  <React.Fragment>
+                  <>
                     <NavDropdown
                       title={(
                         <p>
@@ -131,8 +131,8 @@ function App() {
                       {profile.isAdmin && <MenuItem href="/users">Users</MenuItem>}
                       <MenuItem onClick={handleLogout}>Log out</MenuItem>
                     </NavDropdown>
-                  </React.Fragment>
-                ) : <React.Fragment />
+                  </>
+                ) : <></>
               ) : (
                 <LinkContainer to="/login">
                   <NavItem>

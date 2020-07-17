@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { API } from "aws-amplify";
 import { PageHeader } from "react-bootstrap";
-import { EditForm } from "atl-components";
+import EditForm from "./EditForm";
 import { useAppContext } from "./libs/contextLib";
 import { onError } from "./libs/errorLib";
 

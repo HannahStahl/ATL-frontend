@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Auth } from "aws-amplify";
 import { useHistory } from "react-router-dom";
 import { PageHeader, FormControl } from "react-bootstrap";
-import { LoaderButton } from "atl-components";
+import LoaderButton from "./LoaderButton";
 import { onError } from "./libs/errorLib";
 
 export default function ChangePassword() {

@@ -12,7 +12,7 @@ export default ({
     </Modal.Header>
     <Modal.Body>
       {rowSelectedForRemoval && (
-        <React.Fragment>
+        <>
           <p>
             {`Are you sure you want to remove this ${itemType}${categoryName ? ` from the ${categoryName}` : ''}?`}
           </p>
@@ -36,7 +36,7 @@ export default ({
               Cancel
             </LoaderButton>
           </FormGroup>
-        </React.Fragment>
+        </>
       )}
     </Modal.Body>
   </Modal>

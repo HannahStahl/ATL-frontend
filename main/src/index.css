@@ -37,6 +37,51 @@ input.form-control {
   width: 100%;
 }
 
+th {
+  background-color: #e7e7e7;
+}
+
+th,td {
+  white-space: nowrap;
+}
+
+.table-container {
+  overflow-x: scroll;
+}
+
+.remove-row {
+  width: 30px;
+}
+
+@media all and (hover: hover) {
+  .interactive-table td:hover {
+    cursor: pointer;
+  }
+  .interactive-table tr.disabled td:hover {
+    cursor: auto;
+  }
+}
+
+.helper-text {
+  margin-top: 0px;
+}
+
+.ErrorBoundary {
+  padding-top: 100px;
+  text-align: center;
+}
+
+@keyframes spin {
+  from { transform: scale(1) rotate(0deg); }
+  to { transform: scale(1) rotate(360deg); }
+}
+
+.LoaderButton .spinning.glyphicon {
+  margin-right: 7px;
+  top: 2px;
+  animation: spin 1s infinite linear;
+}
+
 .App {
   padding-top: 100px;
   padding-bottom: 50px;

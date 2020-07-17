@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { API, Auth } from "aws-amplify";
 import { PageHeader, FormControl, HelpBlock } from "react-bootstrap";
-import { EditForm, LoaderButton } from "atl-components";
+import EditForm from "./EditForm";
+import LoaderButton from "./LoaderButton";
 import { useAppContext } from "./libs/contextLib";
 import { onError } from "./libs/errorLib";
 
@@ -90,7 +91,7 @@ export default function Profile() {
     <div>
       <PageHeader>Your Profile</PageHeader>
       {emailCodeSent ? renderEmailConfirmationForm() : (
-        <React.Fragment>
+        <>
           <EditForm
             fields={columns}
             original={profile}
@@ -100,7 +101,7 @@ export default function Profile() {
           <div className="link-below-button">
             <a href="/change-password">Need to change your password?</a>
           </div>
-        </React.Fragment>
+        </>
       )}
     </div>
   );

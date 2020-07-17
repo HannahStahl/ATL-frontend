@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import { AuthenticatedRoute, UnauthenticatedRoute } from "atl-components";
+import AuthenticatedRoute from "./AuthenticatedRoute";
+import UnauthenticatedRoute from "./UnauthenticatedRoute";
 import { useAppContext } from "./libs/contextLib";
 import Home from "./Home";
 import PlayerSignup from "./PlayerSignup";

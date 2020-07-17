@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { PageHeader } from "react-bootstrap";
 import { API } from "aws-amplify";
-import { Table } from "atl-components";
+import Table from "./Table";
 import { useAppContext } from "./libs/contextLib";
 import AddPlayerModal from "./AddPlayerModal";
 

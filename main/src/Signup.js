@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Auth, API } from "aws-amplify";
 import { useHistory } from "react-router-dom";
 import { FormControl, PageHeader, HelpBlock } from "react-bootstrap";
-import { LoaderButton } from "atl-components";
+import LoaderButton from "./LoaderButton";
 import { useAppContext } from "./libs/contextLib";
 import { onError } from "./libs/errorLib";
 

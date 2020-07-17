@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { PageHeader } from "react-bootstrap";
-import { EditForm } from "atl-components";
 import { API } from "aws-amplify";
+import EditForm from "./EditForm";
 
 export default function PlayerSignup() {
   const [isLoading, setIsLoading] = useState(false);
@@ -60,15 +60,15 @@ export default function PlayerSignup() {
   return (
     <div>
       {playerRegistered ? (
-        <React.Fragment>
+        <>
           <PageHeader>Thanks for signing up!</PageHeader>
           <div className="link-below-button">
             <p>We'll be in touch soon.</p>
             <a href="/">Back to home page</a>
           </div>
-        </React.Fragment>
+        </>
       ) : (
-        <React.Fragment>
+        <>
           <PageHeader>New Player Registration</PageHeader>
           <p>
             Enter your info here if you would like to play in the league.
@@ -85,7 +85,7 @@ export default function PlayerSignup() {
             buttonText="Submit"
             labelsAbove
           />
-        </React.Fragment>
+        </>
       )}
     </div>
   );

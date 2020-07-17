@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Modal, FormControl, FormGroup, ControlLabel } from "react-bootstrap";
 import { API } from "aws-amplify";
-import { Table, LoaderButton } from "atl-components";
+import Table from "./Table";
+import LoaderButton from "./LoaderButton";
 
 export default ({ columns, allPlayers, setAllPlayers, teamId, addingPlayer, setAddingPlayer }) => {
   const [playerIdToAdd, setPlayerIdToAdd] = useState(undefined);
@@ -65,10 +66,10 @@ export default ({ columns, allPlayers, setAllPlayers, teamId, addingPlayer, setA
         </LoaderButton>
       </FormGroup>
       {playersWithLastName.length > 0 && (
-        <React.Fragment>
+        <>
           <p>Select a player from the list to add them to your team.</p>
           <Table columns={columns} rows={playersWithLastName} itemType="player" customSelect={addPlayerToTeam} />
-        </React.Fragment>
+        </>
       )}
     </form>
   );
