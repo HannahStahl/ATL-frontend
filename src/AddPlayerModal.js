@@ -70,7 +70,7 @@ export default ({ columns, allPlayers, setAllPlayers, teamId, addingPlayer, setA
         </FormGroup>
         {playersWithLastName.length > 0 && (
           <>
-            <p>Select a player from the list to add them to your team.</p>
+            <ControlLabel>Select a player from the list to add them to your team:</ControlLabel>
             <Table columns={columns} rows={playersWithLastName} itemType="player" customSelect={addPlayerToTeam} />
           </>
         )}
