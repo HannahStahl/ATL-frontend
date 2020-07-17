@@ -24,7 +24,7 @@ export default function UnauthenticatedRoute({ isAuthenticated, children, ...res
       {!isAuthenticated ? (
         children
       ) : (
-        <Redirect to={redirect === "" || redirect === null ? "/" : redirect} />
+        <Redirect to={redirect === "" || redirect === null ? "/portal" : redirect} />
       )}
     </Route>
   );

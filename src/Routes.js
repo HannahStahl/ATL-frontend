@@ -7,6 +7,7 @@ import Home from "./Home";
 import PlayerSignup from "./PlayerSignup";
 import Login from "./Login";
 import Signup from "./Signup";
+import PortalHome from "./PortalHome";
 import Profile from "./Profile";
 import Team from "./Team";
 import Roster from "./Roster";
@@ -39,6 +40,9 @@ export default function Routes() {
       <UnauthenticatedRoute exact path="/signup" isAuthenticated={isAuthenticated}>
         <Signup />
       </UnauthenticatedRoute>
+      <AuthenticatedRoute exact path="/portal" isAuthenticated={isAuthenticated}>
+        <PortalHome />
+      </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/profile" isAuthenticated={isAuthenticated}>
         <Profile />
       </AuthenticatedRoute>
