@@ -109,7 +109,7 @@ export default () => {
   };
 
   return (
-    <div>
+    <div className="container">
       {addingPlayer ? (
         <>
           <PageHeader>Add New Player</PageHeader>

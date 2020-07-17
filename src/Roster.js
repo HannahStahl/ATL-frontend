@@ -69,7 +69,7 @@ export default () => {
   const filterPlayers = (list) => list.filter((player) => player.teamId === teamId);
 
   return (
-    <div>
+    <div className="container">
       <PageHeader>Team Roster</PageHeader>
       {!loadingData && (
         teamId ? (

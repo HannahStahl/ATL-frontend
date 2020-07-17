@@ -67,7 +67,7 @@ export default function Team() {
   };
 
   return (
-    <div>
+    <div className="container">
       <PageHeader>Team Details</PageHeader>
       <EditForm
         fields={columns}

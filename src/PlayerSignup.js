@@ -58,7 +58,7 @@ export default function PlayerSignup() {
   };
 
   return (
-    <div>
+    <div className="container">
       {playerRegistered ? (
         <>
           <PageHeader>Thanks for signing up!</PageHeader>

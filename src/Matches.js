@@ -85,7 +85,7 @@ export default () => {
   );
 
   return (
-    <div>
+    <div className="container">
       <PageHeader>Match Schedule</PageHeader>
       {!loadingData && (
         teamId ? (

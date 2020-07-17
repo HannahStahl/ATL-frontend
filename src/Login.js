@@ -28,7 +28,7 @@ export default function Login() {
   }
 
   return (
-    <div className="Login">
+    <div className="container Login">
       <PageHeader>Login</PageHeader>
       <form onSubmit={handleSubmit}>
         <table className="form-table">

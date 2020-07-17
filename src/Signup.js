@@ -221,7 +221,7 @@ export default function Signup() {
   }
 
   return (
-    <div className="Signup">
+    <div className="container Signup">
       <PageHeader>Create an Account</PageHeader>
       {newUser === null ? renderForm() : renderConfirmationForm()}
     </div>

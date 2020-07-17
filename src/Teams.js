@@ -45,7 +45,7 @@ export default () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <PageHeader>Teams</PageHeader>
       {!loadingData && (
         <Table

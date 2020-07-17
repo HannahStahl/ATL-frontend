@@ -6,6 +6,8 @@ body {
   color: #333;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  --navy: #003a74;
+  --light-blue: #E4EBF8;
 }
 
 select.form-control,
@@ -53,15 +55,6 @@ th,td {
   width: 30px;
 }
 
-@media all and (hover: hover) {
-  .interactive-table td:hover {
-    cursor: pointer;
-  }
-  .interactive-table tr.disabled td:hover {
-    cursor: auto;
-  }
-}
-
 .helper-text {
   margin-top: 0px;
 }
@@ -82,7 +75,7 @@ th,td {
   animation: spin 1s infinite linear;
 }
 
-.App {
+.container {
   padding-top: 100px;
   padding-bottom: 50px;
 }
@@ -93,6 +86,8 @@ th,td {
   left: 0;
   width: 100vw;
   border-radius: 0;
+  background-color: white;
+  margin-bottom: 0px;
 }
 
 .App nav .navbar-nav {
@@ -125,8 +120,132 @@ th,td {
   margin-left: 10px;
 }
 
-.Home * {
+.btn {
+  background-color: var(--navy);
+  border-color: var(--navy);
+}
+
+.home-section-1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
   text-align: center;
+  padding: 75px 7%;
+}
+
+.home-section-1-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5%;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.home-section-2 {
+  background-color: white;
+  width: 100vw;
+  padding: 75px 7%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.home-section-3 {
+  background-color: var(--light-blue);
+  padding: 75px 7%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.home-section-3-card {
+  padding: 40px;
+  border: solid 1px var(--navy);
+  background-color: white;
+  margin: 20px;
+  max-width: 400px;
+  flex-basis: 1;
+}
+
+.home-section-3-card h3 {
+  margin-top: 0px;
+}
+
+.home-section-3-card p {
+  margin-bottom: 0px;
+}
+
+.home-section-2 p {
+  max-width: 750px;
+  margin-bottom: 40px;
+}
+
+.key-dates {
+  margin-top: 20px;
+  margin-bottom: 30px;
+  padding: 30px;
+  background-color: var(--light-blue);
+  display: flex;
+}
+
+.key-dates-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.key-date {
+  font-weight: bold;
+  margin-right: 15px;
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.key-event {
+  margin-left: 15px;
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.key-date:last-of-type, .key-event:last-of-type {
+  margin-bottom: 0px;
+}
+
+h1, h2, h3, h4 {
+  color: var(--navy);
+}
+
+h1.welcome {
+  margin-top: 0px;
+  margin-bottom: 5px;
+  font-size: 4.5rem;
+}
+
+h3.welcome {
+  margin-bottom: 40px;
+}
+
+.landing-img {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+
+.photo-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.6);
+  z-index: -1;
 }
 
 .NotFound {
@@ -178,12 +297,27 @@ th,td {
   color: #999;
 }
 
-@media all and (min-width: 480px) {
-  .Login {
-    margin: 50px 0;
+@media all and (max-width: 600px) {
+  .photo-overlay {
+    background-color: rgba(255, 255, 255, 0.8);
   }
 
-  .Signup {
-    margin: 50px 0;
+  .home-section-1-content {
+    background-color: transparent;
+  }
+}
+
+@media all and (hover: hover) {
+  .interactive-table td:hover {
+    cursor: pointer;
+  }
+
+  .interactive-table tr.disabled td:hover {
+    cursor: auto;
+  }
+
+  .btn:hover {
+    background-color: var(--navy);
+    border-color: var(--navy);
   }
 }

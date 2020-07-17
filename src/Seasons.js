@@ -37,7 +37,7 @@ export default () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <PageHeader>Seasons</PageHeader>
       {!loadingData && (
         <Table

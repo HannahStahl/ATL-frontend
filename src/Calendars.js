@@ -77,7 +77,7 @@ export default () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <PageHeader>Season Calendars</PageHeader>
       <form>
         <FormGroup controlId="seasonId">

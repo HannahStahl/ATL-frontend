@@ -53,7 +53,7 @@ export default () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <PageHeader>Court Locations</PageHeader>
       {!loadingData && (
         <Table

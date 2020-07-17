@@ -26,7 +26,7 @@ export default () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <PageHeader>Associations</PageHeader>
       {!loadingData && (
         <Table

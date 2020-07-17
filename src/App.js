@@ -25,34 +25,48 @@ function App() {
   const [events, setEvents] = useState([]);
   const [loadingData, setLoadingData] = useState(true);
 
+  async function fetchPublicData() {
+    const [users, teams, locations, divisions, associations, seasons, events] = await Promise.all([
+      API.get("atl-backend", "list/user"),
+      API.get("atl-backend", "list/team"),
+      API.get("atl-backend", "list/location"),
+      API.get("atl-backend", "list/division"),
+      API.get("atl-backend", "list/association"),
+      API.get("atl-backend", "list/season"),
+      API.get("atl-backend", "list/event"),
+    ]);
+    setUsers(users);
+    setAllCaptains(users.filter((user) => user.isCaptain));
+    setAllTeams(teams);
+    setLocations(locations);
+    setDivisions(divisions);
+    setAssociations(associations);
+    setSeasons(seasons);
+    setEvents(events);
+  }
+
   useEffect(() => {
+    async function onLoad() {
+      try {
+        await Auth.currentSession();
+        userHasAuthenticated(true);
+      }
+      catch(e) {
+        if (e !== 'No current user') onError(e);
+      }
+      setIsAuthenticating(false);
+      fetchPublicData();
+    }
     onLoad();
   }, []);
 
   useEffect(() => {
-    async function fetchData() {
-      const [users, user, teams, locations, divisions, associations, seasons, events] = await Promise.all([
-        API.get("atl-backend", "list/user"),
-        API.get("atl-backend", "getUser"),
-        API.get("atl-backend", "list/team"),
-        API.get("atl-backend", "list/location"),
-        API.get("atl-backend", "list/division"),
-        API.get("atl-backend", "list/association"),
-        API.get("atl-backend", "list/season"),
-        API.get("atl-backend", "list/event"),
-      ]);
-      setUsers(users);
-      setAllCaptains(users.filter((user) => user.isCaptain));
+    async function fetchPrivateData() {
+      const user = await API.get("atl-backend", "getUser");
       setProfile(user);
-      setAllTeams(teams);
-      setLocations(locations);
-      setDivisions(divisions);
-      setAssociations(associations);
-      setSeasons(seasons);
-      setEvents(events);
       const { userId } = user;
       if (user.isCaptain) {
-        const captainTeam = teams.find((teamInList) => (
+        const captainTeam = allTeams.find((teamInList) => (
           teamInList.captainId === userId || teamInList.cocaptainId === userId
         ));
         setTeam(captainTeam || {});
@@ -67,19 +81,8 @@ function App() {
       }
       setLoadingData(false);
     }
-    if (isAuthenticated) fetchData();
-  }, [isAuthenticated]);
-
-  async function onLoad() {
-    try {
-      await Auth.currentSession();
-      userHasAuthenticated(true);
-    }
-    catch(e) {
-      if (e !== 'No current user') onError(e);
-    }
-    setIsAuthenticating(false);
-  }
+    if (isAuthenticated) fetchPrivateData();
+  }, [isAuthenticated, allTeams]);
 
   async function handleLogout() {
     await Auth.signOut();
@@ -177,7 +180,7 @@ function App() {
             setAllTeams,
             loadingData,
           }}>
-            <div className="container"><Routes /></div>
+            <Routes />
           </AppContext.Provider>
         </ErrorBoundary>
       </div>

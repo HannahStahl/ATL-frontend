@@ -11,7 +11,7 @@ export default () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <PageHeader>Divisions</PageHeader>
       {!loadingData && (
         <Table

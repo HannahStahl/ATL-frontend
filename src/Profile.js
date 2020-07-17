@@ -88,7 +88,7 @@ export default function Profile() {
   );
 
   return (
-    <div>
+    <div className="container">
       <PageHeader>Your Profile</PageHeader>
       {emailCodeSent ? renderEmailConfirmationForm() : (
         <>

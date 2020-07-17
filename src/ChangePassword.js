@@ -38,7 +38,7 @@ export default function ChangePassword() {
   }
 
   return (
-    <div>
+    <div className="container">
       <PageHeader>Change Password</PageHeader>
       <form onSubmit={handleChangeClick}>
         <table className="form-table">

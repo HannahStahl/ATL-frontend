@@ -106,7 +106,7 @@ export default () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <PageHeader>Match Schedules</PageHeader>
       <form>
         <FormGroup controlId="locationId">
