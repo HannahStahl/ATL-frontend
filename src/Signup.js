@@ -39,8 +39,13 @@ export default function Signup() {
   async function handleSubmit(event) {
     event.preventDefault();
     setIsLoading(true);
-    if (accessCode !== process.env.REACT_APP_ACCESS_CODE) {
-      onError("Incorrect access code");
+    const accessCodes = [
+      process.env.REACT_APP_CAPTAIN_ACCESS_CODE,
+      process.env.REACT_APP_ADMIN_ACCESS_CODE,
+      process.env.REACT_APP_ADMIN_CAPTAIN_ACCESS_CODE,
+    ];
+    if (!accessCodes.includes(accessCode)) {
+      onError("Invalid access code");
       setIsLoading(false);
     } else if (password !== confirmPassword) {
       onError("Passwords do not match");
@@ -66,7 +71,20 @@ export default function Signup() {
       await Auth.confirmSignUp(email, confirmationCode);
       await Auth.signIn(email, password);
       await API.post("atl-backend", "create/user", {
-        body: { firstName, lastName, email, phone }
+        body: {
+          firstName,
+          lastName,
+          email,
+          phone,
+          isCaptain: (
+            accessCode === process.env.REACT_APP_CAPTAIN_ACCESS_CODE ||
+            accessCode === process.env.REACT_APP_ADMIN_CAPTAIN_ACCESS_CODE
+          ),
+          isAdmin: (
+            accessCode === process.env.REACT_APP_ADMIN_ACCESS_CODE ||
+            accessCode === process.env.REACT_APP_ADMIN_CAPTAIN_ACCESS_CODE
+          )
+        }
       });
       userHasAuthenticated(true);
       history.push("/");

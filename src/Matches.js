@@ -3,10 +3,9 @@ import { PageHeader } from "react-bootstrap";
 import { API } from "aws-amplify";
 import Table from "./Table";
 import { useAppContext } from "./libs/contextLib";
-import { onError } from "./libs/errorLib";
 
 export default () => {
-  const { matches, setMatches, locations, allTeams, team, loadingData } = useAppContext();
+  const { matches, locations, allTeams, team, loadingData } = useAppContext();
   const [allPlayers, setAllPlayers] = useState([]);
 
   useEffect(() => {
