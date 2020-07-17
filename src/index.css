@@ -124,7 +124,7 @@ th,td {
   margin-bottom: 0px;
 }
 
-.App .nav .dropdown-menu a {
+.App .navbar-right .dropdown-menu a {
   text-align: right;
 }
 
@@ -136,6 +136,11 @@ th,td {
   position: fixed;
   top: 0;
   right: 0;
+}
+
+.centered-content {
+  display: flex;
+  justify-content: center;
 }
 
 .footer {
@@ -326,6 +331,24 @@ h3.welcome {
 
 .line-header:after {
   margin: 0 0 0 10px;
+}
+
+.committee-members div {
+  margin-top: 20px;
+  padding: 40px;
+  background-color: var(--light-blue);
+}
+
+.committee-members h3 {
+  margin-top: 0px;
+}
+
+.committee-member {
+  margin-bottom: 0px;
+}
+
+.bylaw-child-item {
+  margin-left: 20px;
 }
 
 .Signup form span.help-block {

@@ -110,7 +110,17 @@ function App() {
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav>
-              <NavItem eventKey={1} href="/calendar">Calendar</NavItem>
+              <NavDropdown eventKey={1} title="About" id="basic-nav-dropdown">
+                <MenuItem eventKey={1.3} href="/info">General Info</MenuItem>
+                <MenuItem eventKey={1.2} href="/faq">FAQs</MenuItem>
+                <MenuItem eventKey={1.1} href="/history">League History</MenuItem>
+                <MenuItem eventKey={1.4} href="/bylaws">By-laws</MenuItem>
+                <MenuItem eventKey={1.5} href="/finances">Finances</MenuItem>
+              </NavDropdown>
+              <NavItem eventKey={2} href="/team-info">Team Info</NavItem>
+              <NavItem eventKey={3} href="/calendar">Calendar</NavItem>
+              <NavItem eventKey={4} href="/standings">Standings</NavItem>
+              <NavItem eventKey={5} href="/resources">Resources</NavItem>
             </Nav>
           </Navbar.Collapse>
           <Nav pullRight>

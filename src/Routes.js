@@ -4,6 +4,15 @@ import AuthenticatedRoute from "./AuthenticatedRoute";
 import UnauthenticatedRoute from "./UnauthenticatedRoute";
 import { useAppContext } from "./libs/contextLib";
 import Home from "./Home";
+import LeagueHistory from "./LeagueHistory";
+import FAQ from "./FAQ";
+import GeneralInfo from "./GeneralInfo";
+import Bylaws from "./Bylaws";
+import Finances from "./Finances";
+import TeamInfo from "./TeamInfo";
+import Calendar from "./Calendar";
+import Standings from "./Standings";
+import Resources from "./Resources";
 import PlayerSignup from "./PlayerSignup";
 import Login from "./Login";
 import Signup from "./Signup";
@@ -30,6 +39,33 @@ export default function Routes() {
     <Switch>
       <Route exact path="/">
         <Home />
+      </Route>
+      <Route exact path="/history">
+        <LeagueHistory />
+      </Route>
+      <Route exact path="/faq">
+        <FAQ />
+      </Route>
+      <Route exact path="/info">
+        <GeneralInfo />
+      </Route>
+      <Route exact path="/bylaws">
+        <Bylaws />
+      </Route>
+      <Route exact path="/finances">
+        <Finances />
+      </Route>
+      <Route exact path="/team-info">
+        <TeamInfo />
+      </Route>
+      <Route exact path="/calendar">
+        <Calendar />
+      </Route>
+      <Route exact path="/standings">
+        <Standings />
+      </Route>
+      <Route exact path="/resources">
+        <Resources />
       </Route>
       <Route exact path="/player-signup" isAuthenticated={isAuthenticated}>
         <PlayerSignup />

@@ -50,26 +50,6 @@ export default () => {
       joiningTableKey: "teamId",
       joiningTableFieldNames: ["teamName"]
     }, // TODO change these to Home boolean and Opponent name
-    singles1HomePlayerId: playerColumn("S1 Home Player", true),
-    singles1VisitorPlayerId: playerColumn("S1 Visitor Player", false),
-    singles2HomePlayerId: playerColumn("S2 Home Player", true),
-    singles2VisitorPlayerId: playerColumn("S2 Visitor Player", false),
-    doubles1HomePlayers: doublesColumn("D1 Home Players", true, [
-      { key: "doubles1HomePlayer1Id", label: "D1 Home Players" },
-      { key: "doubles1HomePlayer2Id" }
-    ]),
-    doubles1VisitorPlayers: doublesColumn("D1 Visitor Players", false, [
-      { key: "doubles1VisitorPlayer1Id", label: "D1 Visitor Players" },
-      { key: "doubles1VisitorPlayer2Id" }
-    ]),
-    doubles2HomePlayers: doublesColumn("D2 Home Players", true, [
-      { key: "doubles2HomePlayer1Id", label: "D2 Home Players" },
-      { key: "doubles2HomePlayer2Id" }
-    ]),
-    doubles2VisitorPlayers: doublesColumn("D2 Visitor Players", false, [
-      { key: "doubles2VisitorPlayer1Id", label: "D2 Visitor Players" },
-      { key: "doubles2VisitorPlayer2Id" }
-    ]),
     singles1Score: { label: "S1 Score" },
     singles2Score: { label: "S2 Score" },
     doubles1Score: { label: "D1 Score" },
