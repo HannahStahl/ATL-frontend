@@ -6,7 +6,7 @@ import DeleteConfirmationModal from './DeleteConfirmationModal';
 export default ({
   columns, rows, filterRows, getRows, setRows, itemType, API, categoryName, customSelect,
   CustomAddComponent, customAddFunction, customEditFunction, customRemoveFunction, validate,
-  disableCreate
+  createDisabled, removeDisabled
 }) => {
   const [rowSelectedForEdit, setRowSelectedForEdit] = useState(undefined);
   const [rowSelectedForRemoval, setRowSelectedForRemoval] = useState(undefined);
@@ -102,7 +102,7 @@ export default ({
           <thead>
             <tr>
               {Object.keys(columns).filter((key) => !columns[key].hideFromTable).map((key) => <th key={key}>{columns[key].label}</th>)}
-              {setRows && <th />}
+              {setRows && !removeDisabled && <th />}
             </tr>
           </thead>
           <tbody>
@@ -122,7 +122,7 @@ export default ({
                   );
                   return <td key={key}>{columns[key].render ? columns[key].render(value) : value}</td>;
                 })}
-                {setRows && (
+                {setRows && !removeDisabled && (
                   <td className="remove-row">
                     {!row.readOnly && (
                       <i className="fas fa-times-circle" onClick={() => setRowSelectedForRemoval(row)} />
@@ -132,10 +132,10 @@ export default ({
               </tr>
             ))}
             <tr>
-              {setRows && !disableCreate && (
+              {setRows && !createDisabled && (
                 CustomAddComponent ? <CustomAddComponent /> : (
                   <td
-                    colSpan={Object.keys(columns).filter((key) => !columns[key].hideFromTable).length + 1}
+                    colSpan={Object.keys(columns).filter((key) => !columns[key].hideFromTable).length + (removeDisabled ? 0 : 1)}
                     onClick={() => setAddingRow(true)}
                   >
                     {`+ Add new ${itemType}`}

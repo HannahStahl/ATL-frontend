@@ -35,7 +35,7 @@ export default () => {
           getRows={() => API.get("atl-backend", "list/user")}
           itemType="user"
           API={API}
-          disableCreate
+          createDisabled
         />
       )}
     </div>

@@ -41,37 +41,48 @@ export default ({ columns, allPlayers, setAllPlayers, teamId, addingPlayer, setA
   };
 
   const renderSearchForm = () => (
-    <form onSubmit={(event) => {
-      event.preventDefault();
-      setPlayersWithLastName(playersNotOnTeam.filter(
-        (player) => player.lastName.toLowerCase().includes(playerLastName.toLowerCase())
-      ));
-    }}>
-      <FormGroup>
-        <ControlLabel>Search for a player by last name:</ControlLabel>
-        <FormControl
-          value={playerLastName || ''}
-          type="text"
-          onChange={e => setPlayerLastName(e.target.value)}
-        />
-      </FormGroup>
-      <FormGroup>
-        <LoaderButton
-          block
-          bsSize="large"
-          bsStyle="primary"
-          type="submit"
-        >
-          Search
-        </LoaderButton>
-      </FormGroup>
-      {playersWithLastName.length > 0 && (
-        <>
-          <p>Select a player from the list to add them to your team.</p>
-          <Table columns={columns} rows={playersWithLastName} itemType="player" customSelect={addPlayerToTeam} />
-        </>
-      )}
-    </form>
+    <>
+      <form onSubmit={(event) => {
+        event.preventDefault();
+        setPlayersWithLastName(playersNotOnTeam.filter(
+          (player) => player.lastName.toLowerCase().includes(playerLastName.toLowerCase())
+        ));
+      }}>
+        <FormGroup>
+          <ControlLabel>Search for a player by last name:</ControlLabel>
+          <FormControl
+            value={playerLastName || ''}
+            type="text"
+            onChange={e => setPlayerLastName(e.target.value)}
+          />
+        </FormGroup>
+        <FormGroup>
+          <LoaderButton
+            block
+            bsSize="large"
+            bsStyle="primary"
+            type="submit"
+          >
+            Search
+          </LoaderButton>
+        </FormGroup>
+        {playersWithLastName.length > 0 && (
+          <>
+            <p>Select a player from the list to add them to your team.</p>
+            <Table columns={columns} rows={playersWithLastName} itemType="player" customSelect={addPlayerToTeam} />
+          </>
+        )}
+      </form>
+      <hr />
+      <ControlLabel>Or select from the list of players looking for a team:</ControlLabel>
+      <Table
+        columns={columns}
+        rows={allPlayers}
+        filterRows={(list) => list.filter((player) => !player.teamId)}
+        itemType="player"
+        customSelect={addPlayerToTeam}
+      />
+    </>
   );
 
   const renderConfirmationForm = () => (
