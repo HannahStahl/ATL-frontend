@@ -4,7 +4,7 @@ import { PageHeader } from "react-bootstrap";
 import { useAppContext } from "./libs/contextLib";
 
 export default function Home() {
-  const { isAuthenticated, profile } = useAppContext();
+  const { isAuthenticated, profile, loadingData } = useAppContext();
 
   function renderLander() {
     return (
@@ -18,7 +18,7 @@ export default function Home() {
   }
 
   function renderHomePage() {
-    return (
+    return !loadingData && (
       <div>
         <PageHeader>
           {profile.isAdmin ? "Welcome to the ATL Admin Portal." : "Welcome to the Captain's Corner!"}
