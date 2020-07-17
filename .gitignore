@@ -1,26 +1,17 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
 # dependencies
-/main/node_modules
-/admin/node_modules
-/shared/node_modules
+/node_modules
 
 # testing
-/main/coverage
-/admin/coverage
-/shared/coverage
+/coverage
 
 # production
-/main/build
-/admin/build
-/shared/build
-/shared/dist
+/build
 
 # misc
 .DS_Store
-/main/.env
-/admin/.env
-/shared/.env
+/.env
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

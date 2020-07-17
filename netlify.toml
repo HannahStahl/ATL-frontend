@@ -1,5 +1,5 @@
 [build]
-  base    = "main"
+  base    = ""
   publish = "build"
   command = "REACT_APP_STAGE=dev yarn run build"
 
