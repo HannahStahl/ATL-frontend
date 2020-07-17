@@ -351,6 +351,10 @@ h3.welcome {
   margin-left: 20px;
 }
 
+.finances {
+  text-align: center;
+}
+
 .Signup form span.help-block {
   font-size: 14px;
   padding-bottom: 10px;

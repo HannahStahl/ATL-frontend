@@ -1,33 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { PageHeader } from "react-bootstrap";
-import { API } from "aws-amplify";
 import Table from "./Table";
 import { useAppContext } from "./libs/contextLib";
 
 export default () => {
   const { matches, locations, allTeams, team, loadingData } = useAppContext();
-  const [allPlayers, setAllPlayers] = useState([]);
-
-  useEffect(() => {
-    API.get("atl-backend", "list/player").then(setAllPlayers);
-  }, []);
-
-  const playerColumn = (label, home) => ({
-    label,
-    joiningTable: allPlayers,
-    joiningTableFilter: {
-      key: home ? "homeTeamId" : "visitorTeamId",
-      joiningTableKey: "teamId"
-    },
-    joiningTableKey: "playerId",
-    joiningTableFieldNames: ["firstName", "lastName"]
-  });
-
-  const doublesColumn = (label, home, children) => ({
-    label,
-    children: children.map((child) => ({ key: child.key, ...playerColumn(child.label, home) })),
-    childrenJoiner: ', '
-  });
 
   const columns = {
     weekNumber: { label: "Week" },
