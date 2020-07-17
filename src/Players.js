@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import { FormControl, FormGroup, ControlLabel, PageHeader } from "react-bootstrap";
 import { API } from "aws-amplify";
 import Table from "./Table";
+import { useAppContext } from "./libs/contextLib";
 import LoaderButton from "./LoaderButton";
 import EditForm from "./EditForm";
 
 export default () => {
+  const { allTeams } = useAppContext();
   const [allPlayers, setAllPlayers] = useState([]);
   const [playerLastName, setPlayerLastName] = useState(undefined);
   const [playersWithLastName, setPlayersWithLastName] = useState([]);
@@ -23,6 +25,13 @@ export default () => {
         { key: "firstName", label: "First Name", type: "text", required: true },
         { key: "lastName", label: "Last Name", type: "text", required: true },
       ]
+    },
+    "teamId": {
+      label: "Team",
+      type: "dropdown",
+      joiningTable: allTeams,
+      joiningTableKey: "teamId",
+      joiningTableFieldNames: ["teamName"]
     },
     "phone": { label: "Phone", type: "text", placeholder: "xxx-xxx-xxxx" },
     "email": { label: "Email", type: "email", required: true },
