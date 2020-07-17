@@ -101,13 +101,18 @@ function App() {
   return (
     !isAuthenticating && (
       <div className="App">
-        <Navbar fluid>
+        <Navbar fluid collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
               <Link to="/">ATL</Link>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
+          <Navbar.Collapse>
+            <Nav>
+              <NavItem eventKey={1} href="/calendar">Calendar</NavItem>
+            </Nav>
+          </Navbar.Collapse>
           <Nav pullRight>
             {isAuthenticated ? (
               profile && profile.userId ? (
