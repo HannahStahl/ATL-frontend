@@ -119,9 +119,15 @@ function App() {
                       id="basic-nav-dropdown"
                     >
                       <MenuItem href="/profile">My Profile</MenuItem>
+                      {profile.isCaptain && profile.isAdmin && (
+                        <div className="line-header">CAPTAIN PAGES</div>
+                      )}
                       {profile.isCaptain && <MenuItem href="/team-details">Team Details</MenuItem>}
                       {profile.isCaptain && <MenuItem href="/team-roster">Team Roster</MenuItem>}
                       {profile.isCaptain && <MenuItem href="/match-schedule">Match Schedule</MenuItem>}
+                      {profile.isCaptain && profile.isAdmin && (
+                        <div className="line-header">ADMIN PAGES</div>
+                      )}
                       {profile.isAdmin && <MenuItem href="/seasons">Seasons</MenuItem>}
                       {profile.isAdmin && <MenuItem href="/season-calendars">Season Calendars</MenuItem>}
                       {profile.isAdmin && <MenuItem href="/teams">Teams</MenuItem>}
