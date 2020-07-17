@@ -73,15 +73,19 @@ export default ({ columns, allPlayers, setAllPlayers, teamId, addingPlayer, setA
           </>
         )}
       </form>
-      <hr />
-      <ControlLabel>Or select from the list of players looking for a team:</ControlLabel>
-      <Table
-        columns={columns}
-        rows={allPlayers}
-        filterRows={(list) => list.filter((player) => !player.teamId)}
-        itemType="player"
-        customSelect={addPlayerToTeam}
-      />
+      {allPlayers.filter((player) => !player.teamId).length > 0 && (
+        <>
+          <hr />
+            <ControlLabel>Or select from the list of players looking for a team:</ControlLabel>
+            <Table
+              columns={columns}
+              rows={allPlayers}
+              filterRows={(list) => list.filter((player) => !player.teamId)}
+              itemType="player"
+              customSelect={addPlayerToTeam}
+            />
+        </>
+      )}
     </>
   );
 
