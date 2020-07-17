@@ -22,6 +22,16 @@ export default () => {
     },
     "phone": { label: "Phone", type: "text", placeholder: "xxx-xxx-xxxx" },
     "email": { label: "Email", type: "email", required: true, readOnly: true },
+    "isCaptain": {
+      label: "Captain?",
+      type: "checkbox",
+      render: (value) => value ? <i className="fas fa-check" /> : ""
+    },
+    "isAdmin": {
+      label: "Admin?",
+      type: "checkbox",
+      render: (value) => value ? <i className="fas fa-check" /> : ""
+    },
   };
 
   return (
