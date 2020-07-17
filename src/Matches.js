@@ -15,18 +15,13 @@ export default () => {
 
   const playerColumn = (label, home) => ({
     label,
-    type: "dropdown",
     joiningTable: allPlayers,
     joiningTableFilter: {
       key: home ? "homeTeamId" : "visitorTeamId",
       joiningTableKey: "teamId"
     },
     joiningTableKey: "playerId",
-    joiningTableFieldNames: ["firstName", "lastName"],
-    readOnlyConditional: (match) => (
-      (home && match.homeTeamId === team.teamId) ||
-      (!home && match.visitorTeamId === team.teamId)
-    )
+    joiningTableFieldNames: ["firstName", "lastName"]
   });
 
   const doublesColumn = (label, home, children) => ({
@@ -36,30 +31,25 @@ export default () => {
   });
 
   const columns = {
-    weekNumber: { label: "Week", type: "number", required: true },
-    startTime: { label: "Start Time", type: "text" },
+    weekNumber: { label: "Week" },
+    startTime: { label: "Start Time" },
     locationId: {
       label: "Location",
-      type: "dropdown",
       joiningTable: locations,
       joiningTableKey: "locationId",
       joiningTableFieldNames: ["locationName"]
     },
     homeTeamId: {
       label: "Home Team",
-      type: "dropdown",
       joiningTable: allTeams,
       joiningTableKey: "teamId",
-      joiningTableFieldNames: ["teamName"],
-      required: true,
+      joiningTableFieldNames: ["teamName"]
     },
     visitorTeamId: {
       label: "Visiting Team",
-      type: "dropdown",
       joiningTable: allTeams,
       joiningTableKey: "teamId",
-      joiningTableFieldNames: ["teamName"],
-      required: true
+      joiningTableFieldNames: ["teamName"]
     }, // TODO change these to Home boolean and Opponent name
     singles1HomePlayerId: playerColumn("S1 Home Player", true),
     singles1VisitorPlayerId: playerColumn("S1 Visitor Player", false),
@@ -81,53 +71,12 @@ export default () => {
       { key: "doubles2VisitorPlayer1Id", label: "D2 Visitor Players" },
       { key: "doubles2VisitorPlayer2Id" }
     ]),
-    singles1Score: { label: "S1 Score", type: "text" },
-    singles2Score: { label: "S2 Score", type: "text" },
-    doubles1Score: { label: "D1 Score", type: "text" },
-    doubles2Score: { label: "D2 Score", type: "text" },
-    singles1HomeSetsWon: { label: "S1 Home Sets Won", type: "number", hideFromTable: true },
-    singles1VisitorSetsWon: { label: "S1 Visitor Sets Won", type: "number", hideFromTable: true },
-    singles2HomeSetsWon: { label: "S2 Home Sets Won", type: "number", hideFromTable: true },
-    singles2VisitorSetsWon: { label: "S2 Visitor Sets Won", type: "number", hideFromTable: true },
-    doubles1HomeSetsWon: { label: "D1 Home Sets Won", type: "number", hideFromTable: true },
-    doubles1VisitorSetsWon: { label: "D1 Visitor Sets Won", type: "number", hideFromTable: true },
-    doubles2HomeSetsWon: { label: "D2 Home Sets Won", type: "number", hideFromTable: true },
-    doubles2VisitorSetsWon: { label: "D2 Visitor Sets Won", type: "number", hideFromTable: true },
-    totalHomeSetsWon: { label: "Home Sets Won", type: "number", readOnly: true },
-    totalVisitorSetsWon: { label: "Visitor Sets Won", type: "number", readOnly: true }
-  };
-
-  const validate = (body) => {
-    const { homeTeamId, visitorTeamId } = body;
-    if (homeTeamId === visitorTeamId) {
-      onError("Home team and visiting team must be different.");
-      return false;
-    }
-    if (homeTeamId !== teamId && visitorTeamId !== teamId) {
-      onError("Your team must be either the home team or the visiting team.");
-      return false;
-    }
-    return true;
-  };
-
-  const editRow = async (rowId, body) => {
-    const {
-      singles1HomeSetsWon, singles2HomeSetsWon, doubles1HomeSetsWon, doubles2HomeSetsWon,
-      singles1VisitorSetsWon, singles2VisitorSetsWon, doubles1VisitorSetsWon, doubles2VisitorSetsWon
-    } = body;
-    const homeSets = [singles1HomeSetsWon, singles2HomeSetsWon, doubles1HomeSetsWon, doubles2HomeSetsWon];
-    const visitorSets = [singles1VisitorSetsWon, singles2VisitorSetsWon, doubles1VisitorSetsWon, doubles2VisitorSetsWon];
-    body.totalHomeSetsWon = 0;
-    homeSets.forEach((homeSet) => {
-      if (homeSet && parseInt(homeSet)) body.totalHomeSetsWon += parseInt(homeSet);
-    });
-    body.totalVisitorSetsWon = 0;
-    visitorSets.forEach((visitorSet) => {
-      if (visitorSet && parseInt(visitorSet)) body.totalVisitorSetsWon += parseInt(visitorSet);
-    });
-    await API.put("atl-backend", `update/match/${rowId}`, { body });
-    const newMatches = await API.get("atl-backend", "list/match");
-    setMatches([...newMatches]);
+    singles1Score: { label: "S1 Score" },
+    singles2Score: { label: "S2 Score" },
+    doubles1Score: { label: "D1 Score" },
+    doubles2Score: { label: "D2 Score" },
+    totalHomeSetsWon: { label: "Home Sets Won" },
+    totalVisitorSetsWon: { label: "Visitor Sets Won" }
   };
 
   const { teamId } = team;
@@ -145,12 +94,7 @@ export default () => {
             columns={columns}
             rows={matches}
             filterRows={filterMatches}
-            setRows={setMatches}
-            getRows={() => API.get("atl-backend", "list/match")}
             itemType="match"
-            API={API}
-            validate={validate}
-            customEditFunction={editRow}
           />
         ) : (
           <p className="link-below-button">
