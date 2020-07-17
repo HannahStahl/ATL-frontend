@@ -124,6 +124,7 @@ function App() {
                       {profile.isCaptain && <MenuItem href="/match-schedule">Match Schedule</MenuItem>}
                       {profile.isAdmin && <MenuItem href="/seasons">Seasons</MenuItem>}
                       {profile.isAdmin && <MenuItem href="/season-calendars">Season Calendars</MenuItem>}
+                      {profile.isAdmin && <MenuItem href="/teams">Teams</MenuItem>}
                       {profile.isAdmin && <MenuItem href="/court-locations">Court Locations</MenuItem>}
                       {profile.isAdmin && <MenuItem href="/associations">Associations</MenuItem>}
                       {profile.isAdmin && <MenuItem href="/match-schedules">Match Schedules</MenuItem>}
@@ -168,6 +169,7 @@ function App() {
             events,
             setEvents,
             allTeams,
+            setAllTeams,
             loadingData,
           }}>
             <div className="container"><Routes /></div>
