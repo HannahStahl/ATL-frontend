@@ -3,12 +3,14 @@ import { Modal, FormControl, FormGroup, ControlLabel } from "react-bootstrap";
 import { API } from "aws-amplify";
 import Table from "./Table";
 import LoaderButton from "./LoaderButton";
+import EditForm from "./EditForm";
 
 export default ({ columns, allPlayers, setAllPlayers, teamId, addingPlayer, setAddingPlayer }) => {
   const [playerIdToAdd, setPlayerIdToAdd] = useState(undefined);
   const [playerLastName, setPlayerLastName] = useState(undefined);
   const [playersWithLastName, setPlayersWithLastName] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectingPlayer, setSelectingPlayer] = useState(false);
 
   const playersNotOnTeam = allPlayers.filter((player) => player.teamId !== teamId);
 
@@ -118,13 +120,65 @@ export default ({ columns, allPlayers, setAllPlayers, teamId, addingPlayer, setA
     </form>
   );
 
+  const getFormFields = () => {
+    const fields = {};
+    Object.keys(columns).forEach((key) => {
+      const column = columns[key];
+      if (!column.readOnly) {
+        if (column.children) {
+          column.children.forEach((child) => {
+            if (!child.readOnly) fields[child.key] = child;
+          });
+        } else fields[key] = column;
+      }
+    });
+    return fields;
+  };
+
+  const createPlayer = async (event, body) => {
+    event.preventDefault();
+    setIsLoading(true);
+    body.teamId = teamId;
+    await API.post("atl-backend", "create/player", { body });
+    const updatedAllPlayers = await API.get("atl-backend", "list/player");
+    setAllPlayers([...updatedAllPlayers]);
+    setIsLoading(false);
+    setAddingPlayer(false);
+  };
+
   return (
-    <Modal show={addingPlayer} onHide={() => setAddingPlayer(false)}>
+    <Modal
+      show={addingPlayer}
+      onHide={() => {
+        setAddingPlayer(false);
+        setSelectingPlayer(false);
+      }}
+    >
       <Modal.Header closeButton>
         <h2>Add new player</h2>
       </Modal.Header>
       <Modal.Body>
-        {playerIdToAdd ? renderConfirmationForm() : renderSearchForm()}
+        {!selectingPlayer ? (
+          <>
+            <LoaderButton
+              block
+              bsSize="large"
+              bsStyle="primary"
+              onClick={() => setSelectingPlayer(true)}
+              className="select-player"
+            >
+              Select a player from the database
+              <i className="fas fa-arrow-right" />
+            </LoaderButton>
+            <EditForm
+              fields={getFormFields()}
+              save={createPlayer}
+              isLoading={isLoading}
+            />
+          </>
+        ) : (
+          playerIdToAdd ? renderConfirmationForm() : renderSearchForm()
+        )}
       </Modal.Body>
     </Modal>
   );

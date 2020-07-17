@@ -139,6 +139,14 @@ th,td {
   text-align: center;
 }
 
+.select-player {
+  margin-bottom: 15px;
+}
+
+.select-player i {
+  margin-left: 8px;
+}
+
 .Signup form span.help-block {
   font-size: 14px;
   padding-bottom: 10px;
