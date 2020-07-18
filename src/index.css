@@ -98,9 +98,14 @@ th,td {
   margin-bottom: 0px;
 }
 
-.App nav .navbar-nav {
+.App nav .navbar-nav:not(.left-aligned) {
   text-align: right;
   padding-right: 15px;
+}
+
+.App nav .navbar-nav.left-aligned {
+  text-align: left;
+  padding-left: 15px;
 }
 
 .App nav .container-fluid {
@@ -377,6 +382,11 @@ h3.welcome {
     background-color: white;
     border-left: solid 1px #eee;
     border-bottom: solid 1px #eee;
+  }
+
+  .container {
+    padding-top: 50px;
+    padding-bottom: 30px;
   }
 }
 

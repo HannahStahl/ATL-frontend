@@ -109,7 +109,7 @@ function App() {
             <Navbar.Toggle />
           </Navbar.Header>
           <Navbar.Collapse>
-            <Nav>
+            <Nav className="left-aligned">
               <NavDropdown eventKey={1} title="About" id="basic-nav-dropdown">
                 <MenuItem eventKey={1.3} href="/info">General Info</MenuItem>
                 <MenuItem eventKey={1.2} href="/faq">FAQs</MenuItem>
