@@ -10,6 +10,7 @@ import GeneralInfo from "./GeneralInfo";
 import Bylaws from "./Bylaws";
 import Problems from "./Problems";
 import Finances from "./Finances";
+import DivisionAssignments from "./DivisionAssignments";
 import TeamInfo from "./TeamInfo";
 import Calendar from "./Calendar";
 import Standings from "./Standings";
@@ -58,6 +59,9 @@ export default function Routes() {
       </Route>
       <Route exact path="/finances">
         <Finances />
+      </Route>
+      <Route exact path="/division-assignments">
+        <DivisionAssignments />
       </Route>
       <Route exact path="/team-info">
         <TeamInfo />
