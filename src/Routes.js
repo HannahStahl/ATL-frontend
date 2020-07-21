@@ -8,6 +8,7 @@ import LeagueHistory from "./LeagueHistory";
 import FAQ from "./FAQ";
 import GeneralInfo from "./GeneralInfo";
 import Bylaws from "./Bylaws";
+import Problems from "./Problems";
 import Finances from "./Finances";
 import TeamInfo from "./TeamInfo";
 import Calendar from "./Calendar";
@@ -51,6 +52,9 @@ export default function Routes() {
       </Route>
       <Route exact path="/bylaws">
         <Bylaws />
+      </Route>
+      <Route exact path="/problems">
+        <Problems />
       </Route>
       <Route exact path="/finances">
         <Finances />

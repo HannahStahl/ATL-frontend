@@ -157,5 +157,37 @@
         ]
       }
     ]
+  },
+  "problems": {
+    "USTA Rules and the Code": [
+      "<b>USTA RULES</b> and the <b>USTA CODE</b> govern play except where necessary (see <a download href='ATL Rules Handbook.pdf'>ATL Rules</a>).",
+      "Some sample CODE rules: a player cannot throw his/her racket, bang balls, use offensive language, take more than 25 seconds between points, or 90 seconds between odd game changeovers, take more than a 10 minute warmup, refuse to help an opponent with a call even if it would go against oneself, refuse to call \"not-ups\" and \"traps\" against oneself, leave the court area for any reason other than 5 minute toilet visit, <b>and many more</b>."
+    ],
+    "Playing the Match": [
+      "A captain or acting captain must be present at all team matches from start to finish.",
+      "Exchange completed rosters simultaneously before the first point is played. This must be done by an acting captain if the regular captain is unavailable. Lineups on scratch paper are okay.",
+      "<b>SANDBAGGING?</b> Yes, it is legal. Playing players out of order intentionally in order to win matches is sandbagging. Captains should make every effort to line up players in order of playing ability.",
+      "For matches scheduled at schools where the match must be played on two courts (3 hours allotted), <b>DOUBLES MATCHES WILL BE PLAYED FIRST</b>. The captains have the option to allow doubles matches to complete before beginning the singles matches.",
+      "When other ATL Team matches are waiting to go on your court, players in the middle of their match <b>MUST MOVE TO ANOTHER COURT OR COMPLETE PLAY AT ANOTHER TIME</b>. All ATL team matches must begin at their scheduled time."
+    ],
+    "Rain-outs": [
+      "Even though the weather looks 'iffy' for the following match day, captains are not allowed to postpone matches <b>UNTIL ONE HOUR BEFORE MATCH TIME</b>, with the consent of both captains required. <b>DECIDE THEN</b> upon a rescheduled match time.",
+      "<b>MAKE-UPS</b>: When it rains, decide on a new time that day. Official make-up times are as follows: 1. Next day (Sunday), same time and location. 2. Following Sunday, same time, same location. 3. A Friday night, Saturday night, or Sunday night at a tennis center; however, if the match was not originally scheduled there, players must pay a court fee to the center. If make-ups are scheduled at the AISD courts, the league administrator must OK court availability."
+    ],
+    "Forfeits": [
+      "Due to recent problems with an over-abundance of forfeitures, which seriously impact the division standings, <b>WE WILL NOW BE ACTIVELY TRACKING FORFEITS ON A WEEK TO WEEK BASIS</b>. The ATL rules state that forfeiture of either 24 total sets, or 16 sets to any one team during the season, constitute grounds for the removal off all results involving the team in question. Also, any team forfeiting 16 or more sets for the season will not be eligible for prizes, regardless of their final standing at the end of the season. Any teams with an inordinate amount of forfeitures will risk the possibility of being suspended from the league. All of these problems can be eased <b>IF CAPTAINS WILL JUST ENSURE THAT THEY HAVE A FULL LINE-UP FOR EACH MATCH</b>.",
+      "Captains cannot ask other captains to reschedule matches beforehand due to the <b>UNAVAILABILITY OF PLAYERS</b>.",
+      "When matches are foreited, the number two singles must be forfeited before the number one singles match, and the number two doubles match must be forfeited before the number one doubles match. Singles and doubles may be forfeited in either order.",
+      "Up to 2 players may be replaced prior to the Week 6 of the current season. Although these players have been added to the roster, they are not eligible to play until the Week 6 of the current season. Any player, who serves as a replacement, cannot have been on another team's roster at anytime during the season."
+    ],
+    "Scores": [
+      "Scorecards are important. Please take time in filling them out completely and exchanging before the beginning of the match.",
+      "<b>REPORTING SCORES</b>: scorecards must be recieved by the league administrator within 1 week upon completion of the match. They may be sent via email, reported online, or dropped off with the league administrator. Postponed matches should be reported to the league administrator."
+    ],
+    "Problems": [
+      "Trouble with an opponent? Obtain an observer, preferably your team captain or the other team's captain, to document any incidents. Protests must be in writing to the league administrator within 3 working days.",
+      "ATL PRACTICE COURTS: ATL does not take precedence over the public in reserving practice courts. Courtesy warrants cancelling courts if not needed ASAP so that others may benefit.",
+      "IF YOU HAVE DISPUTES OR PROBLEMS OF ANY KIND, A PHONE CALL OR EMAIL TO ONE OF THE <a href='/info'>ATL COMMITTEE MEMBERS</a> MAY BE ABLE TO SOLVE THE PROBLEM BEFORE IT GROWS!"
+    ]
   }
 }
