@@ -14,7 +14,7 @@ export default function GeneralInfo() {
       </p>
       <h3>Rules & Regulations:</h3>
       <p>
-        Unless otherwise provided by the <a href="/rules">ATL rules</a>, the <a href="https://www.usta.com/en/home/about-usta/who-we-are/national/officiating-rules-and-regulations.html">rules of the United States Tennis Association</a> (USTA) and the <a href="https://www.usta.com/content/dam/usta/pdfs/2015_Code.pdf">Code of Tennis</a> shall govern league play.
+        Unless otherwise provided by the <a download href="ATL Rules.pdf">ATL rules</a>, the <a href="https://www.usta.com/en/home/about-usta/who-we-are/national/officiating-rules-and-regulations.html">rules of the United States Tennis Association</a> (USTA) and the <a href="https://www.usta.com/content/dam/usta/pdfs/2015_Code.pdf">Code of Tennis</a> shall govern league play.
         Knotty problems can be referenced when unusual events occur that are not covered by any of the above.
         If there are situations that need personal attention, please call one of the ATL Committee members.
       </p>

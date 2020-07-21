@@ -7,7 +7,6 @@ import Home from "./Home";
 import LeagueHistory from "./LeagueHistory";
 import FAQ from "./FAQ";
 import GeneralInfo from "./GeneralInfo";
-import Rules from "./Rules";
 import Bylaws from "./Bylaws";
 import Finances from "./Finances";
 import TeamInfo from "./TeamInfo";
@@ -49,9 +48,6 @@ export default function Routes() {
       </Route>
       <Route exact path="/info">
         <GeneralInfo />
-      </Route>
-      <Route exact path="/rules">
-        <Rules />
       </Route>
       <Route exact path="/bylaws">
         <Bylaws />
