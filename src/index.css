@@ -150,6 +150,10 @@ th,td {
   justify-content: center;
 }
 
+.centered-text {
+  text-align: center;
+}
+
 .footer {
   height: 80px;
   width: 100%;
@@ -261,6 +265,30 @@ th,td {
 
 .key-date:last-of-type, .key-event:last-of-type {
   margin-bottom: 0px;
+}
+
+.season-calendars {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.season-events-container {
+  margin: 40px;
+  margin-top: 20px;
+  border: solid 1px var(--navy);
+  padding: 30px;
+  flex-basis: 0;
+  flex-grow: 1;
+  min-width: 300px;
+}
+
+.season-events-container h3 {
+  margin-top: 0px;
+}
+
+.season-events {
+  display: flex;
+  margin-top: 20px;
 }
 
 h1, h2, h3, h4 {
@@ -430,6 +458,10 @@ h3.welcome {
   .container {
     padding-top: 50px;
     padding-bottom: 30px;
+  }
+
+  .season-events-container {
+    margin: 10px;
   }
 }
 

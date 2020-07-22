@@ -38,7 +38,6 @@ export default function Home() {
     }
   }, [seasons, events]);
 
-
   return (
     <div className="Home">
       <img className="landing-img" src="austin.jpg" alt="Austin Tennis League" />
