@@ -43,7 +43,7 @@ const CourtLocation = (location) => {
 };
 
 export default function CourtLocations() {
-  const { locations, loadingData } = useAppContext();
+  const { locations } = useAppContext();
   return (
     <div className="container">
       <PageHeader>Court Locations</PageHeader>
@@ -53,11 +53,9 @@ export default function CourtLocations() {
         It is the responsibility of the Captain to inform players of court locations.
         Maps are available at: <a href="http://tennismaps.com">Tennis Maps</a>.
       </p>
-      {!loadingData && (
-        <ul className="court-locations-list">
-          {locations.map((location) => <CourtLocation key={location.locationId} {...location} />)}
-        </ul>
-      )}
+      <ul className="court-locations-list">
+        {locations.map((location) => <CourtLocation key={location.locationId} {...location} />)}
+      </ul>
     </div>
   );
 }

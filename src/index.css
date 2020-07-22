@@ -364,12 +364,6 @@ h3.welcome {
   margin-bottom: 25px;
 }
 
-.court-locations-list {
-  columns: 2;
-  column-gap: 100px;
-  list-style-type: none;
-}
-
 .court-locations-list li {
   break-inside: avoid;
   display: flex;
@@ -426,6 +420,14 @@ h3.welcome {
 
   .home-section-1-content {
     background-color: transparent;
+  }
+}
+
+@media all and (min-width: 768px) {
+  .court-locations-list {
+    columns: 2;
+    column-gap: 100px;
+    list-style-type: none;
   }
 }
 

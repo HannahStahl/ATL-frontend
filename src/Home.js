@@ -57,7 +57,7 @@ export default function Home() {
           The Austin Tennis League (ATL) offers all levels of singles and doubles, in both Fall and Spring leagues.
           Matches are held on Saturdays throughout the Austin area, in addition to other ad hoc tennis activities.
         </p>
-        {!loadingData && (
+        {season.seasonName && (
           <>
             <h3>{`${season.seasonName || ""} Key Dates`}</h3>
             <div className="key-dates">
