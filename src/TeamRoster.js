@@ -27,7 +27,7 @@ export default function TeamRoster() {
       <div className="container">
         <PageHeader>{team.teamName}</PageHeader>
         <div className="centered-content">
-          <Table>
+          <Table bordered>
             <thead>
               <tr>
                 <th />

@@ -8,7 +8,7 @@ export default function TeamListing() {
     <div className="container">
       <PageHeader>Team Listing</PageHeader>
       <div className="centered-content">
-        <Table hover className="interactive-table">
+        <Table bordered hover className="interactive-table">
           <thead>
             <tr>
               <th>Division</th>
