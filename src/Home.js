@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useAppContext } from "./libs/contextLib";
 
 export default function Home() {
-  const { seasons, events, loadingData } = useAppContext();
+  const { seasons, events } = useAppContext();
   const [season, setSeason] = useState({});
   const [seasonEvents, setSeasonEvents] = useState([]);
 
