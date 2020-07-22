@@ -78,6 +78,8 @@ th,td {
 .container {
   padding-top: 100px;
   padding-bottom: 50px;
+  padding-left: 10%;
+  padding-right: 10%;
   min-height: 100vh;
   margin-bottom: -80px;
 }
@@ -360,7 +362,7 @@ h3.welcome {
   text-align: center;
 }
 
-.court-locations-intro, .tennis-centers-intro {
+.court-locations-intro, .tennis-centers-intro, .contact-intro {
   margin-bottom: 25px;
 }
 
@@ -381,6 +383,24 @@ h3.welcome {
 
 .no-margin-bottom {
   margin-bottom: 0px;
+}
+
+.contact-item td {
+  padding-bottom: 25px;
+}
+
+.contact-item-text {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.contact-item-separator {
+  width: 130px;
+  text-align: center;
+}
+
+.contact-item img {
+  margin-right: 20px;
 }
 
 .Signup form span.help-block {
@@ -410,6 +430,17 @@ h3.welcome {
   .container {
     padding-top: 50px;
     padding-bottom: 30px;
+  }
+}
+
+@media all and (max-width: 699px) {
+  .contact-item-text {
+    display: block;
+  }
+
+  .contact-item-separator {
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
 }
 
