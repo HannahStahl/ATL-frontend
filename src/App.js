@@ -120,7 +120,7 @@ function App() {
               </NavDropdown>
               <NavDropdown eventKey={2} title="Season Info" id="basic-nav-dropdown">
                 <MenuItem eventKey={2.1} href="/calendar">Calendar</MenuItem>
-                <MenuItem eventKey={2.2} href="/team-listing">List of Teams</MenuItem>
+                <MenuItem eventKey={2.2} href="/team-listing">Teams</MenuItem>
                 <MenuItem eventKey={2.3} href="/schedules">Match Schedules</MenuItem>
                 <MenuItem eventKey={2.4} href="/leader-board">Leader Board</MenuItem>
                 <MenuItem eventKey={2.5} href="/standings">Detailed Standings</MenuItem>

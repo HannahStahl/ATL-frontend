@@ -12,6 +12,7 @@ import Problems from "./Problems";
 import Finances from "./Finances";
 import DivisionAssignments from "./DivisionAssignments";
 import TeamListing from "./TeamListing";
+import TeamRoster from "./TeamRoster";
 import DivisionSchedules from "./DivisionSchedules";
 import Calendar from "./Calendar";
 import LeaderBoard from "./LeaderBoard";
@@ -73,6 +74,9 @@ export default function Routes() {
       </Route>
       <Route exact path="/team-listing">
         <TeamListing />
+      </Route>
+      <Route exact path="/roster/:teamId">
+        <TeamRoster />
       </Route>
       <Route exact path="/schedules">
         <DivisionSchedules />
