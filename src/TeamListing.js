@@ -1,13 +1,13 @@
 import React from "react";
 import { PageHeader } from "react-bootstrap";
 
-export default function Standings() {
+export default function TeamListing() {
   return (
     <div className="container">
       <PageHeader>
-        Standings
+        Team Listing
       </PageHeader>
-      <p>Insert content here. (Show all divisions by default, with option to filter to one particular division.)</p>
+      <p>Insert content here.</p>
     </div>
   );
 }

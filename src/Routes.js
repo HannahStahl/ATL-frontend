@@ -11,10 +11,18 @@ import Bylaws from "./Bylaws";
 import Problems from "./Problems";
 import Finances from "./Finances";
 import DivisionAssignments from "./DivisionAssignments";
-import TeamInfo from "./TeamInfo";
+import TeamListing from "./TeamListing";
+import DivisionSchedules from "./DivisionSchedules";
 import Calendar from "./Calendar";
+import LeaderBoard from "./LeaderBoard";
 import Standings from "./Standings";
-import Resources from "./Resources";
+import MatchResults from "./MatchResults";
+import PastSeasons from "./PastSeasons";
+import CourtLocations from "./CourtLocations";
+import TennisAssociations from "./TennisAssociations";
+import Centers from "./Centers";
+import Clubs from "./Clubs";
+import Contact from "./Contact";
 import PlayerSignup from "./PlayerSignup";
 import Login from "./Login";
 import Signup from "./Signup";
@@ -63,17 +71,41 @@ export default function Routes() {
       <Route exact path="/division-assignments">
         <DivisionAssignments />
       </Route>
-      <Route exact path="/team-info">
-        <TeamInfo />
+      <Route exact path="/team-listing">
+        <TeamListing />
+      </Route>
+      <Route exact path="/schedules">
+        <DivisionSchedules />
       </Route>
       <Route exact path="/calendar">
         <Calendar />
       </Route>
+      <Route exact path="/leader-board">
+        <LeaderBoard />
+      </Route>
       <Route exact path="/standings">
         <Standings />
       </Route>
-      <Route exact path="/resources">
-        <Resources />
+      <Route exact path="/match-results">
+        <MatchResults />
+      </Route>
+      <Route exact path="/past-seasons">
+        <PastSeasons />
+      </Route>
+      <Route exact path="/court-locations">
+        <CourtLocations />
+      </Route>
+      <Route exact path="/tennis-associations">
+        <TennisAssociations />
+      </Route>
+      <Route exact path="/tennis-centers">
+        <Centers />
+      </Route>
+      <Route exact path="/tennis-clubs">
+        <Clubs />
+      </Route>
+      <Route exact path="/contact">
+        <Contact />
       </Route>
       <Route exact path="/player-signup" isAuthenticated={isAuthenticated}>
         <PlayerSignup />

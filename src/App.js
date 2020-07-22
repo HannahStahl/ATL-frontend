@@ -110,7 +110,7 @@ function App() {
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav className="left-aligned">
-              <NavDropdown eventKey={1} title="About" id="basic-nav-dropdown">
+              <NavDropdown eventKey={1} title="About the League" id="basic-nav-dropdown">
                 <MenuItem eventKey={1.1} href="/info">General Info</MenuItem>
                 <MenuItem eventKey={1.2} href="/faq">FAQs</MenuItem>
                 <MenuItem eventKey={1.3} href="/history">League History</MenuItem>
@@ -118,10 +118,22 @@ function App() {
                 <MenuItem eventKey={1.5} href="/bylaws">By-laws</MenuItem>
                 <MenuItem eventKey={1.6} href="/finances">Finances</MenuItem>
               </NavDropdown>
-              <NavItem eventKey={2} href="/team-info">Team Info</NavItem>
-              <NavItem eventKey={3} href="/calendar">Calendar</NavItem>
-              <NavItem eventKey={4} href="/standings">Standings</NavItem>
-              <NavItem eventKey={5} href="/resources">Resources</NavItem>
+              <NavDropdown eventKey={2} title="Season Info" id="basic-nav-dropdown">
+                <MenuItem eventKey={2.1} href="/calendar">Calendar</MenuItem>
+                <MenuItem eventKey={2.2} href="/team-listing">List of Teams</MenuItem>
+                <MenuItem eventKey={2.3} href="/schedules">Match Schedules</MenuItem>
+                <MenuItem eventKey={2.4} href="/leader-board">Leader Board</MenuItem>
+                <MenuItem eventKey={2.5} href="/standings">Detailed Standings</MenuItem>
+                <MenuItem eventKey={2.6} href="/match-results">Match Results</MenuItem>
+                <MenuItem eventKey={2.7} href="/past-seasons">Past Seasons</MenuItem>
+              </NavDropdown>
+              <NavDropdown eventKey={3} title="Tennis in Austin" id="basic-nav-dropdown">
+                <MenuItem eventKey={3.1} href="/court-locations">Court Locations</MenuItem>
+                <MenuItem eventKey={3.2} href="/tennis-associations">Associations</MenuItem>
+                <MenuItem eventKey={3.3} href="/tennis-centers">Centers</MenuItem>
+                <MenuItem eventKey={3.4} href="/tennis-clubs">Clubs</MenuItem>
+              </NavDropdown>
+              <NavItem eventKey={4} href="/contact">Contact Us</NavItem>
             </Nav>
           </Navbar.Collapse>
           <Nav pullRight>
