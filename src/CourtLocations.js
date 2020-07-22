@@ -2,18 +2,22 @@ import React, { useState } from "react";
 import { PageHeader } from "react-bootstrap";
 import { useAppContext } from "./libs/contextLib";
 
-const renderAddress = (location) => (
-  <>
-    {(location.address || location.city || location.zip) && ': '}
-    {location.address || ''}
-    {(location.address && (location.city || location.zip)) ? ', ' : ''}
-    {location.city ? `${location.city}, TX` : ''}
-    {location.zip && ` ${location.zip}`}
-  </>
-);
+const renderAddress = (location) => {
+  const { address, city, zip } = location;
+  return (
+    <>
+      {(address || city || zip) && ': '}
+      {address || ''}
+      {(address && (city || zip)) ? ', ' : ''}
+      {city ? `${city}, TX` : ''}
+      {zip && ` ${zip}`}
+    </>
+  );
+};
 
 const CourtLocation = (location) => {
   const [expanded, setExpanded] = useState(false);
+  const { tennisMapsUrl, locationName, directions } = location;
   return (
     <li>
       <img
@@ -23,20 +27,20 @@ const CourtLocation = (location) => {
         className="toggle-directions"
       />
       <div>
-        {location.tennisMapsUrl
+        {tennisMapsUrl
           ? (
-            <p className={location.directions && expanded ? 'no-margin-bottom' : undefined}>
-              <b><a href={location.tennisMapsUrl}>{location.locationName}</a></b>
+            <p className={directions && expanded ? 'no-margin-bottom' : undefined}>
+              <b><a href={tennisMapsUrl.startsWith('http') ? tennisMapsUrl : `http://${tennisMapsUrl}`}>{locationName}</a></b>
               {renderAddress(location)}
             </p>
           ) : (
-            <p className={location.directions && expanded ? 'no-margin-bottom' : undefined}>
-              <b>{location.locationName}</b>
+            <p className={directions && expanded ? 'no-margin-bottom' : undefined}>
+              <b>{locationName}</b>
               {renderAddress(location)}
             </p>
           )
         }
-        {location.directions && expanded && <p className="directions">{location.directions}</p>}
+        {directions && expanded && <p className="directions">{directions}</p>}
       </div>
     </li>
   )
