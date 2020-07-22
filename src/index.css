@@ -360,6 +360,35 @@ h3.welcome {
   text-align: center;
 }
 
+.court-locations-intro {
+  margin-bottom: 25px;
+}
+
+.court-locations-list {
+  columns: 2;
+  column-gap: 100px;
+  list-style-type: none;
+}
+
+.court-locations-list li {
+  break-inside: avoid;
+  display: flex;
+}
+
+.toggle-directions {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.toggle-directions.invisible {
+  visibility: hidden;
+}
+
+.no-margin-bottom {
+  margin-bottom: 0px;
+}
+
 .Signup form span.help-block {
   font-size: 14px;
   padding-bottom: 10px;
@@ -412,5 +441,9 @@ h3.welcome {
   .btn:hover {
     background-color: var(--navy);
     border-color: var(--navy);
+  }
+
+  .toggle-directions:hover {
+    cursor: pointer;
   }
 }

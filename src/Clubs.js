@@ -4,7 +4,7 @@ import { PageHeader } from "react-bootstrap";
 export default function Clubs() {
   return (
     <div className="container">
-      <PageHeader>Clubs</PageHeader>
+      <PageHeader>Local Tennis Clubs</PageHeader>
       <p>Insert content here.</p>
     </div>
   );

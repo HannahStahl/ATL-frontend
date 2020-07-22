@@ -128,7 +128,7 @@ function App() {
                 <MenuItem eventKey={2.7} href="/past-seasons">Past Seasons</MenuItem>
               </NavDropdown>
               <NavDropdown eventKey={3} title="Tennis in Austin" id="basic-nav-dropdown">
-                <MenuItem eventKey={3.1} href="/court-locations">Court Locations</MenuItem>
+                <MenuItem eventKey={3.1} href="/locations">Court Locations</MenuItem>
                 <MenuItem eventKey={3.2} href="/tennis-associations">Associations</MenuItem>
                 <MenuItem eventKey={3.3} href="/tennis-centers">Centers</MenuItem>
                 <MenuItem eventKey={3.4} href="/tennis-clubs">Clubs</MenuItem>

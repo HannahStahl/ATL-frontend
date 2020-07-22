@@ -92,7 +92,7 @@ export default function Routes() {
       <Route exact path="/past-seasons">
         <PastSeasons />
       </Route>
-      <Route exact path="/court-locations">
+      <Route exact path="/locations">
         <CourtLocations />
       </Route>
       <Route exact path="/tennis-associations">
