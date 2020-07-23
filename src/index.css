@@ -439,6 +439,10 @@ h3.welcome {
   margin-right: 20px;
 }
 
+.update-standings-btn {
+  margin-bottom: 15px;
+}
+
 .Signup form span.help-block {
   font-size: 14px;
   padding-bottom: 10px;

@@ -147,16 +147,8 @@ export default function MatchResult() {
                   <td />
                   <td />
                   <td />
-                  <td>
-                    <b>
-                      {parseInt(match.singles1HomeSetsWon || 0) + parseInt(match.singles2HomeSetsWon || 0) + parseInt(match.doubles1HomeSetsWon || 0) + parseInt(match.doubles2HomeSetsWon || 0)}
-                    </b>
-                  </td>
-                  <td>
-                    <b>
-                      {parseInt(match.singles1VisitorSetsWon || 0) + parseInt(match.singles2VisitorSetsWon || 0) + parseInt(match.doubles1VisitorSetsWon || 0) + parseInt(match.doubles2VisitorSetsWon || 0)}
-                    </b>
-                  </td>
+                  <td><b>{match.totalHomeSetsWon || 0}</b></td>
+                  <td><b>{match.totalVisitorSetsWon || 0}</b></td>
                 </tr>
               </tbody>
             </Table>

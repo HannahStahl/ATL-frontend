@@ -107,6 +107,36 @@ export default () => {
     return true;
   };
 
+  const getTotalHomeSetsWon = (match) => (
+    parseInt(match.singles1HomeSetsWon || 0) +
+    parseInt(match.singles2HomeSetsWon || 0) +
+    parseInt(match.doubles1HomeSetsWon || 0) +
+    parseInt(match.doubles2HomeSetsWon || 0)
+  );
+
+  const getTotalVisitorSetsWon = (match) => (
+    parseInt(match.singles1VisitorSetsWon || 0) +
+    parseInt(match.singles2VisitorSetsWon || 0) +
+    parseInt(match.doubles1VisitorSetsWon || 0) +
+    parseInt(match.doubles2VisitorSetsWon || 0)
+  );
+
+  const addMatch = async (body) => {
+    body.totalHomeSetsWon = getTotalHomeSetsWon(body);
+    body.totalVisitorSetsWon = getTotalVisitorSetsWon(body);
+    await API.post("atl-backend", "create/match", { body });
+    const updatedMatches = await API.get("atl-backend", "list/match");
+    setMatches([...updatedMatches]);
+  };
+
+  const editMatch = async (matchId, body) => {
+    body.totalHomeSetsWon = getTotalHomeSetsWon(body);
+    body.totalVisitorSetsWon = getTotalVisitorSetsWon(body);
+    await API.put("atl-backend", `update/match/${matchId}`, { body });
+    const updatedMatches = await API.get("atl-backend", "list/match");
+    setMatches([...updatedMatches]);
+  };
+
   return (
     <div className="container">
       <PageHeader>Match Schedules</PageHeader>
@@ -134,6 +164,8 @@ export default () => {
           itemType="match"
           API={API}
           validate={validate}
+          customAddFunction={addMatch}
+          customEditFunction={editMatch}
         />
       )}
     </div>
