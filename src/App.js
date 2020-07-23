@@ -18,16 +18,19 @@ function App() {
   const [team, setTeam] = useState({});
   const [users, setUsers] = useState([]);
   const [allCaptains, setAllCaptains] = useState([]);
-  const [matches, setMatches] = useState([]);
   const [locations, setLocations] = useState([]);
   const [divisions, setDivisions] = useState([]);
   const [associations, setAssociations] = useState([]);
   const [seasons, setSeasons] = useState([]);
   const [events, setEvents] = useState([]);
+  const [standings, setStandings] = useState([]);
+  const [allMatches, setAllMatches] = useState([]);
   const [loadingData, setLoadingData] = useState(true);
 
   async function fetchPublicData() {
-    const [users, teams, locations, divisions, associations, seasons, events] = await Promise.all([
+    const [
+      users, teams, locations, divisions, associations, seasons, events, standings, matches
+    ] = await Promise.all([
       API.get("atl-backend", "list/user"),
       API.get("atl-backend", "list/team"),
       API.get("atl-backend", "list/location"),
@@ -35,6 +38,8 @@ function App() {
       API.get("atl-backend", "list/association"),
       API.get("atl-backend", "list/season"),
       API.get("atl-backend", "list/event"),
+      API.get("atl-backend", "list/standing"),
+      API.get("atl-backend", "list/match")
     ]);
     setUsers(users);
     setAllCaptains(users.filter((user) => user.isCaptain));
@@ -44,6 +49,8 @@ function App() {
     setAssociations(associations);
     setSeasons(seasons);
     setEvents(events);
+    setStandings(standings);
+    setAllMatches(matches);
   }
 
   useEffect(() => {
@@ -71,14 +78,6 @@ function App() {
           teamInList.captainId === userId || teamInList.cocaptainId === userId
         ));
         setTeam(captainTeam || {});
-        if (captainTeam) {
-          const { teamId } = captainTeam;
-          const allMatches = await API.get("atl-backend", `list/match`);
-          const teamMatches = allMatches.filter((match) => (
-            match.homeTeamId === teamId || match.visitorTeamId === teamId
-          )); // TODO do this on the backend
-          setMatches(teamMatches);
-        }
       }
       setLoadingData(false);
     }
@@ -89,12 +88,7 @@ function App() {
     await Auth.signOut();
     userHasAuthenticated(false);
     setProfile({});
-    setAllTeams([]);
     setTeam({});
-    setAllCaptains([]);
-    setMatches([]);
-    setLocations([]);
-    setDivisions([]);
     history.push("/login");
   }
 
@@ -190,8 +184,6 @@ function App() {
             setProfile,
             team,
             setTeam,
-            matches,
-            setMatches,
             users,
             setUsers,
             allCaptains,
@@ -208,6 +200,9 @@ function App() {
             allTeams,
             setAllTeams,
             loadingData,
+            standings,
+            allMatches,
+            setAllMatches
           }}>
             <Routes />
           </AppContext.Provider>

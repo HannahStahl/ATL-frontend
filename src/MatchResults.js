@@ -4,7 +4,7 @@ import { PageHeader, FormControl, Table } from "react-bootstrap";
 import { useAppContext } from "./libs/contextLib";
 
 export default function MatchResults() {
-  const { divisions, matches, allTeams } = useAppContext();
+  const { divisions, allMatches, allTeams } = useAppContext();
   const [weekNumbers, setWeekNumbers] = useState([]);
   const [divisionId, setDivisionId] = useState("");
   const [teamId, setTeamId] = useState("");
@@ -12,14 +12,14 @@ export default function MatchResults() {
   const [filteredMatches, setFilteredMatches] = useState([]);
 
   useEffect(() => {
-    if (matches.length > 0) {
-      setFilteredMatches(matches);
-      setWeekNumbers([...new Set(matches.map((match) => match.weekNumber))]);
+    if (allMatches.length > 0) {
+      setFilteredMatches(allMatches);
+      setWeekNumbers([...new Set(allMatches.map((match) => match.weekNumber))]);
     }
-  }, [matches]);
+  }, [allMatches]);
 
   useEffect(() => {
-    setFilteredMatches(matches.filter((match) => {
+    setFilteredMatches(allMatches.filter((match) => {
       const home = match.homeTeamId && allTeams.find((team) => team.teamId === match.homeTeamId);
       const visitor = match.visitorTeamId && allTeams.find((team) => team.teamId === match.visitorTeamId);
       return (
@@ -28,7 +28,7 @@ export default function MatchResults() {
         (weekNumber === "" || match.weekNumber === weekNumber)
       );
     }));
-  }, [divisionId, teamId, weekNumber, allTeams, matches]);
+  }, [divisionId, teamId, weekNumber, allTeams, allMatches]);
 
   return (
     <div className="container">
@@ -74,7 +74,6 @@ export default function MatchResults() {
               </option>
             ))}
           </FormControl>
-          <p>Insert table of matches with filters applied, where clicking on a row opens match result page for that match.</p>
           <Table bordered hover className="interactive-table">
             <thead>
               <tr>

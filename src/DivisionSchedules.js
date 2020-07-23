@@ -4,7 +4,7 @@ import { PageHeader, Table, FormControl } from "react-bootstrap";
 import { useAppContext } from "./libs/contextLib";
 
 export default function DivisionSchedules() {
-  const { divisions, allTeams, allCaptains, matches, locations } = useAppContext();
+  const { divisions, allTeams, allCaptains, allMatches, locations } = useAppContext();
   const [division, setDivision] = useState(undefined);
   const [teams, setTeams] = useState([]);
   const [schedule, setSchedule] = useState([]);
@@ -21,8 +21,8 @@ export default function DivisionSchedules() {
 
   useEffect(() => {
     const teamIds = teams.map((team) => team.teamId);
-    setSchedule(matches.filter((match) => teamIds.includes(match.homeTeamId) || teamIds.includes(match.visitorTeamId)));
-  }, [matches, teams]);
+    setSchedule(allMatches.filter((match) => teamIds.includes(match.homeTeamId) || teamIds.includes(match.visitorTeamId)));
+  }, [allMatches, teams]);
 
   return (
     <div className="container">

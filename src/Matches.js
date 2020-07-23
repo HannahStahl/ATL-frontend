@@ -5,7 +5,7 @@ import Table from "./Table";
 import { useAppContext } from "./libs/contextLib";
 
 export default () => {
-  const { matches, locations, allTeams, team, loadingData } = useAppContext();
+  const { allMatches, locations, allTeams, team, loadingData } = useAppContext();
 
   const columns = {
     weekNumber: { label: "Week" },
@@ -50,7 +50,7 @@ export default () => {
         teamId ? (
           <Table
             columns={columns}
-            rows={matches}
+            rows={allMatches}
             filterRows={filterMatches}
             itemType="match"
           />

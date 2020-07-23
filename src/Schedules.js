@@ -7,7 +7,7 @@ import { useAppContext } from "./libs/contextLib";
 import { onError } from "./libs/errorLib";
 
 export default () => {
-  const { matches, setMatches, locations, allTeams } = useAppContext();
+  const { allMatches, setMatches, locations, allTeams } = useAppContext();
   const [location, setLocation] = useState({});
   const [allPlayers, setAllPlayers] = useState([]);
 
@@ -157,7 +157,7 @@ export default () => {
       {location.locationId && (
         <Table
           columns={columns}
-          rows={matches}
+          rows={allMatches}
           filterRows={filterMatches}
           setRows={setMatches}
           getRows={() => API.get("atl-backend", "list/match")}
