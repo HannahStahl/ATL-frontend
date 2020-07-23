@@ -18,6 +18,7 @@ import Calendar from "./Calendar";
 import LeaderBoard from "./LeaderBoard";
 import Standings from "./Standings";
 import MatchResults from "./MatchResults";
+import MatchResult from "./MatchResult";
 import PastSeasons from "./PastSeasons";
 import CourtLocations from "./CourtLocations";
 import TennisAssociations from "./TennisAssociations";
@@ -92,6 +93,9 @@ export default function Routes() {
       </Route>
       <Route exact path="/match-results">
         <MatchResults />
+      </Route>
+      <Route exact path="/match-results/:matchId">
+        <MatchResult />
       </Route>
       <Route exact path="/past-seasons">
         <PastSeasons />

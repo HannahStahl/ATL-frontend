@@ -390,7 +390,15 @@ h3.welcome {
   text-align: center;
 }
 
-.court-locations-intro, .tennis-centers-intro, .contact-intro, .schedules-intro {
+.court-locations-intro, .tennis-centers-intro, .contact-intro, .schedules-intro, .match-result-intro {
+  margin-bottom: 25px;
+}
+
+.match-results-dropdown {
+  margin-bottom: 10px;
+}
+
+.match-results-dropdown:last-of-type {
   margin-bottom: 25px;
 }
 
