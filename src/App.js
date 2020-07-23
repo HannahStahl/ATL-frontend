@@ -110,7 +110,6 @@ function App() {
                 <MenuItem eventKey={1.3} href="/history">League History</MenuItem>
                 <MenuItem eventKey={1.4} href="/division-assignments">Division Assignments</MenuItem>
                 <MenuItem eventKey={1.5} href="/bylaws">By-laws</MenuItem>
-                <MenuItem eventKey={1.6} href="/finances">Finances</MenuItem>
               </NavDropdown>
               <NavDropdown eventKey={2} title="Season Info" id="basic-nav-dropdown">
                 <MenuItem eventKey={2.1} href="/calendar">Calendar</MenuItem>
@@ -119,7 +118,6 @@ function App() {
                 <MenuItem eventKey={2.4} href="/leader-board">Leader Board</MenuItem>
                 <MenuItem eventKey={2.5} href="/standings">Detailed Standings</MenuItem>
                 <MenuItem eventKey={2.6} href="/match-results">Match Results</MenuItem>
-                <MenuItem eventKey={2.7} href="/past-seasons">Past Seasons</MenuItem>
               </NavDropdown>
               <NavDropdown eventKey={3} title="Tennis in Austin" id="basic-nav-dropdown">
                 <MenuItem eventKey={3.1} href="/locations">Court Locations</MenuItem>

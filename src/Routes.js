@@ -9,7 +9,6 @@ import FAQ from "./FAQ";
 import GeneralInfo from "./GeneralInfo";
 import Bylaws from "./Bylaws";
 import Problems from "./Problems";
-import Finances from "./Finances";
 import DivisionAssignments from "./DivisionAssignments";
 import TeamListing from "./TeamListing";
 import TeamRoster from "./TeamRoster";
@@ -19,7 +18,6 @@ import LeaderBoard from "./LeaderBoard";
 import Standings from "./Standings";
 import MatchResults from "./MatchResults";
 import MatchResult from "./MatchResult";
-import PastSeasons from "./PastSeasons";
 import CourtLocations from "./CourtLocations";
 import TennisAssociations from "./TennisAssociations";
 import Centers from "./Centers";
@@ -67,9 +65,6 @@ export default function Routes() {
       <Route exact path="/problems">
         <Problems />
       </Route>
-      <Route exact path="/finances">
-        <Finances />
-      </Route>
       <Route exact path="/division-assignments">
         <DivisionAssignments />
       </Route>
@@ -96,9 +91,6 @@ export default function Routes() {
       </Route>
       <Route exact path="/match-results/:matchId">
         <MatchResult />
-      </Route>
-      <Route exact path="/past-seasons">
-        <PastSeasons />
       </Route>
       <Route exact path="/locations">
         <CourtLocations />
