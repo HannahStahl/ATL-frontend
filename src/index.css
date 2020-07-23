@@ -177,7 +177,7 @@ th,td {
   text-decoration: underline;
 }
 
-.btn {
+.btn:not(.cancel-button) {
   background-color: var(--navy);
   border-color: var(--navy);
 }
@@ -523,7 +523,7 @@ h3.welcome {
     cursor: auto;
   }
 
-  .btn:hover {
+  .btn:not(.cancel-button):hover {
     background-color: var(--navy);
     border-color: var(--navy);
   }

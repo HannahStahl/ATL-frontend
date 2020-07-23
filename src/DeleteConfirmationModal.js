@@ -32,6 +32,7 @@ export default ({
               block
               bsSize="large"
               onClick={() => setRowSelectedForRemoval(undefined)}
+              className="cancel-button"
             >
               Cancel
             </LoaderButton>

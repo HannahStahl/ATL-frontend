@@ -53,6 +53,7 @@ export default function PlayerSignup() {
     event.preventDefault();
     setIsLoading(true);
     await API.post("atl-backend", "createPlayer", { body });
+    await API.post("atl-backend", "emailCaptains", { body });
     setIsLoading(false);
     setPlayerRegistered(true);
   };

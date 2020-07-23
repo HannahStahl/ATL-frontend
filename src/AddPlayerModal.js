@@ -113,6 +113,7 @@ export default ({ columns, allPlayers, setAllPlayers, teamId, addingPlayer, setA
           block
           bsSize="large"
           onClick={() => { setPlayerIdToAdd(undefined); }}
+          className="cancel-button"
         >
           Cancel
         </LoaderButton>
