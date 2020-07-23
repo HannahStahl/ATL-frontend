@@ -1,4 +1,5 @@
 import React from "react";
+import moment from "moment";
 import { PageHeader } from "react-bootstrap";
 import Table from "./Table";
 import { useAppContext } from "./libs/contextLib";
@@ -8,6 +9,7 @@ export default () => {
 
   const columns = {
     weekNumber: { label: "Week" },
+    matchDate: { label: "Date", type: "date", render: (value) => value && moment(value).format("M/D/YYYY") },
     startTime: { label: "Start Time" },
     locationId: {
       label: "Location",

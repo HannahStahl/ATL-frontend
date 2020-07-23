@@ -24,7 +24,7 @@ export default () => {
     },
     "phone": { label: "Phone", type: "text", placeholder: "xxx-xxx-xxxx" },
     "email": { label: "Email", type: "email", required: true },
-    "rating": { label: "Rating", type: "number", required: true },
+    "rating": { label: "Rating", type: "number", required: true, render: (rating) => rating?.toFixed(1) },
     "ratingType": {
       label: "Rating Type",
       type: "dropdown",

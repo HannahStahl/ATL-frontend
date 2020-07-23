@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import moment from "moment";
 import { PageHeader, FormControl, Table } from "react-bootstrap";
 import { useAppContext } from "./libs/contextLib";
 
@@ -77,6 +78,7 @@ export default function MatchResults() {
           <Table bordered hover className="interactive-table">
             <thead>
               <tr>
+                <th>Date</th>
                 <th>Home</th>
                 <th>Visitor</th>
               </tr>
@@ -87,6 +89,7 @@ export default function MatchResults() {
               const visitor = match.visitorTeamId && allTeams.find((team) => team.teamId === match.visitorTeamId);
                 return (
                   <tr key={match.matchId} onClick={() => window.location.pathname = `/match-results/${match.matchId}`}>
+                    <td>{match.matchDate ? moment(match.matchDate).format("M/D/YYYY") : ''}</td>
                     <td>{home ? home.teamName : ''}</td>
                     <td>{visitor ? visitor.teamName : ''}</td>
                   </tr>

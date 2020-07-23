@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import moment from "moment";
 import { PageHeader, Table, FormControl } from "react-bootstrap";
 import { useAppContext } from "./libs/contextLib";
 
@@ -78,6 +79,7 @@ export default function DivisionSchedules() {
           <thead>
             <tr>
               <th>Week</th>
+              <th>Date</th>
               <th>Home</th>
               <th>Visitor</th>
               <th>Location</th>
@@ -91,7 +93,8 @@ export default function DivisionSchedules() {
               const location = locations.find((locationInList) => locationInList.locationId === match.locationId);
               return (
                 <tr key={match.matchId}>
-                  <td>{match.weekNumber}</td>
+                  <td>{match.weekNumber || ""}</td>
+                  <td>{match.matchDate ? moment(match.matchDate).format("M/D/YYYY") : ""}</td>
                   <td>{home ? home.teamName : ""}</td>
                   <td>{visitor ? visitor.teamName : ""}</td>
                   <td>{location ? location.locationName : ""}</td>

@@ -34,8 +34,8 @@ export default () => {
       joiningTableFieldNames: ["teamName"]
     },
     "phone": { label: "Phone", type: "text", placeholder: "xxx-xxx-xxxx" },
-    "email": { label: "Email", type: "email", required: true },
-    "rating": { label: "Rating", type: "number", required: true },
+    "email": { label: "Email", type: "email" },
+    "rating": { label: "Rating", type: "number", render: (rating) => rating?.toFixed(1) },
     "ratingType": {
       label: "Rating Type",
       type: "dropdown",
@@ -44,10 +44,9 @@ export default () => {
     "gender": {
       label: "Gender",
       type: "dropdown",
-      required: true,
       options: [{ value: "F", name: "Female" }, {value: "M", name: "Male" }],
     },
-    "birthYear": { label: "Birth Year", type: "number", required: true },
+    "birthYear": { label: "Birth Year", type: "number" },
     "usta": {
       label: "USTA?",
       type: "dropdown",

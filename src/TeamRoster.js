@@ -40,7 +40,7 @@ export default function TeamRoster() {
                 <tr key={player.playerId}>
                   <td>{index + 1}</td>
                   <td>{`${player.firstName || ''} ${player.lastName || ''}`}</td>
-                  <td>{player.rating || ''}</td>
+                  <td>{player.rating?.toFixed(1) || ''}</td>
                 </tr>
               ))}
             </tbody>

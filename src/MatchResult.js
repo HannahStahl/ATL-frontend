@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import moment from "moment";
 import { PageHeader, Table } from "react-bootstrap";
 import { API } from "aws-amplify";
 import { useAppContext } from "./libs/contextLib";
@@ -90,10 +91,11 @@ export default function MatchResult() {
           <div>
             <div className="centered-content match-result-intro">
               <div>
+                <p><b>Date:</b> {match.matchDate ? moment(match.matchDate).format("M/D/YYYY") : ""}</p>
                 <p><b>Home:</b> {getHomeTeam()}</p>
                 <p><b>Visitor:</b> {getVisitorTeam()}</p>
                 <p><b>Location:</b> {getLocation()}</p>
-                <p><b>Time:</b> {match.startTime}</p>
+                <p><b>Time:</b> {match.startTime || ""}</p>
               </div>
             </div>
             <Table bordered>

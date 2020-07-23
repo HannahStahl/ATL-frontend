@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import moment from "moment";
 import { PageHeader, FormGroup, FormControl } from "react-bootstrap";
 import { API } from "aws-amplify";
 import Table from "./Table";
@@ -34,6 +35,7 @@ export default () => {
 
   const columns = {
     weekNumber: { label: "Week", type: "number", required: true },
+    matchDate: { label: "Date", type: "date", render: (value) => value && moment(value).format("M/D/YYYY") },
     startTime: { label: "Start Time", type: "text" },
     locationId: {
       label: "Location",
