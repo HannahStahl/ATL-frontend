@@ -27,24 +27,26 @@ export default function TeamRoster() {
       <div className="container">
         <PageHeader>{team.teamName}</PageHeader>
         <div className="centered-content">
-          <Table bordered>
-            <thead>
-              <tr>
-                <th />
-                <th>Player Name</th>
-                <th>Rating</th>
-              </tr>
-            </thead>
-            <tbody>
-              {roster.map((player, index) => (
-                <tr key={player.playerId}>
-                  <td>{index + 1}</td>
-                  <td>{`${player.firstName || ''} ${player.lastName || ''}`}</td>
-                  <td>{player.rating?.toFixed(1) || ''}</td>
+          <div className="table-container">
+            <Table bordered>
+              <thead>
+                <tr>
+                  <th />
+                  <th>Player Name</th>
+                  <th>Rating</th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
+              </thead>
+              <tbody>
+                {roster.map((player, index) => (
+                  <tr key={player.playerId}>
+                    <td>{index + 1}</td>
+                    <td>{`${player.firstName || ''} ${player.lastName || ''}`}</td>
+                    <td>{player.rating ? parseFloat(player.rating).toFixed(1) : ''}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </div>
         </div>
       </div>
     );

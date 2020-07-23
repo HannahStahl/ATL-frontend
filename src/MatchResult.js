@@ -88,7 +88,7 @@ export default function MatchResult() {
       <PageHeader>Match Results</PageHeader>
       <div className="centered-content">
         {match.matchId && (
-          <div>
+          <div className="centered-content-inner">
             <div className="centered-content match-result-intro">
               <div>
                 <p><b>Date:</b> {match.matchDate ? moment(match.matchDate).format("M/D/YYYY") : ""}</p>
@@ -98,60 +98,62 @@ export default function MatchResult() {
                 <p><b>Time:</b> {match.startTime || ""}</p>
               </div>
             </div>
-            <Table bordered>
-              <thead>
-                <tr>
-                  <th>Line</th>
-                  <th>Home Player</th>
-                  <th>Visitor Player</th>
-                  <th>Score</th>
-                  <th>Home Sets</th>
-                  <th>Visitor Sets</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Singles 1</td>
-                  <td>{match.singles1HomePlayer}</td>
-                  <td>{match.singles1VisitorPlayer}</td>
-                  <td>{match.singles1Score}</td>
-                  <td>{match.singles1HomeSetsWon}</td>
-                  <td>{match.singles1VisitorSetsWon}</td>
-                </tr>
-                <tr>
-                  <td>Singles 2</td>
-                  <td>{match.singles2HomePlayer}</td>
-                  <td>{match.singles2VisitorPlayer}</td>
-                  <td>{match.singles2Score}</td>
-                  <td>{match.singles2HomeSetsWon}</td>
-                  <td>{match.singles2VisitorSetsWon}</td>
-                </tr>
-                <tr>
-                  <td>Doubles 1</td>
-                  <td>{match.doubles1HomePlayers}</td>
-                  <td>{match.doubles1VisitorPlayers}</td>
-                  <td>{match.doubles1Score}</td>
-                  <td>{match.doubles1HomeSetsWon}</td>
-                  <td>{match.doubles1VisitorSetsWon}</td>
-                </tr>
-                <tr>
-                  <td>Doubles 2</td>
-                  <td>{match.doubles2HomePlayers}</td>
-                  <td>{match.doubles2VisitorPlayers}</td>
-                  <td>{match.doubles2Score}</td>
-                  <td>{match.doubles2HomeSetsWon}</td>
-                  <td>{match.doubles2VisitorSetsWon}</td>
-                </tr>
-                <tr>
-                  <td />
-                  <td />
-                  <td />
-                  <td />
-                  <td><b>{match.totalHomeSetsWon || 0}</b></td>
-                  <td><b>{match.totalVisitorSetsWon || 0}</b></td>
-                </tr>
-              </tbody>
-            </Table>
+            <div className="table-container">
+              <Table bordered>
+                <thead>
+                  <tr>
+                    <th>Line</th>
+                    <th>Home Player</th>
+                    <th>Visitor Player</th>
+                    <th>Score</th>
+                    <th>Home Sets</th>
+                    <th>Visitor Sets</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Singles 1</td>
+                    <td>{match.singles1HomePlayer}</td>
+                    <td>{match.singles1VisitorPlayer}</td>
+                    <td>{match.singles1Score}</td>
+                    <td>{match.singles1HomeSetsWon}</td>
+                    <td>{match.singles1VisitorSetsWon}</td>
+                  </tr>
+                  <tr>
+                    <td>Singles 2</td>
+                    <td>{match.singles2HomePlayer}</td>
+                    <td>{match.singles2VisitorPlayer}</td>
+                    <td>{match.singles2Score}</td>
+                    <td>{match.singles2HomeSetsWon}</td>
+                    <td>{match.singles2VisitorSetsWon}</td>
+                  </tr>
+                  <tr>
+                    <td>Doubles 1</td>
+                    <td>{match.doubles1HomePlayers}</td>
+                    <td>{match.doubles1VisitorPlayers}</td>
+                    <td>{match.doubles1Score}</td>
+                    <td>{match.doubles1HomeSetsWon}</td>
+                    <td>{match.doubles1VisitorSetsWon}</td>
+                  </tr>
+                  <tr>
+                    <td>Doubles 2</td>
+                    <td>{match.doubles2HomePlayers}</td>
+                    <td>{match.doubles2VisitorPlayers}</td>
+                    <td>{match.doubles2Score}</td>
+                    <td>{match.doubles2HomeSetsWon}</td>
+                    <td>{match.doubles2VisitorSetsWon}</td>
+                  </tr>
+                  <tr>
+                    <td />
+                    <td />
+                    <td />
+                    <td />
+                    <td><b>{match.totalHomeSetsWon || 0}</b></td>
+                    <td><b>{match.totalVisitorSetsWon || 0}</b></td>
+                  </tr>
+                </tbody>
+              </Table>
+            </div>
           </div>
         )}
       </div>

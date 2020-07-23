@@ -150,6 +150,10 @@ th,td {
   justify-content: center;
 }
 
+.centered-content-inner {
+  width: 100%;
+}
+
 .centered-text {
   text-align: center;
 }

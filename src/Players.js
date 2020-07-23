@@ -35,7 +35,7 @@ export default () => {
     },
     "phone": { label: "Phone", type: "text", placeholder: "xxx-xxx-xxxx" },
     "email": { label: "Email", type: "email" },
-    "rating": { label: "Rating", type: "number", render: (rating) => rating?.toFixed(1) },
+    "rating": { label: "Rating", type: "number", render: (rating) => rating ? parseFloat(rating).toFixed(1) : "" },
     "ratingType": {
       label: "Rating Type",
       type: "dropdown",

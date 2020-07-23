@@ -34,7 +34,7 @@ export default function MatchResults() {
     <div className="container">
       <PageHeader>Match Results</PageHeader>
       <div className="centered-content">
-        <div>
+        <div className="centered-content-inner">
           <FormControl
             className="match-results-dropdown"
             value={divisionId}
@@ -74,28 +74,30 @@ export default function MatchResults() {
               </option>
             ))}
           </FormControl>
-          <Table bordered hover className="interactive-table">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Home</th>
-                <th>Visitor</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredMatches.map((match) => {
-              const home = match.homeTeamId && allTeams.find((team) => team.teamId === match.homeTeamId);
-              const visitor = match.visitorTeamId && allTeams.find((team) => team.teamId === match.visitorTeamId);
-                return (
-                  <tr key={match.matchId} onClick={() => window.location.pathname = `/match-results/${match.matchId}`}>
-                    <td>{match.matchDate ? moment(match.matchDate).format("M/D/YYYY") : ''}</td>
-                    <td>{home ? home.teamName : ''}</td>
-                    <td>{visitor ? visitor.teamName : ''}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </Table>
+          <div className="table-container">
+            <Table bordered hover className="interactive-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Home</th>
+                  <th>Visitor</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredMatches.map((match) => {
+                const home = match.homeTeamId && allTeams.find((team) => team.teamId === match.homeTeamId);
+                const visitor = match.visitorTeamId && allTeams.find((team) => team.teamId === match.visitorTeamId);
+                  return (
+                    <tr key={match.matchId} onClick={() => window.location.pathname = `/match-results/${match.matchId}`}>
+                      <td>{match.matchDate ? moment(match.matchDate).format("M/D/YYYY") : ''}</td>
+                      <td>{home ? home.teamName : ''}</td>
+                      <td>{visitor ? visitor.teamName : ''}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </Table>
+          </div>
         </div>
       </div>
     </div>
