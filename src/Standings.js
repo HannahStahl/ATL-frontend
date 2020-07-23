@@ -27,6 +27,11 @@ export default function Standings() {
     )
   };
 
+  const getDivisionNumber = (team) => {
+    const division = divisions.find((division) => division.divisionId === team.divisionId);
+    return division ? division.divisionNumber : "";
+  };
+
   return (
     <div className="container">
       <PageHeader>Standings</PageHeader>
@@ -50,6 +55,7 @@ export default function Standings() {
               <Table bordered>
                 <thead>
                   <tr>
+                    <th>Division</th>
                     <th>Team Name</th>
                     <th>Sets Won</th>
                     <th>Sets Lost</th>
@@ -60,6 +66,7 @@ export default function Standings() {
                     ))}
                   </tr>
                   <tr>
+                    <th />
                     <th />
                     <th />
                     <th />
@@ -90,6 +97,7 @@ export default function Standings() {
                       const teamStanding = standings.find((standing) => standing.teamId === team.teamId);
                       return (
                         <tr key={team.teamId}>
+                          <td>{getDivisionNumber(team)}</td>
                           <td>{team.teamName}</td>
                           <td>{teamStanding && teamStanding.setsWon}</td>
                           <td>{teamStanding && teamStanding.setsLost}</td>
