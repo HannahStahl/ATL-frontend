@@ -447,6 +447,10 @@ h3.welcome {
   margin-bottom: 15px;
 }
 
+.self-rating-info {
+  margin-bottom: 0px;
+}
+
 .Signup form span.help-block {
   font-size: 14px;
   padding-bottom: 10px;

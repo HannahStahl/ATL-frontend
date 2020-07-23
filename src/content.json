@@ -230,5 +230,113 @@
       "text": "Finally, the ATL Committee's focus is not to determine which teams are the best in the league.  Instead, our focus is to attempt to give every team an opportunity to test itself against similarly-skilled competition.",
       "children": []
     }
-  }
+  },
+  "selfRatingInstructions": [
+    "Begin with 1.0. Read all categories and then decide which one best describes your present ability level.",
+    "Assume you are competing against players of the same gender and ability level.",
+    "If in doubt, place yourself in the next highest category."
+  ],
+  "selfRatingInfo": [
+    "You may find that you actually play above or below the category, which best describes your skill level, depending on your competitive ability.",
+    "Your self-rating is not meant to be static, but may be adjusted as your skills change or as your match play demonstrates the need for reclassification.",
+    "Your self-rating may be confirmed by a qualified verifier. For participation in the USTA League Tennis Program your self-rating must be confirmed by USTA sectionally approved verifiers.",
+    "There is no substitute for match results as a measure of playing ability."
+  ],
+  "ntrpRatings": [
+    {
+      "header": "Characteristics of a 2.0 Player",
+      "text": [
+        "Forehand: Incomplete swing; lacks directional intent",
+        "Backhand: Avoids backhands; erratic contact; grip problems",
+        "Serve/Return: Incomplete service motion; double faults common; toss is inconsistent; return on serve erratic",
+        "Volley: Reluctant to play net; avoids backhand; lacks footwork",
+        "Playing Style: Familiar with basic positions for singles and doubles play; frequently out of position"
+      ]
+    },
+    {
+      "header": "Characteristics of a 2.5 Player",
+      "text": [
+        "Forehand: Form developing; prepared for moderately paced shots",
+        "Backhand: Grip and preparation problems; often chooses to hit forehand instead of backhand",
+        "Serve/Return: Attempting a full swing; can get the ball in play at slow pace; inconsistent toss; can return slow paced serve",
+        "Volley: Uncomfortable at net especially on the backhand side; frequently uses forehand racket face on backhand volleys",
+        "Special Shots: Can lob intentionally but with little control; can make contact on overheads",
+        "Playing Style: Can sustain a short rally of slow pace; weak court coverage; usually remains in the initial doubles position"
+      ]
+    },
+    {
+      "header": "Characteristics of a 3.0 Player",
+      "text": [
+        "Forehand: Fairly consistent with some directional intent; lacks depth control",
+        "Backhand: Frequently prepared; starting to hit with fair consistency on moderate shots",
+        "Serve/Return: Can lob consistently on moderate shots",
+        "Playing Style: Consistent on medium-paced shots; most common doubles formation is still one-up, one-back; approaches net when play dictates but weak in execution"
+      ]
+    },
+    {
+      "header": "Characteristics of a 3.5 Player",
+      "text": [
+        "Forehand: Good consistency and variety on moderate shots; good directional control; developing spin",
+        "Backhand: Hitting with directional control on moderate shots; has difficulty on high or hard shots; returns difficult shot defensively",
+        "Serve/Return: Starting to serve with control and some power; developing spin; can return serve consistently with directional control on moderate shots",
+        "Volley: More aggresive net play; some ability to cover side shots; uses proper footwork; can direct forehand volleys; controls backhand volleys but with little offense; difficulty in putting volleys away",
+        "Special Shots: Consistent overhead on shots within reach; developing approach shots; drop shots, and half volleys; can place the return of most second serves",
+        "Playing Style: Consistent on moderate shots with directional control; improved court coverage; starting to look for the opportunity to come to the net; developing teamwork in doubles"
+      ]
+    },
+    {
+      "header": "Characteristics of a 4.0 Player",
+      "text": [
+        "Forehand: Dependable; hits with depth and control on moderate shots; may try to hit too good a placement on a difficult shot",
+        "Backhand: Player can direct the ball with consistency and depth on moderate shots; developing spin",
+        "Serve/Return: Places both first and second serves; frequent power on first serve; uses spin; dependable return of serve; can return with depth in singles and mix returns in doubles",
+        "Volley: Depth and control on forehand volley; can direct backhand volleys but usually lacks depth; developing wide and low volleys on both sides of the body",
+        "Special Shots: Can put away easy overheads; can poach in doubles; follows aggresive shots to the net; beginning to finish points off; can hit to opponent's weaknesses; able to lob defensively on difficult shots and offensively on setups; dependable return of serve",
+        "Playing Style: Dependable ground strokes with directional control and depth demonstrated on moderate shots; not yet playing good percentage tennis; teamwork in doubles is evident; rallies may be lost due to impatience"
+      ]
+    },
+    {
+      "header": "Characteristics of a 4.5 Player",
+      "text": [
+        "Forehand: Very dependable; uses speed and spin effectively; controls depth well, tends to over-hit on difficult shots; offensive on moderate shots",
+        "Backhand: Can control direction and depth but may break down under pressure; can hit with power and moderate shots",
+        "Serve/Return: Aggresive serving with limited double faults; uses power and spin; developing offense; on second serve frequently hits with good depth and placement; frequently hits aggresive service returns; can take pace off with moderate success in doubles",
+        "Volley: Can handle a mixed sequence of volleys; good footwork; has depth and directed control on backhands; developing touch; most common error is still over-hitting",
+        "Special Shots: Approach shots hit with good depth and control; can consistently hit volleys and overheads to end the point; frequently hits aggresive service returns",
+        "Playing Style: More intentional variety in game; is hitting with more pace; covers up weaknesses well; beginning to vary game plan according to opponent; aggresive net play is common in doubles; good anticipation; beginning to handle pace"
+      ]
+    },
+    {
+      "header": "Characteristics of a 5.0 Player",
+      "text": [
+        "Forehand: Strong shot with control, depth, and spin; uses forehand to set up offensive situations; has developed good touch; consistent on passing shots",
+        "Backhand: Can use backhand as an aggresive shot with good consistency; has good direction and depth on most shots; varies spin",
+        "Serve/Return: Serve is placed effectively with the intent of hitting a weakness or developing an offensive situation; has a variety of serves to rely on; good depth, spin, and placement on most second serves to force weak return or set up next shot; can mix aggresive and off-paced service returns with control, depth, and spin",
+        "Volley: Can hit most volleys with depth, pace, and direction; plays difficult volleys depth; given opportunity, volley is often hit for a winner",
+        "Special Shots: Approach shots and passing shots are hit with pace and high degree of effectiveness; can lob offensively; overhead can be hit from any position; hits mid-court volley with consistency; can mix aggresive and off-paced service returns",
+        "Playing Style: Frequently has an outstanding shot or attribute around which his/her game is built; can vary game plan according to opponentl this player is \"match wise\", plays percentage tennis, and \"beats himself\" less than the 4.5 player; solid teamwork in doubles is evident; game breaks down mentally and physically more often than the 5.5 player"
+      ]
+    },
+    {
+      "header": "Characteristics of a 5.5 Player",
+      "text": [
+        "- Can hit dependable shots in stress situations",
+        "- Has developed good anticipation",
+        "- Can pick up cues from such things as opponent's toss, body position, back-swing, preparation",
+        "- First and second serve can be depended on in stress situations and can be hit offensively at any time",
+        "- Can analyze and exploit opponents weaknesses",
+        "- Has developed power and/or consistency as a major weapon",
+        "- Can vary strategies and style of play in a competitive situation"
+      ]
+    },
+    {
+      "header": "Players rated from 6.0 to 7.0",
+      "text": [
+        "Players with this rating will generally not need NTRP ratings. Rankings or past rankings will speak for themselves.",
+        "The 6.0 player typically has had intensive training for national tournament competition at the junior level and collegiate levels and has obtained a sectional and/or national ranking.",
+        "The 6.5 player has a reasonable chance of succeeding at the 7.0 level and has extensive satellite tournament experience.",
+        "The 7.0 player is a world class player who is committed to competition on the international level and whose major source of income is tournament prize winnings."
+      ]
+    }
+  ]
 }

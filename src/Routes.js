@@ -22,6 +22,7 @@ import CourtLocations from "./CourtLocations";
 import TennisAssociations from "./TennisAssociations";
 import Centers from "./Centers";
 import Clubs from "./Clubs";
+import Ratings from "./Ratings";
 import Contact from "./Contact";
 import PlayerSignup from "./PlayerSignup";
 import Login from "./Login";
@@ -67,6 +68,9 @@ export default function Routes() {
       </Route>
       <Route exact path="/division-assignments">
         <DivisionAssignments />
+      </Route>
+      <Route exact path="/ratings">
+        <Ratings />
       </Route>
       <Route exact path="/team-listing">
         <TeamListing />
