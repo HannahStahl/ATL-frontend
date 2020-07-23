@@ -206,30 +206,42 @@
         "children": []
       }
     ],
-    "Team performance in past seasons and roster stability": {
-      "text": "Each team returning to ATL has a performance history from past seasons.  A team's record is a good indicator of how that team might be expected to perform in an upcoming season, assuming the team's roster remains relatively stable.  Teams with major roster changes cannot be judged on history alone.  And the placement of brand-new teams can be tricky if none of the players have results in ATL matches.  While it can be a good indicator, historical information on team performance can vary, especially among some teams that retain little more than their team names from one season to the next.  Each season before the placement meeting, the ATL Committee compares each returning team's roster with its roster from the previous season to determine where changes, if any, have occurred.  The committee assesses several aspects of roster stability: Who is returning to the team, and how did those players perform the past season?  Who is no longer on the team, and how did those players perform?  What new players have been added, and are there any results for these new players - ATL or otherwise - that indicate how those new players might perform in ATL?",
-      "children": []
-    },
-    "Changes in league composition": {
-      "text": "Captains often assume that each team finishing first in a division will automatically move up to the next higher division in the succeeding season (and vice-versa for the last-place team).  However, that assumes that each team and all the others in the league remain static.  League composition can change drastically from season to season.  New teams join the league each season, others drop out, and some teams make wholesale changes in their rosters.  Even if one team's roster remains static, that team's placement may depend more on the changes in other teams since these other changes can affect overall league composition.  Team placement depends more on each team's strength relative to all other teams in the league.",
-      "children": []
-    },
-    "Accuracy of each player's USTA rating": {
-      "text": "The ATL Committee relies on every team's ability to list the accurate rating of each player on its roster.  It is easier to place teams if all players on a roster have a published USTA rating.  (Go to to view the results for players with published USTA ratings.)  Published ratings can be a good indicator of an individual's playing ability, especially against Austin area competition.  Self-ratings vary in accuracy since they rely on a person's ability to assess their skills against a sliding scale of stroke mechanics (NTRP Ratings).  Self-ratings do not reflect a player's performance in actual matches.  Finally, most players familiar with USTA published ratings understand that there can be wide variations in ability, even for players with the same rating (e.g., all 3.5-rated players are not equal).",
-      "children": []
-    },
-    "An individual player's performance in past seasons": {
-      "text": "The ATL Committee also reviews each player's performance in ATL matches, especially in the most recently completed season (Player Performance History).  ATL player records reveal not only match results but also frequency of participation.  The records provide the committee with information on how often individuals competed for their teams.  For instance, a team may carry a player or two with a rating much higher than the average rating of the rest of the team, but if the team never or seldom got these people in matches in the previous season, their impact on team placement can be minimal.  As another example, some teams carry up to 15 players on their rosters, but a core of about 8-10 people play most of the matches.  That team's strength would be best viewed as the average strength of those 8-10 players.",
-      "children": []
-    },
-    "Team placement process": {
-      "text": "The ATL Committee's placement process begins by arraying all teams from top to bottom, sometimes based on historical placement if teams retain the same rosters.  From there, the ATL Committee uses the tools and strategies listed above to arrange teams by division.",
-      "children": []
-    },
-    "Focus on fun": {
-      "text": "Finally, the ATL Committee's focus is not to determine which teams are the best in the league.  Instead, our focus is to attempt to give every team an opportunity to test itself against similarly-skilled competition.",
-      "children": []
-    }
+    "Team performance in past seasons and roster stability": [
+      {
+        "text": "Each team returning to ATL has a performance history from past seasons.  A team's record is a good indicator of how that team might be expected to perform in an upcoming season, assuming the team's roster remains relatively stable.  Teams with major roster changes cannot be judged on history alone.  And the placement of brand-new teams can be tricky if none of the players have results in ATL matches.  While it can be a good indicator, historical information on team performance can vary, especially among some teams that retain little more than their team names from one season to the next.  Each season before the placement meeting, the ATL Committee compares each returning team's roster with its roster from the previous season to determine where changes, if any, have occurred.  The committee assesses several aspects of roster stability: Who is returning to the team, and how did those players perform the past season?  Who is no longer on the team, and how did those players perform?  What new players have been added, and are there any results for these new players - ATL or otherwise - that indicate how those new players might perform in ATL?",
+        "children": []
+      }
+    ],
+    "Changes in league composition": [
+      {
+        "text": "Captains often assume that each team finishing first in a division will automatically move up to the next higher division in the succeeding season (and vice-versa for the last-place team).  However, that assumes that each team and all the others in the league remain static.  League composition can change drastically from season to season.  New teams join the league each season, others drop out, and some teams make wholesale changes in their rosters.  Even if one team's roster remains static, that team's placement may depend more on the changes in other teams since these other changes can affect overall league composition.  Team placement depends more on each team's strength relative to all other teams in the league.",
+        "children": []
+      }
+    ],
+    "Accuracy of each player's USTA rating": [
+      {
+        "text": "The ATL Committee relies on every team's ability to list the accurate rating of each player on its roster.  It is easier to place teams if all players on a roster have a published USTA rating.  (Go to to view the results for players with published USTA ratings.)  Published ratings can be a good indicator of an individual's playing ability, especially against Austin area competition.  Self-ratings vary in accuracy since they rely on a person's ability to assess their skills against a sliding scale of stroke mechanics (<a href=\"/ratings\">NTRP Ratings</a>).  Self-ratings do not reflect a player's performance in actual matches.  Finally, most players familiar with USTA published ratings understand that there can be wide variations in ability, even for players with the same rating (e.g., all 3.5-rated players are not equal).",
+        "children": []
+      }
+    ],
+    "An individual player's performance in past seasons": [
+      {
+        "text": "The ATL Committee also reviews each player's performance in ATL matches, especially in the most recently completed season.  ATL player records reveal not only match results but also frequency of participation.  The records provide the committee with information on how often individuals competed for their teams.  For instance, a team may carry a player or two with a rating much higher than the average rating of the rest of the team, but if the team never or seldom got these people in matches in the previous season, their impact on team placement can be minimal.  As another example, some teams carry up to 15 players on their rosters, but a core of about 8-10 people play most of the matches.  That team's strength would be best viewed as the average strength of those 8-10 players.",
+        "children": []
+      }
+    ],
+    "Team placement process": [
+      {
+        "text": "The ATL Committee's placement process begins by arraying all teams from top to bottom, sometimes based on historical placement if teams retain the same rosters.  From there, the ATL Committee uses the tools and strategies listed above to arrange teams by division.",
+        "children": []
+      }
+    ],
+    "Focus on fun": [
+      {
+        "text": "Finally, the ATL Committee's focus is not to determine which teams are the best in the league.  Instead, our focus is to attempt to give every team an opportunity to test itself against similarly-skilled competition.",
+        "children": []
+      }
+    ]
   },
   "selfRatingInstructions": [
     "Begin with 1.0. Read all categories and then decide which one best describes your present ability level.",

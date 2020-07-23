@@ -9,9 +9,9 @@ export default function DivisionAssignments() {
       {Object.keys(content.divisionAssignments).map((section) => (
         <div key={section}>
           <h3>{section}</h3>
-          {content.problems[section].map((item) => (
-            <>
-              <p key={item.item} dangerouslySetInnerHTML={{ __html: item }} />
+          {content.divisionAssignments[section].map((item) => (
+            <React.Fragment key={item.text}>
+              <p dangerouslySetInnerHTML={{ __html: item.text }} />
               {item.children.length > 0 && (
                 <ol>
                   {item.children.map((childItem) => (
@@ -19,7 +19,7 @@ export default function DivisionAssignments() {
                   ))}
                 </ol>
               )}
-            </>
+            </React.Fragment>
           ))}
         </div>
       ))}

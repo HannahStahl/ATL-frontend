@@ -16,7 +16,7 @@ export default function PlayerSignup() {
       label: "NTRP Rating",
       type: "number",
       required: true,
-      helpText: <span>This is used to approximate the division that would be competitive for you. If you don't know or are unfamiliar with the ratings, you can learn more about them <a href="http://www.atltennis.org/austin/Ratings.shtml">here</a>.</span>
+      helpText: <span>This is used to approximate the division that would be competitive for you. If you don't know or are unfamiliar with the ratings, you can learn more about them <a href="/ratings">here</a>.</span>
     },
     "ratingType": {
       label: "Rating Type",
