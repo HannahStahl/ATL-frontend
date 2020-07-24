@@ -7,8 +7,8 @@ import { useAppContext } from "./libs/contextLib";
 import { onError } from "./libs/errorLib";
 
 export default () => {
-  const { allMatches, setMatches, locations, allTeams } = useAppContext();
-  const [location, setLocation] = useState({});
+  const { allMatches, setAllMatches, locations, allTeams, loadingData } = useAppContext();
+  const [locationId, setLocationId] = useState("");
   const [allPlayers, setAllPlayers] = useState([]);
 
   useEffect(() => {
@@ -96,7 +96,7 @@ export default () => {
     totalVisitorSetsWon: { label: "Visitor Sets Won", type: "number", readOnly: true }
   };
 
-  const filterMatches = (list) => location.locationId ? list.filter((match) => match.locationId === location.locationId) : [];
+  const filterMatches = (list) => locationId === "" ? list : list.filter((match) => match.locationId === locationId);
 
   const validate = (body) => {
     const { homeTeamId, visitorTeamId } = body;
@@ -126,7 +126,7 @@ export default () => {
     body.totalVisitorSetsWon = getTotalVisitorSetsWon(body);
     await API.post("atl-backend", "create/match", { body });
     const updatedMatches = await API.get("atl-backend", "list/match");
-    setMatches([...updatedMatches]);
+    setAllMatches([...updatedMatches]);
   };
 
   const editMatch = async (matchId, body) => {
@@ -134,7 +134,7 @@ export default () => {
     body.totalVisitorSetsWon = getTotalVisitorSetsWon(body);
     await API.put("atl-backend", `update/match/${matchId}`, { body });
     const updatedMatches = await API.get("atl-backend", "list/match");
-    setMatches([...updatedMatches]);
+    setAllMatches([...updatedMatches]);
   };
 
   return (
@@ -143,23 +143,23 @@ export default () => {
       <form>
         <FormGroup controlId="locationId">
           <FormControl
-            value={location.locationId || ''}
+            value={locationId || ''}
             componentClass="select"
-            onChange={e => setLocation(locations.find((locationInList) => locationInList.locationId === e.target.value))}
+            onChange={e => setLocationId(e.target.value)}
           >
-            <option value="" disabled>Select location</option>
+            <option value="">All locations</option>
             {locations.map((location) => (
               <option key={location.locationId} value={location.locationId}>{location.locationName}</option>
             ))}
           </FormControl>
         </FormGroup>
       </form>
-      {location.locationId && (
+      {!loadingData && (
         <Table
           columns={columns}
           rows={allMatches}
           filterRows={filterMatches}
-          setRows={setMatches}
+          setRows={setAllMatches}
           getRows={() => API.get("atl-backend", "list/match")}
           itemType="match"
           API={API}
