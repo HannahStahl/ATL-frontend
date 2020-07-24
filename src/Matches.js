@@ -10,7 +10,7 @@ export default () => {
   const columns = {
     weekNumber: { label: "Week" },
     matchDate: { label: "Date", type: "date", render: (value) => value && moment(value).format("M/D/YYYY") },
-    startTime: { label: "Start Time" },
+    startTime: { label: "Time" },
     locationId: {
       label: "Location",
       joiningTable: locations,

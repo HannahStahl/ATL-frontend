@@ -36,7 +36,7 @@ export default () => {
   const columns = {
     weekNumber: { label: "Week", type: "number", required: true },
     matchDate: { label: "Date", type: "date", render: (value) => value && moment(value).format("M/D/YYYY") },
-    startTime: { label: "Start Time", type: "text" },
+    startTime: { label: "Time", type: "text" },
     locationId: {
       label: "Location",
       type: "dropdown",
