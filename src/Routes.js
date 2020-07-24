@@ -157,7 +157,7 @@ export default function Routes() {
       <AuthenticatedRoute exact path="/associations" isAuthenticated={isAuthenticated}>
         <Associations />
       </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/match-schedules" isAuthenticated={isAuthenticated}>
+      <AuthenticatedRoute exact path="/matches" isAuthenticated={isAuthenticated}>
         <Schedules />
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/divisions" isAuthenticated={isAuthenticated}>

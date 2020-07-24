@@ -156,7 +156,7 @@ function App() {
                     {profile.isAdmin && <MenuItem href="/season-calendars">Season Calendars</MenuItem>}
                     {profile.isAdmin && <MenuItem href="/teams">Teams</MenuItem>}
                     {profile.isAdmin && <MenuItem href="/players">Players</MenuItem>}
-                    {profile.isAdmin && <MenuItem href="/match-schedules">Matches</MenuItem>}
+                    {profile.isAdmin && <MenuItem href="/matches">Matches</MenuItem>}
                     {profile.isAdmin && <MenuItem href="/court-locations">Court Locations</MenuItem>}
                     {profile.isAdmin && <MenuItem href="/associations">Associations</MenuItem>}
                     {profile.isAdmin && <MenuItem href="/divisions">Divisions</MenuItem>}
