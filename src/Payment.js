@@ -34,7 +34,7 @@ export default function Payment() {
                 <tr>
                   <td>
                     <select name="os0">
-                      <option value="Full Payment:">Full Payment: $1 USD</option>
+                      <option value="Full Payment:">Full Payment: $206.28 USD</option>
                       <option value="Half Payment:">Half Payment: $103.30 USD</option>
                     </select>
                   </td>
@@ -64,7 +64,7 @@ export default function Payment() {
               </tbody>
             </table>
             <input type="hidden" name="option_select0" value="Full Payment:" />
-            <input type="hidden" name="option_amount0" value="1" />
+            <input type="hidden" name="option_amount0" value="206.28" />
             <input type="hidden" name="option_select1" value="Half Payment:" />
             <input type="hidden" name="option_amount1" value="103.30" />
             <input type="hidden" name="option_index" value="0" />
