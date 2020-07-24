@@ -139,7 +139,7 @@ export default () => {
 
   return (
     <div className="container">
-      <PageHeader>Match Schedules</PageHeader>
+      <PageHeader>Matches</PageHeader>
       <form>
         <FormGroup controlId="locationId">
           <FormControl
