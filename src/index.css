@@ -451,6 +451,15 @@ h3.welcome {
   margin-bottom: 0px;
 }
 
+.paypal-table {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.paypal-form-label {
+  padding-top: 10px;
+}
+
 .Signup form span.help-block {
   font-size: 14px;
   padding-bottom: 10px;
