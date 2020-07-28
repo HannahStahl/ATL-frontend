@@ -8,20 +8,16 @@ import { useAppContext } from "./libs/contextLib";
 export default () => {
   const { seasons, events, setEvents, loadingData } = useAppContext();
   const [eventsWithLeagueDates, setEventsWithLeagueDates] = useState([]);
-  const [sortedSeasons, setSortedSeasons] = useState([]);
   const [season, setSeason] = useState({});
 
   useEffect(() => {
     if (seasons.length > 0) {
-      const reversedSeasons = [...seasons];
-      reversedSeasons.reverse();
-      setSortedSeasons(reversedSeasons);
       let index = 0;
       const selectedSeasonId = window.location.search.split('?seasonId=')[1];
       if (selectedSeasonId) {
-        index = reversedSeasons.findIndex((seasonInList) => seasonInList.seasonId === selectedSeasonId);
+        index = seasons.findIndex((seasonInList) => seasonInList.seasonId === selectedSeasonId);
       }
-      setSeason(reversedSeasons[index]);
+      setSeason(seasons[index]);
     }
   }, [seasons]);
 
@@ -87,7 +83,7 @@ export default () => {
             onChange={e => setSeason(seasons.find((seasonInList) => seasonInList.seasonId === e.target.value))}
           >
             <option value="" disabled>Select season</option>
-            {sortedSeasons.map((season) => (
+            {seasons.map((season) => (
               <option key={season.seasonId} value={season.seasonId}>{season.seasonName}</option>
             ))}
           </FormControl>

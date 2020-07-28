@@ -10,9 +10,7 @@ export default function Home() {
 
   useEffect(() => {
     if (seasons.length > 0) {
-      const reversedSeasons = [...seasons];
-      reversedSeasons.reverse();
-      const currentSeason = reversedSeasons[0];
+      const currentSeason = seasons.find((season) => season.currentSeason);
       setSeason(currentSeason);
       const eventsForSeason = events.filter((event) => event.seasonId === currentSeason.seasonId);
       let eventsWithLeagueDates = eventsForSeason.concat([
