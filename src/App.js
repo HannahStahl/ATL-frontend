@@ -157,6 +157,7 @@ function App() {
                     {profile.isAdmin && <MenuItem href="/teams">Teams</MenuItem>}
                     {profile.isAdmin && <MenuItem href="/players">Players</MenuItem>}
                     {profile.isAdmin && <MenuItem href="/matches">Matches</MenuItem>}
+                    {profile.isAdmin && <MenuItem href="/update-standings">Standings</MenuItem>}
                     {profile.isAdmin && <MenuItem href="/court-locations">Court Locations</MenuItem>}
                     {profile.isAdmin && <MenuItem href="/associations">Associations</MenuItem>}
                     {profile.isAdmin && <MenuItem href="/divisions">Divisions</MenuItem>}
@@ -200,6 +201,7 @@ function App() {
             setAllTeams,
             loadingData,
             standings,
+            setStandings,
             allMatches,
             setAllMatches
           }}>

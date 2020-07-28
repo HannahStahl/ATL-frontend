@@ -6,14 +6,14 @@ import DeleteConfirmationModal from './DeleteConfirmationModal';
 export default ({
   columns, rows, filterRows, getRows, setRows, itemType, API, categoryName, customSelect,
   CustomAddComponent, customAddFunction, customEditFunction, customRemoveFunction, validate,
-  createDisabled, removeDisabled
+  createDisabled, removeDisabled, primaryKey
 }) => {
   const [rowSelectedForEdit, setRowSelectedForEdit] = useState(undefined);
   const [rowSelectedForRemoval, setRowSelectedForRemoval] = useState(undefined);
   const [addingRow, setAddingRow] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const itemId = `${itemType}Id`;
+  const itemId = primaryKey || `${itemType}Id`;
 
   const addRow = async (event, body) => {
     event.preventDefault();

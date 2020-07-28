@@ -158,6 +158,10 @@ th,td {
   text-align: center;
 }
 
+.fa-check.updated-standings {
+  margin-right: 8px;
+}
+
 .footer {
   height: 80px;
   width: 100%;

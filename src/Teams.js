@@ -1,17 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import { PageHeader } from "react-bootstrap";
 import { API } from "aws-amplify";
 import Table from "./Table";
 import { useAppContext } from "./libs/contextLib";
-import LoaderButton from "./LoaderButton";
 
 export default () => {
   const {
     allTeams, setAllTeams, allCaptains, divisions, locations, loadingData,
   } = useAppContext();
-
-  const [updatingStandings, setUpdatingStandings] = useState(false);
-  const [updatedStandings, setUpdatedStandings] = useState(false);
 
   const columns = {
     teamName: { label: "Team Name", type: "text", required: true },
@@ -48,14 +44,6 @@ export default () => {
     comments: { label: "Comments", type: "textarea" }
   };
 
-  const updateStandings = () => {
-    setUpdatingStandings(true);
-    API.put("atl-backend", "update/standing/all").then(() => {
-      setUpdatingStandings(false);
-      setUpdatedStandings(true);
-    });
-  };
-
   return (
     <div className="container">
       <PageHeader>Teams</PageHeader>
@@ -69,20 +57,6 @@ export default () => {
             itemType="team"
             API={API}
           />
-          <div className="centered-content">
-            <LoaderButton
-              bsSize="large"
-              bsStyle="primary"
-              onClick={updateStandings}
-              isLoading={updatingStandings}
-              className="update-standings-btn"
-            >
-              Update Standings
-            </LoaderButton>
-          </div>
-          <div className="centered-content">
-            {updatedStandings && <p>Updated</p>}
-          </div>
         </>
       )}
     </div>

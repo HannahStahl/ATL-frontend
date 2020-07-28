@@ -93,7 +93,9 @@ export default () => {
     doubles2HomeSetsWon: { label: "D2 Home Sets Won", type: "number", hideFromTable: true },
     doubles2VisitorSetsWon: { label: "D2 Visitor Sets Won", type: "number", hideFromTable: true },
     totalHomeSetsWon: { label: "Home Sets Won", type: "number", readOnly: true },
-    totalVisitorSetsWon: { label: "Visitor Sets Won", type: "number", readOnly: true }
+    totalVisitorSetsWon: { label: "Visitor Sets Won", type: "number", readOnly: true },
+    homeSetsForfeited: { label: "Home Sets Forfeited", type: "number" },
+    visitorSetsForfeited: { label: "Visitor Sets Forfeited", type: "number" }
   };
 
   const filterMatches = (list) => locationId === "" ? list : list.filter((match) => match.locationId === locationId);
