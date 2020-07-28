@@ -87,7 +87,7 @@ export default function Signup() {
         }
       });
       userHasAuthenticated(true);
-      history.push("/");
+      history.push("/portal");
     } catch (e) {
       onError(e);
       setIsLoading(false);
