@@ -106,6 +106,18 @@ export default ({
             </tr>
           </thead>
           <tbody>
+            <tr>
+              {setRows && !createDisabled && (
+                CustomAddComponent ? <CustomAddComponent /> : (
+                  <td
+                    colSpan={Object.keys(columns).filter((key) => !columns[key].hideFromTable).length + (removeDisabled ? 0 : 1)}
+                    onClick={() => setAddingRow(true)}
+                  >
+                    {`+ Add new ${itemType}`}
+                  </td>
+                )
+              )}
+            </tr>
             {(filterRows ? filterRows(rows) : rows).map((row) => (
               <tr
                 key={row[itemId]}
@@ -131,18 +143,6 @@ export default ({
                 )}
               </tr>
             ))}
-            <tr>
-              {setRows && !createDisabled && (
-                CustomAddComponent ? <CustomAddComponent /> : (
-                  <td
-                    colSpan={Object.keys(columns).filter((key) => !columns[key].hideFromTable).length + (removeDisabled ? 0 : 1)}
-                    onClick={() => setAddingRow(true)}
-                  >
-                    {`+ Add new ${itemType}`}
-                  </td>
-                )
-              )}
-            </tr>
           </tbody>
         </Table>
       </div>
