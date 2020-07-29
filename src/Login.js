@@ -70,6 +70,9 @@ export default function Login() {
           Log In
         </LoaderButton>
         <div className="link-below-button">
+          <a href="/reset-password">Forgot password?</a>
+        </div>
+        <div className="link-below-button">
           <a href="/signup">Need to create an account?</a>
         </div>
       </form>

@@ -43,6 +43,7 @@ import Associations from "./Associations";
 import Divisions from "./Divisions";
 import Schedules from "./Schedules";
 import Users from "./Users";
+import ForgotPassword from "./ForgotPassword";
 import ChangePassword from "./ChangePassword";
 import NotFound from "./NotFound";
 
@@ -121,6 +122,9 @@ export default function Routes() {
       </UnauthenticatedRoute>
       <UnauthenticatedRoute exact path="/signup" isAuthenticated={isAuthenticated}>
         <Signup />
+      </UnauthenticatedRoute>
+      <UnauthenticatedRoute exact path="/reset-password" isAuthenticated={isAuthenticated}>
+        <ForgotPassword />
       </UnauthenticatedRoute>
       <AuthenticatedRoute exact path="/portal" isAuthenticated={isAuthenticated}>
         <PortalHome />

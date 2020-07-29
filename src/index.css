@@ -158,8 +158,16 @@ th,td {
   text-align: center;
 }
 
-.fa-check.updated-standings {
+.fa-check.updated-standings, .fa-check.updated-password {
   margin-right: 8px;
+}
+
+.reset-password-success {
+  text-align: center;
+}
+
+.form-field-with-note td {
+  padding-bottom: 0px;
 }
 
 .footer {
@@ -427,6 +435,11 @@ h3.welcome {
 
 .no-margin-bottom {
   margin-bottom: 0px;
+}
+
+.help-block {
+  margin-bottom: 0px;
+  padding-bottom: 0px !important;
 }
 
 .contact-item td {

@@ -99,7 +99,7 @@ export default function Signup() {
       <form onSubmit={handleConfirmationSubmit}>
         <table className="form-table">
           <tbody>
-            <tr>
+            <tr className="form-field-with-note">
               <td className="form-label">Confirmation Code</td>
               <td className="form-field">
                 <FormControl
@@ -110,7 +110,12 @@ export default function Signup() {
                 />
               </td>
             </tr>
-            <tr><td colSpan={2}><HelpBlock>Check your email for the code.</HelpBlock></td></tr>
+            <tr>
+              <td />
+              <td>
+                <HelpBlock>Check your email for the code.</HelpBlock>
+              </td>
+            </tr>
           </tbody>
         </table>
         <LoaderButton
@@ -184,7 +189,7 @@ export default function Signup() {
                 />
               </td>
             </tr>
-            <tr>
+            <tr className="form-field-with-note">
               <td className="form-label">Password</td>
               <td className="form-field">
                 <FormControl
@@ -192,6 +197,19 @@ export default function Signup() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
+              </td>
+            </tr>
+            <tr>
+              <td />
+              <td>
+                <HelpBlock>
+                  Password must contain all of the following:<br />
+                  - at least 8 characters<br />
+                  - at least 1 number<br />
+                  - at least 1 special character<br />
+                  - at least 1 uppercase letter<br />
+                  - at least 1 lowercase letter<br />
+                </HelpBlock>
               </td>
             </tr>
             <tr>
