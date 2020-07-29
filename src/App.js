@@ -147,7 +147,7 @@ function App() {
                     )}
                     {profile.isCaptain && <MenuItem href="/team-details">Team Details</MenuItem>}
                     {profile.isCaptain && <MenuItem href="/team-roster">Team Roster</MenuItem>}
-                    {profile.isCaptain && <MenuItem href="/match-schedule">Match Schedule</MenuItem>}
+                    {profile.isCaptain && <MenuItem href="/match-schedule">Matches</MenuItem>}
                     {profile.isCaptain && <MenuItem href="/payment">Fee Payment</MenuItem>}
                     {profile.isCaptain && profile.isAdmin && (
                       <div className="line-header">ADMIN PAGES</div>
