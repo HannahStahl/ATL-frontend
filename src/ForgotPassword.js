@@ -59,6 +59,9 @@ export default function ForgotPassword() {
       ) : (
         codeSent ? (
           <form onSubmit={handleConfirmationSubmit}>
+            <div className="centered-content">
+              <p>A confirmation code has been sent to your email inbox and should arrive within 1 minute.</p>
+            </div>
             <table className="form-table">
               <tbody>
                 <tr className="form-field-with-note">
@@ -66,7 +69,7 @@ export default function ForgotPassword() {
                   <td className="form-field">
                     <FormControl
                       autoFocus
-                      type="text"
+                      type="tel"
                       onChange={(e) => setCode(e.target.value)}
                       value={code}
                     />
@@ -75,7 +78,7 @@ export default function ForgotPassword() {
                 <tr>
                   <td />
                   <td>
-                    <HelpBlock>Check your email for the code.</HelpBlock>
+                    <HelpBlock>Enter the code that was emailed to you.</HelpBlock>
                   </td>
                 </tr>
                 <tr className="form-field-with-note">
@@ -121,7 +124,7 @@ export default function ForgotPassword() {
               isLoading={submitting}
               disabled={code.length === 0 || password.length === 0 || confirmedPassword.length === 0}
             >
-              Verify
+              Submit
             </LoaderButton>
           </form>
         ) : (

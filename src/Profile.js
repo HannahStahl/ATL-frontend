@@ -58,6 +58,9 @@ export default function Profile() {
 
   const renderEmailConfirmationForm = () => (
     <form onSubmit={verifyNewEmail}>
+    <div className="centered-content">
+      <p>A confirmation code has been sent to your email inbox and should arrive within 1 minute.</p>
+    </div>
       <table className="form-table">
         <tbody>
           <tr>
@@ -71,7 +74,11 @@ export default function Profile() {
               />
             </td>
           </tr>
-          <tr><td colSpan={2}><HelpBlock>Check your new email for a verification code.</HelpBlock></td></tr>
+          <tr>
+            <td colSpan={2}>
+              <HelpBlock>Enter the code that was emailed to you.</HelpBlock>
+            </td>
+          </tr>
         </tbody>
       </table>
       <LoaderButton
@@ -82,7 +89,7 @@ export default function Profile() {
         isLoading={isLoading}
         disabled={!validateConfirmationForm()}
       >
-        Verify
+        Submit
       </LoaderButton>
     </form>
   );

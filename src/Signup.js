@@ -97,6 +97,9 @@ export default function Signup() {
   function renderConfirmationForm() {
     return (
       <form onSubmit={handleConfirmationSubmit}>
+        <div className="centered-content">
+          <p>A confirmation code has been sent to your email inbox and should arrive within 1 minute.</p>
+        </div>
         <table className="form-table">
           <tbody>
             <tr className="form-field-with-note">
@@ -113,7 +116,7 @@ export default function Signup() {
             <tr>
               <td />
               <td>
-                <HelpBlock>Check your email for the code.</HelpBlock>
+                <HelpBlock>Enter the code that was emailed to you.</HelpBlock>
               </td>
             </tr>
           </tbody>
@@ -126,7 +129,7 @@ export default function Signup() {
           isLoading={isLoading}
           disabled={!validateConfirmationForm()}
         >
-          Verify
+          Submit
         </LoaderButton>
       </form>
     );
