@@ -64,6 +64,7 @@ export default function Standings() {
                     {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((weekNumber) => (
                       <th key={weekNumber} colSpan={2}>Week {weekNumber}</th>
                     ))}
+                    <th>Forf. Sets</th>
                   </tr>
                   <tr>
                     <th />
@@ -78,6 +79,7 @@ export default function Standings() {
                         <th>L</th>
                       </React.Fragment>
                     ))}
+                    <th />
                   </tr>
                 </thead>
                 <tbody>
@@ -104,6 +106,7 @@ export default function Standings() {
                           <td>{teamStanding && teamStanding.setsPlayed}</td>
                           <td>{teamStanding && (parseFloat(teamStanding.percentSetsWon || 0) * 100).toFixed(2)}</td>
                           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((weekNumber) => renderWL(team.teamId, weekNumber))}
+                          <td>{teamStanding && teamStanding.setsForfeited}</td>
                         </tr>
                       );
                     })
