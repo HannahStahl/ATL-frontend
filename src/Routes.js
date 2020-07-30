@@ -30,10 +30,7 @@ import Signup from "./Signup";
 import PortalHome from "./PortalHome";
 import Profile from "./Profile";
 import Team from "./Team";
-import Roster from "./Roster";
-import Matches from "./Matches";
 import UpdateStandings from "./UpdateStandings";
-import Payment from "./Payment";
 import Seasons from "./Seasons";
 import Calendars from "./Calendars";
 import Teams from "./Teams";
@@ -135,17 +132,8 @@ export default function Routes() {
       <AuthenticatedRoute exact path="/team-details" isAuthenticated={isAuthenticated}>
         <Team />
       </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/team-roster" isAuthenticated={isAuthenticated}>
-        <Roster />
-      </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/match-schedule" isAuthenticated={isAuthenticated}>
-        <Matches />
-      </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/update-standings" isAuthenticated={isAuthenticated}>
         <UpdateStandings />
-      </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/payment" isAuthenticated={isAuthenticated}>
-        <Payment />
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/seasons" isAuthenticated={isAuthenticated}>
         <Seasons />

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { API } from "aws-amplify";
-import { PageHeader } from "react-bootstrap";
 import EditForm from "./EditForm";
 import { useAppContext } from "./libs/contextLib";
 import { onError } from "./libs/errorLib";
+import Roster from "./Roster";
+import Matches from "./Matches";
+import Payment from "./Payment";
 
 export default function Team() {
   const { profile, team, setTeam, allCaptains, locations, divisions } = useAppContext();
@@ -55,26 +57,28 @@ export default function Team() {
       joiningTableFieldNames: ["divisionNumber"]
     },
     locationId: {
-      label: "Location",
+      label: "Home Courts",
       type: "dropdown",
       joiningTable: locations,
       joiningTableKey: "locationId",
       joiningTableFieldNames: ["locationName"]
-    },
-    courtNumber: { label: "Court Number", type: "number" },
-    courtTime: { label: "Court Time", type: "text" },
-    comments: { label: "Comments", type: "textarea" }
+    }
   };
 
   return (
     <div className="container">
-      <PageHeader>Team Details</PageHeader>
-      <EditForm
-        fields={columns}
-        original={team}
-        save={saveTeam}
-        isLoading={isLoading}
-      />
+      <div className="team-details">
+        <h1 className="team-details-page-header">Team Details</h1>
+        <EditForm
+          fields={columns}
+          original={team}
+          save={saveTeam}
+          isLoading={isLoading}
+        />
+      </div>
+      <Roster />
+      <Matches />
+      <Payment />
     </div>
   );
 }

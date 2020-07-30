@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { PageHeader } from "react-bootstrap";
 import { API } from "aws-amplify";
 import Table from "./Table";
 import { useAppContext } from "./libs/contextLib";
@@ -68,29 +67,22 @@ export default () => {
 
   const filterPlayers = (list) => list.filter((player) => player.teamId === teamId);
 
-  return (
-    <div className="container">
-      <PageHeader>Team Roster</PageHeader>
-      {!loadingData && (
-        teamId ? (
-          <Table
-            columns={columns}
-            rows={allPlayers}
-            filterRows={filterPlayers}
-            setRows={setAllPlayers}
-            getRows={() => API.get("atl-backend", "/list/player")}
-            itemType="player"
-            API={API}
-            CustomAddComponent={AddPlayerComponent}
-            customRemoveFunction={removePlayerFromTeam}
-            categoryName="team"
-          />
-        ) : (
-          <p className="link-below-button">
-            Head over to the <a href="/team-details">Team Details</a> page to create your team, then you will be able to add players.
-          </p>
-        )
-      )}
+  return !loadingData && teamId ? (
+    <>
+      <hr className="team-details-page-break" />
+      <h1 className="team-details-page-header">Roster</h1>
+      <Table
+        columns={columns}
+        rows={allPlayers}
+        filterRows={filterPlayers}
+        setRows={setAllPlayers}
+        getRows={() => API.get("atl-backend", "/list/player")}
+        itemType="player"
+        API={API}
+        CustomAddComponent={AddPlayerComponent}
+        customRemoveFunction={removePlayerFromTeam}
+        categoryName="team"
+      />
       <AddPlayerModal
         columns={columns}
         allPlayers={allPlayers}
@@ -99,6 +91,6 @@ export default () => {
         addingPlayer={addingPlayer}
         setAddingPlayer={setAddingPlayer}
       />
-    </div>
-  );
+    </>
+  ) : <div />;
 }

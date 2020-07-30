@@ -1,7 +1,6 @@
 import React from "react";
 import moment from "moment";
 import { API } from "aws-amplify";
-import { PageHeader } from "react-bootstrap";
 import Table from "./Table";
 import { useAppContext } from "./libs/contextLib";
 
@@ -50,28 +49,21 @@ export default () => {
     (match) => match.homeTeamId === teamId || match.visitorTeamId === teamId
   );
 
-  return (
-    <div className="container">
-      <PageHeader>Match Schedule</PageHeader>
-      {!loadingData && (
-        teamId ? (
-          <Table
-            columns={columns}
-            rows={allMatches}
-            filterRows={filterMatches}
-            setRows={setAllMatches}
-            getRows={() => API.get("atl-backend", "list/match")}
-            itemType="match"
-            API={API}
-            createDisabled
-            removeDisabled
-          />
-        ) : (
-          <p className="link-below-button">
-            Head over to the <a href="/team-details">Team Details</a> page to create your team, then you will be able to view your match schedule.
-          </p>
-        )
-      )}
-    </div>
-  );
+  return !loadingData && teamId ? (
+    <>
+      <hr className="team-details-page-break" />
+      <h1 className="team-details-page-header">Matches</h1>
+      <Table
+        columns={columns}
+        rows={allMatches}
+        filterRows={filterMatches}
+        setRows={setAllMatches}
+        getRows={() => API.get("atl-backend", "list/match")}
+        itemType="match"
+        API={API}
+        createDisabled
+        removeDisabled
+      />
+    </>
+  ) : <div />;
 }

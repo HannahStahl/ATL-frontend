@@ -1,10 +1,14 @@
 import React from "react";
-import { PageHeader } from "react-bootstrap";
+import { useAppContext } from "./libs/contextLib";
 
 export default function Payment() {
-  return (
-    <div className="container">
-      <PageHeader>Payment</PageHeader>
+  const { team, loadingData } = useAppContext();
+  const { teamId } = team;
+
+  return !loadingData && teamId ? (
+    <>
+      <hr className="team-details-page-break" />
+      <h1 className="team-details-page-header">Payment</h1>
       <div className="centered-content">
         <div>
           <h3>Option 1: Pay by check</h3>
@@ -73,6 +77,6 @@ export default function Payment() {
           </form>
         </div>
       </div>
-    </div>
-  );
+    </>
+  ) : <div />;
 }
