@@ -6,10 +6,9 @@ import { useAppContext } from "./libs/contextLib";
 import { onError } from "./libs/errorLib";
 import Roster from "./Roster";
 import Matches from "./Matches";
-import Payment from "./Payment";
 
 export default function Team() {
-  const { profile, allTeams, allCaptains, locations, divisions } = useAppContext();
+  const { loadingData, profile, allTeams, allCaptains, locations, divisions } = useAppContext();
   const { userId } = profile;
   const [isLoading, setIsLoading] = useState(false);
   const [team, setTeam] = useState({});
@@ -96,7 +95,6 @@ export default function Team() {
                       componentClass="select"
                       onChange={e => setTeam(teams.find((teamInList) => teamInList.teamId === e.target.value))}
                     >
-                      <option value="" disabled />
                       {teams.map((teamInList) => (
                         <option key={teamInList.teamId} value={teamInList.teamId}>{teamInList.teamName}</option>
                       ))}
@@ -109,16 +107,17 @@ export default function Team() {
             <hr className="team-details-page-break" />
           </>
         )}
-        <EditForm
-          fields={columns}
-          original={team}
-          save={saveTeam}
-          isLoading={isLoading}
-        />
+        {!loadingData && (
+          <EditForm
+            fields={columns}
+            original={team}
+            save={saveTeam}
+            isLoading={isLoading}
+          />
+        )}
       </div>
       <Roster team={team} />
       <Matches team={team} />
-      <Payment team={team} />
     </div>
   );
 }

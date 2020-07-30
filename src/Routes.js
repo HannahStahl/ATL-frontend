@@ -43,6 +43,7 @@ import Users from "./Users";
 import ForgotPassword from "./ForgotPassword";
 import ChangePassword from "./ChangePassword";
 import NotFound from "./NotFound";
+import Payment from "./Payment";
 
 export default function Routes() {
   const { isAuthenticated } = useAppContext();
@@ -131,6 +132,9 @@ export default function Routes() {
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/team-info" isAuthenticated={isAuthenticated}>
         <Team />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/payment" isAuthenticated={isAuthenticated}>
+        <Payment />
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/update-standings" isAuthenticated={isAuthenticated}>
         <UpdateStandings />
