@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { FormControl } from "react-bootstrap";
 import { API } from "aws-amplify";
 import EditForm from "./EditForm";
 import { useAppContext } from "./libs/contextLib";
@@ -12,13 +13,16 @@ export default function Team() {
   const { userId } = profile;
   const [isLoading, setIsLoading] = useState(false);
   const [team, setTeam] = useState({});
+  const [teams, setTeams] = useState([]);
   const { teamId } = team;
 
   useEffect(() => {
     async function fetchTeam() {
-      const captainTeam = allTeams.find((teamInList) => (
+      const captainTeams = allTeams.filter((teamInList) => (
         teamInList.captainId === userId || teamInList.cocaptainId === userId
       ));
+      setTeams(captainTeams);
+      const captainTeam = captainTeams[0];
       setTeam(captainTeam || {});
     }
     fetchTeam();
@@ -80,6 +84,31 @@ export default function Team() {
     <div className="container">
       <div className="team-details">
         <h1 className="team-details-page-header">Team Details</h1>
+        {teams.length > 1 && (
+          <>
+            <table>
+              <tbody>
+                <tr>
+                  <td className="form-label">Select team to view:</td>
+                  <td className="form-field">
+                    <FormControl
+                      value={(team.teamId) || ""}
+                      componentClass="select"
+                      onChange={e => setTeam(teams.find((teamInList) => teamInList.teamId === e.target.value))}
+                    >
+                      <option value="" disabled />
+                      {teams.map((teamInList) => (
+                        <option key={teamInList.teamId} value={teamInList.teamId}>{teamInList.teamName}</option>
+                      ))}
+                    </FormControl>
+
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <hr className="team-details-page-break" />
+          </>
+        )}
         <EditForm
           fields={columns}
           original={team}
