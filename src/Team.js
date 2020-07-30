@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { API } from "aws-amplify";
 import EditForm from "./EditForm";
 import { useAppContext } from "./libs/contextLib";
@@ -8,10 +8,21 @@ import Matches from "./Matches";
 import Payment from "./Payment";
 
 export default function Team() {
-  const { profile, team, setTeam, allCaptains, locations, divisions } = useAppContext();
+  const { profile, allTeams, allCaptains, locations, divisions } = useAppContext();
   const { userId } = profile;
   const [isLoading, setIsLoading] = useState(false);
+  const [team, setTeam] = useState({});
   const { teamId } = team;
+
+  useEffect(() => {
+    async function fetchTeam() {
+      const captainTeam = allTeams.find((teamInList) => (
+        teamInList.captainId === userId || teamInList.cocaptainId === userId
+      ));
+      setTeam(captainTeam || {});
+    }
+    fetchTeam();
+  }, [userId, allTeams]);
 
   const saveTeam = async (event, body) => {
     event.preventDefault();
@@ -76,9 +87,9 @@ export default function Team() {
           isLoading={isLoading}
         />
       </div>
-      <Roster />
-      <Matches />
-      <Payment />
+      <Roster team={team} />
+      <Matches team={team} />
+      <Payment team={team} />
     </div>
   );
 }

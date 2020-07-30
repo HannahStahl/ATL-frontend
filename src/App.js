@@ -15,7 +15,6 @@ function App() {
   const [isAuthenticated, userHasAuthenticated] = useState(false);
   const [profile, setProfile] = useState({});
   const [allTeams, setAllTeams] = useState([]);
-  const [team, setTeam] = useState({});
   const [users, setUsers] = useState([]);
   const [allCaptains, setAllCaptains] = useState([]);
   const [locations, setLocations] = useState([]);
@@ -72,13 +71,6 @@ function App() {
     async function fetchPrivateData() {
       const user = await API.get("atl-backend", "getUser");
       setProfile(user);
-      const { userId } = user;
-      if (user.isCaptain) {
-        const captainTeam = allTeams.find((teamInList) => (
-          teamInList.captainId === userId || teamInList.cocaptainId === userId
-        ));
-        setTeam(captainTeam || {});
-      }
       setLoadingData(false);
     }
     if (isAuthenticated) fetchPrivateData();
@@ -88,7 +80,6 @@ function App() {
     await Auth.signOut();
     userHasAuthenticated(false);
     setProfile({});
-    setTeam({});
     history.push("/login");
   }
 
@@ -142,7 +133,7 @@ function App() {
                     id="basic-nav-dropdown"
                   >
                     <MenuItem href="/profile">My Profile</MenuItem>
-                    {profile.isCaptain && <MenuItem href="/team-details">Team Details</MenuItem>}
+                    {profile.isCaptain && <MenuItem href="/team-info">Team Info</MenuItem>}
                     {profile.isAdmin && <MenuItem href="/seasons">Seasons</MenuItem>}
                     {profile.isAdmin && <MenuItem href="/season-calendars">Season Calendars</MenuItem>}
                     {profile.isAdmin && <MenuItem href="/teams">Teams</MenuItem>}
@@ -173,8 +164,6 @@ function App() {
             userHasAuthenticated,
             profile,
             setProfile,
-            team,
-            setTeam,
             users,
             setUsers,
             allCaptains,

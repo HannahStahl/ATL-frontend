@@ -129,7 +129,7 @@ export default function Routes() {
       <AuthenticatedRoute exact path="/profile" isAuthenticated={isAuthenticated}>
         <Profile />
       </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/team-details" isAuthenticated={isAuthenticated}>
+      <AuthenticatedRoute exact path="/team-info" isAuthenticated={isAuthenticated}>
         <Team />
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/update-standings" isAuthenticated={isAuthenticated}>

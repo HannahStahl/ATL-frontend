@@ -4,8 +4,8 @@ import { API } from "aws-amplify";
 import Table from "./Table";
 import { useAppContext } from "./libs/contextLib";
 
-export default () => {
-  const { allMatches, setAllMatches, locations, allTeams, team, loadingData } = useAppContext();
+export default ({ team }) => {
+  const { allMatches, setAllMatches, locations, allTeams, loadingData } = useAppContext();
 
   const columns = {
     weekNumber: { label: "Week", readOnly: true },

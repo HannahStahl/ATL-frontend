@@ -4,8 +4,8 @@ import Table from "./Table";
 import { useAppContext } from "./libs/contextLib";
 import AddPlayerModal from "./AddPlayerModal";
 
-export default () => {
-  const { team, loadingData } = useAppContext();
+export default ({ team }) => {
+  const { loadingData } = useAppContext();
   const [allPlayers, setAllPlayers] = useState([]);
   const [addingPlayer, setAddingPlayer] = useState(false);
 

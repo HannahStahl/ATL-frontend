@@ -1,8 +1,8 @@
 import React from "react";
 import { useAppContext } from "./libs/contextLib";
 
-export default function Payment() {
-  const { team, loadingData } = useAppContext();
+export default function Payment({ team }) {
+  const { loadingData } = useAppContext();
   const { teamId } = team;
 
   return !loadingData && teamId ? (
