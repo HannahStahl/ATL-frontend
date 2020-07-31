@@ -3,10 +3,11 @@ import moment from "moment";
 import { PageHeader, FormGroup, FormControl } from "react-bootstrap";
 import { API } from "aws-amplify";
 import zipcelx from "zipcelx";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import Table from "./Table";
 import { useAppContext } from "./libs/contextLib";
 import { onError } from "./libs/errorLib";
-import LoaderButton from "./LoaderButton";
+import SchedulePDF from "./SchedulePDF";
 
 export default () => {
   const { allMatches, setAllMatches, locations, allTeams, loadingData } = useAppContext();
@@ -141,26 +142,31 @@ export default () => {
     setAllMatches([...updatedMatches]);
   };
 
-  const downloadSchedule = () => {
+  const dataKeys = ["weekNumber", "matchDate", "startTime", "locationId", "homeTeamId", "visitorTeamId"];
+
+  const getValue = (match, key) => {
+    let value = match[key] || "";
+    if (key === "locationId" && value.length > 0) {
+      const location = locations.find((locationInList) => locationInList.locationId === value);
+      value = location ? (location.locationName || "") : "";
+    } else if ((key === "homeTeamId" || key === "visitorTeamId") && value.length > 0) {
+      const team = allTeams.find((teamInList) => teamInList.teamId === value);
+      value = team ? (team.teamName || "") : "";
+    }
+    return value;
+  };
+
+  const downloadExcel = () => {
     const matches = filterMatches(allMatches);
-    const dataKeys = ["weekNumber", "matchDate", "startTime", "locationId", "homeTeamId", "visitorTeamId"];
     const headerRow = dataKeys.map((key) => ({
       value: columns[key].label, type: "string"
     }));
     const dataRows = matches.map((match) => dataKeys.map((key) => {
-      let value = match[key] || "";
-      if (key === "locationId" && value.length > 0) {
-        const location = locations.find((locationInList) => locationInList.locationId === value);
-        value = location ? (location.locationName || "") : "";
-      } else if ((key === "homeTeamId" || key === "visitorTeamId") && value.length > 0) {
-        const team = allTeams.find((teamInList) => teamInList.teamId === value);
-        value = team ? (team.teamName || "") : "";
-      }
-      return ({ value, type: "string" });
+      return ({ value: getValue(match, key), type: "string" });
     }));
     const data = [headerRow].concat(dataRows);
     zipcelx({
-      filename: "Match Schedule",
+      filename: "ATL Match Schedule",
       sheet: { data }
     });
   };
@@ -196,15 +202,30 @@ export default () => {
             customAddFunction={addMatch}
             customEditFunction={editMatch}
           />
-          <LoaderButton
-            block
-            type="submit"
-            bsSize="large"
-            bsStyle="primary"
-            onClick={downloadSchedule}
-          >
-            Download Schedule
-          </LoaderButton>
+          <p className="centered-text">
+            <b>Download schedule:</b>
+            <a href="#" onClick={downloadExcel} className="download-schedule-link">
+              <i className="fas fa-file-excel" />
+              Excel
+            </a>
+            <span href="#" className="download-schedule-link">
+              <PDFDownloadLink
+                document={
+                  <SchedulePDF
+                    dataKeys={dataKeys}
+                    columns={columns}
+                    filterMatches={filterMatches}
+                    allMatches={allMatches}
+                    getValue={getValue}
+                  />
+                }
+                fileName="ATL Match Schedule.pdf"
+              >
+                <i className="fas fa-file-pdf" />
+                PDF
+              </PDFDownloadLink>
+            </span>
+          </p>
         </>
       )}
     </div>

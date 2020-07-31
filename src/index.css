@@ -158,6 +158,14 @@ th,td {
   text-align: center;
 }
 
+.download-schedule-link {
+  margin-left: 15px;
+}
+
+.download-schedule-link i {
+  margin-right: 5px;
+}
+
 .fa-check.updated-standings, .fa-check.updated-password {
   margin-right: 8px;
 }
