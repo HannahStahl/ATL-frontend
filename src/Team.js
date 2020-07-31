@@ -144,7 +144,7 @@ export default function Team() {
                 </tbody>
               </table>
             ) : (
-              <p>
+              <p className="centered-text">
                 Maggie is working on associating you with your team(s).
                 You will receive an email when this process is complete.
               </p>

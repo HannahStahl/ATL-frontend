@@ -5,6 +5,7 @@ import { FormControl, PageHeader, HelpBlock } from "react-bootstrap";
 import LoaderButton from "./LoaderButton";
 import { useAppContext } from "./libs/contextLib";
 import { onError } from "./libs/errorLib";
+import config from "./config";
 
 export default function Signup() {
   const history = useHistory();
@@ -70,22 +71,21 @@ export default function Signup() {
     try {
       await Auth.confirmSignUp(email, confirmationCode);
       await Auth.signIn(email, password);
-      await API.post("atl-backend", "create/user", {
-        body: {
-          firstName,
-          lastName,
-          email,
-          phone,
-          isCaptain: (
-            accessCode === process.env.REACT_APP_CAPTAIN_ACCESS_CODE ||
-            accessCode === process.env.REACT_APP_ADMIN_CAPTAIN_ACCESS_CODE
-          ),
-          isAdmin: (
-            accessCode === process.env.REACT_APP_ADMIN_ACCESS_CODE ||
-            accessCode === process.env.REACT_APP_ADMIN_CAPTAIN_ACCESS_CODE
-          )
-        }
-      });
+      const isCaptain = (
+        accessCode === process.env.REACT_APP_CAPTAIN_ACCESS_CODE ||
+        accessCode === process.env.REACT_APP_ADMIN_CAPTAIN_ACCESS_CODE
+      );
+      const isAdmin = (
+        accessCode === process.env.REACT_APP_ADMIN_ACCESS_CODE ||
+        accessCode === process.env.REACT_APP_ADMIN_CAPTAIN_ACCESS_CODE
+      );
+      const body = { firstName, lastName, email, phone, isCaptain, isAdmin };
+      await API.post("atl-backend", "create/user", { body });
+      if (isCaptain) {
+        await API.post("atl-backend", "emailAdmin", {
+          body: { ...body, adminEmail: config.adminEmail, url: window.location.origin }
+        });
+      }
       userHasAuthenticated(true);
       history.push("/portal");
     } catch (e) {
