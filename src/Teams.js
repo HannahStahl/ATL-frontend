@@ -44,6 +44,47 @@ export default () => {
     comments: { label: "Comments", type: "textarea" }
   };
 
+  const emailCaptain = async (captainId, teamName, url, captainOrCocaptain) => {
+    const captain = allCaptains.find((captainInList) => captainInList.userId === captainId);
+    const { firstName, email: captainEmail } = captain;
+    await API.post("atl-backend", "emailCaptain", {
+      body: { firstName, teamName, captainOrCocaptain, url, captainEmail }
+    });
+  };
+
+  const createTeam = async (body) => {
+    await API.post("atl-backend", "create/team", { body });
+    const updatedTeams = await API.get("atl-backend", "list/team");
+    const { captainId, cocaptainId, teamName } = body;
+    const url = window.location.origin;
+    const promises = [];
+    if (captainId && captainId.length > 0) {
+      promises.push(emailCaptain(captainId, teamName, url, "captain"));
+    }
+    if (cocaptainId && cocaptainId.length > 0) {
+      promises.push(emailCaptain(cocaptainId, teamName, url, "co-captain"));
+    }
+    await Promise.all(promises);
+    setAllTeams([...updatedTeams]);
+  };
+
+  const editTeam = async (teamId, body) => {
+    const original = await API.get("atl-backend", `get/team/${teamId}`);
+    await API.put("atl-backend", `update/team/${teamId}`, { body });
+    const updatedTeams = await API.get("atl-backend", "list/team");
+    const { captainId, cocaptainId, teamName } = body;
+    const url = window.location.origin;
+    const promises = [];
+    if (captainId && captainId.length > 0 && captainId !== original.captainId) {
+      promises.push(emailCaptain(captainId, teamName, url, "captain"));
+    }
+    if (cocaptainId && cocaptainId.length > 0 && cocaptainId !== original.cocaptainId) {
+      promises.push(emailCaptain(cocaptainId, teamName, url, "co-captain"));
+    }
+    await Promise.all(promises);
+    setAllTeams([...updatedTeams]);
+  };
+
   return (
     <div className="container">
       <PageHeader>Teams</PageHeader>
@@ -56,6 +97,8 @@ export default () => {
             getRows={() => API.get("atl-backend", "list/team")}
             itemType="team"
             API={API}
+            customAddFunction={createTeam}
+            customEditFunction={editTeam}
           />
         </>
       )}
