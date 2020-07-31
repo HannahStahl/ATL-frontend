@@ -28,14 +28,30 @@ export default function Team() {
     const captain = team.captainId && team.captainId.length > 0 ? (
       allCaptains.find((captainInList) => captainInList.userId === team.captainId)
     ) : "";
-    return captain ? `${captain.firstName} ${captain.lastName}` : "";
+    return captain ? (
+      <>
+        {`${captain.firstName} ${captain.lastName}`}
+        <br />
+        {captain.email}
+        <br />
+        {captain.phone}
+      </>
+    ) : "";
   };
 
   const getCocaptain = () => {
     const cocaptain = team.cocaptainId && team.cocaptainId.length > 0 ? (
       allCaptains.find((captainInList) => captainInList.userId === team.cocaptainId)
     ) : "";
-    return cocaptain ? `${cocaptain.firstName} ${cocaptain.lastName}` : "";
+    return cocaptain ? (
+      <>
+        {`${cocaptain.firstName} ${cocaptain.lastName}`}
+        <br />
+        {cocaptain.email}
+        <br />
+        {cocaptain.phone}
+      </>
+    ) : "";
   };
 
   const getDivision = () => {
@@ -82,13 +98,50 @@ export default function Team() {
         )}
         {!loadingData && !loadingTeam && (
           <div className="centered-content">
-            <div>
-              <p><b>Team Name:</b> {team.teamName || ""}</p>
-              <p><b>Captain:</b> {getCaptain()}</p>
-              <p><b>Co-Captain:</b> {getCocaptain()}</p>
-              <p><b>Division:</b> {getDivision()}</p>
-              <p><b>Home Courts:</b> {getLocation()}</p>
-            </div>
+            <table className="team-details-table">
+              <tbody>
+                <tr>
+                  <td>
+                    <p><b>Team Name:</b></p>
+                  </td>
+                  <td>
+                    <p>{team.teamName || ""}</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p><b>Captain:</b></p>
+                  </td>
+                  <td>
+                    <p>{getCaptain()}</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p><b>Co-Captain:</b></p>
+                  </td>
+                  <td>
+                    <p>{getCocaptain()}</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p><b>Division:</b></p>
+                  </td>
+                  <td>
+                    <p>{getDivision()}</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p><b>Home Courts:</b></p>
+                  </td>
+                  <td>
+                    <p>{getLocation()}</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         )}
       </div>
