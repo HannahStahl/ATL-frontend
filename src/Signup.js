@@ -116,7 +116,7 @@ export default function Signup() {
             <tr>
               <td />
               <td>
-                <HelpBlock>Enter the code that was emailed to you.</HelpBlock>
+                <HelpBlock className="no-margin-bottom">Enter the code that was emailed to you.</HelpBlock>
               </td>
             </tr>
           </tbody>
@@ -205,7 +205,7 @@ export default function Signup() {
             <tr>
               <td />
               <td>
-                <HelpBlock>
+                <HelpBlock className="no-margin-bottom">
                   Password must contain all of the following:<br />
                   - at least 8 characters<br />
                   - at least 1 number<br />

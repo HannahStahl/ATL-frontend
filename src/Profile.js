@@ -76,7 +76,7 @@ export default function Profile() {
           </tr>
           <tr>
             <td colSpan={2}>
-              <HelpBlock>Enter the code that was emailed to you.</HelpBlock>
+              <HelpBlock className="no-margin-bottom">Enter the code that was emailed to you.</HelpBlock>
             </td>
           </tr>
         </tbody>
