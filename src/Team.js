@@ -1,19 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { FormControl } from "react-bootstrap";
-import { API } from "aws-amplify";
-import EditForm from "./EditForm";
 import { useAppContext } from "./libs/contextLib";
-import { onError } from "./libs/errorLib";
 import Roster from "./Roster";
 import Matches from "./Matches";
 
 export default function Team() {
   const { loadingData, profile, allTeams, allCaptains, locations, divisions } = useAppContext();
   const { userId } = profile;
-  const [isLoading, setIsLoading] = useState(false);
+  const [loadingTeam, setLoadingTeam] = useState(true);
   const [team, setTeam] = useState({});
   const [teams, setTeams] = useState([]);
-  const { teamId } = team;
 
   useEffect(() => {
     async function fetchTeam() {
@@ -23,60 +19,37 @@ export default function Team() {
       setTeams(captainTeams);
       const captainTeam = captainTeams[0];
       setTeam(captainTeam || {});
+      setLoadingTeam(false);
     }
     fetchTeam();
   }, [userId, allTeams]);
 
-  const saveTeam = async (event, body) => {
-    event.preventDefault();
-    if (body.captainId === body.cocaptainId) {
-      onError("Captain and co-captain cannot be the same.");
-    } else if (body.captainId !== userId && body.cocaptainId !== userId) {
-      onError("You must be either the captain or co-captain of this team.");
-    } else {
-      setIsLoading(true);
-      if (teamId) {
-        const result = await API.put("atl-backend", `update/team/${teamId}`, { body });
-        setTeam(result);
-      }
-      else {
-        const result = await API.post("atl-backend", "create/team", { body });
-        setTeam(result);
-      }
-      setIsLoading(false);
-    }
+  const getCaptain = () => {
+    const captain = team.captainId && team.captainId.length > 0 ? (
+      allCaptains.find((captainInList) => captainInList.userId === team.captainId)
+    ) : "";
+    return captain ? `${captain.firstName} ${captain.lastName}` : "";
   };
 
-  const columns = {
-    teamName: { label: "Team Name", type: "text", required: true },
-    captainId: {
-      label: "Captain",
-      type: "dropdown",
-      joiningTable: allCaptains,
-      joiningTableKey: "userId",
-      joiningTableFieldNames: ["firstName", "lastName"]
-    },
-    cocaptainId: {
-      label: "Co-Captain",
-      type: "dropdown",
-      joiningTable: allCaptains,
-      joiningTableKey: "userId",
-      joiningTableFieldNames: ["firstName", "lastName"]
-    },
-    divisionId: {
-      label: "Division",
-      type: "dropdown",
-      joiningTable: divisions,
-      joiningTableKey: "divisionId",
-      joiningTableFieldNames: ["divisionNumber"]
-    },
-    locationId: {
-      label: "Home Courts",
-      type: "dropdown",
-      joiningTable: locations,
-      joiningTableKey: "locationId",
-      joiningTableFieldNames: ["locationName"]
-    }
+  const getCocaptain = () => {
+    const cocaptain = team.cocaptainId && team.cocaptainId.length > 0 ? (
+      allCaptains.find((captainInList) => captainInList.userId === team.cocaptainId)
+    ) : "";
+    return cocaptain ? `${cocaptain.firstName} ${cocaptain.lastName}` : "";
+  };
+
+  const getDivision = () => {
+    const division = team.divisionId && team.divisionId.length > 0 ? (
+      divisions.find((divisionInList) => divisionInList.divisionId === team.divisionId)
+    ) : "";
+    return division ? (division.divisionNumber || "") : "";
+  };
+
+  const getLocation = () => {
+    const location = team.locationId && team.locationId.length > 0 ? (
+      locations.find((locationInList) => locationInList.locationId === team.locationId)
+    ) : "";
+    return location ? (location.locationName || "") : "";
   };
 
   return (
@@ -107,13 +80,16 @@ export default function Team() {
             <hr className="team-details-page-break" />
           </>
         )}
-        {!loadingData && (
-          <EditForm
-            fields={columns}
-            original={team}
-            save={saveTeam}
-            isLoading={isLoading}
-          />
+        {!loadingData && !loadingTeam && (
+          <div className="centered-content">
+            <div>
+              <p><b>Team Name:</b> {team.teamName || ""}</p>
+              <p><b>Captain:</b> {getCaptain()}</p>
+              <p><b>Co-Captain:</b> {getCocaptain()}</p>
+              <p><b>Division:</b> {getDivision()}</p>
+              <p><b>Home Courts:</b> {getLocation()}</p>
+            </div>
+          </div>
         )}
       </div>
       <Roster team={team} />
