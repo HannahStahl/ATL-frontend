@@ -24,6 +24,7 @@ function App() {
   const [events, setEvents] = useState([]);
   const [standings, setStandings] = useState([]);
   const [allMatches, setAllMatches] = useState([]);
+  const [loadingPublicData, setLoadingPublicData] = useState(true);
   const [loadingData, setLoadingData] = useState(true);
 
   async function fetchPublicData() {
@@ -50,6 +51,7 @@ function App() {
     setEvents(events);
     setStandings(standings);
     setAllMatches(matches);
+    setLoadingPublicData(false);
   }
 
   useEffect(() => {
@@ -73,8 +75,8 @@ function App() {
       setProfile(user);
       setLoadingData(false);
     }
-    if (isAuthenticated) fetchPrivateData();
-  }, [isAuthenticated, allTeams]);
+    if (isAuthenticated && !loadingPublicData) fetchPrivateData();
+  }, [isAuthenticated, loadingPublicData]);
 
   async function handleLogout() {
     await Auth.signOut();

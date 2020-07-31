@@ -21,8 +21,8 @@ export default function Team() {
       setTeam(captainTeam || {});
       setLoadingTeam(false);
     }
-    fetchTeam();
-  }, [userId, allTeams]);
+    if (!loadingData) fetchTeam();
+  }, [loadingData, userId, allTeams]);
 
   const getCaptain = () => {
     const captain = team.captainId && team.captainId.length > 0 ? (
@@ -96,57 +96,64 @@ export default function Team() {
             <hr className="team-details-page-break" />
           </>
         )}
-        {!loadingData && !loadingTeam && (
-          <div className="centered-content">
-            <table className="team-details-table">
-              <tbody>
-                <tr>
-                  <td>
-                    <p><b>Team Name:</b></p>
-                  </td>
-                  <td>
-                    <p>{team.teamName || ""}</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <p><b>Captain:</b></p>
-                  </td>
-                  <td>
-                    <p>{getCaptain()}</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <p><b>Co-Captain:</b></p>
-                  </td>
-                  <td>
-                    <p>{getCocaptain()}</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <p><b>Division:</b></p>
-                  </td>
-                  <td>
-                    <p>{getDivision()}</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <p><b>Home Courts:</b></p>
-                  </td>
-                  <td>
-                    <p>{getLocation()}</p>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        )}
+        <div className="centered-content"> 
+          {loadingTeam ? <p>Loading...</p> : (
+            team.teamId ? (
+              <table className="team-details-table">
+                <tbody>
+                  <tr>
+                    <td>
+                      <p><b>Team Name:</b></p>
+                    </td>
+                    <td>
+                      <p>{team.teamName || ""}</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <p><b>Captain:</b></p>
+                    </td>
+                    <td>
+                      <p>{getCaptain()}</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <p><b>Co-Captain:</b></p>
+                    </td>
+                    <td>
+                      <p>{getCocaptain()}</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <p><b>Division:</b></p>
+                    </td>
+                    <td>
+                      <p>{getDivision()}</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <p><b>Home Courts:</b></p>
+                    </td>
+                    <td>
+                      <p>{getLocation()}</p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            ) : (
+              <p>
+                Maggie is working on associating you with your team(s).
+                You will receive an email when this process is complete.
+              </p>
+            )
+          )}
+        </div>
       </div>
-      <Roster team={team} />
-      <Matches team={team} />
+      {!loadingTeam && <Roster team={team} />}
+      {!loadingTeam && <Matches team={team} />}
     </div>
   );
 }
