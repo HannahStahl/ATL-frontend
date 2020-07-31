@@ -204,11 +204,12 @@ export default () => {
           />
           <p className="centered-text">
             <b>Download schedule:</b>
+            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
             <a href="#" onClick={downloadExcel} className="download-schedule-link">
               <i className="fas fa-file-excel" />
               Excel
             </a>
-            <span href="#" className="download-schedule-link">
+            <span className="download-schedule-link">
               <PDFDownloadLink
                 document={
                   <SchedulePDF
