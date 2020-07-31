@@ -6,6 +6,8 @@ body {
   color: #333;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  --red: #da4d49;
+  --light-red: #f6d9d8;
   --navy: #003a74;
   --light-blue: #E4EBF8;
 }
@@ -117,6 +119,7 @@ th,td {
 
 .App nav .container-fluid .navbar-brand {
   margin-left: 0px;
+  color: var(--navy);
 }
 
 .App .nav .dropdown-toggle .fa-user-circle {
@@ -143,6 +146,14 @@ th,td {
   position: fixed;
   top: 0;
   right: 0;
+}
+
+.App .navbar-default .navbar-nav>li>a {
+  color: var(--navy);
+}
+
+.App .dropdown-menu>li>a {
+  color: var(--navy);
 }
 
 .centered-content {
@@ -564,6 +575,22 @@ h3.welcome {
 }
 
 @media all and (hover: hover) {
+  .App .navbar-default .navbar-nav>li>a:hover {
+    color: var(--red);
+  }
+
+  .App nav .container-fluid .navbar-brand:hover {
+    color: var(--red);
+  }
+
+  .App .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {
+    color: var(--navy);
+  }
+
+  .App .dropdown-menu>li>a:focus, .dropdown-menu>li>a:hover {
+    background-color: var(--light-red);
+  }
+
   .interactive-table td:hover {
     cursor: pointer;
   }
