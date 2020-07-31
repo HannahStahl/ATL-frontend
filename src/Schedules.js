@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import moment from "moment";
 import { PageHeader, FormGroup, FormControl } from "react-bootstrap";
 import { API } from "aws-amplify";
+import zipcelx from "zipcelx";
 import Table from "./Table";
 import { useAppContext } from "./libs/contextLib";
 import { onError } from "./libs/errorLib";
+import LoaderButton from "./LoaderButton";
 
 export default () => {
   const { allMatches, setAllMatches, locations, allTeams, loadingData } = useAppContext();
@@ -139,6 +141,30 @@ export default () => {
     setAllMatches([...updatedMatches]);
   };
 
+  const downloadSchedule = () => {
+    const matches = filterMatches(allMatches);
+    const dataKeys = ["weekNumber", "matchDate", "startTime", "locationId", "homeTeamId", "visitorTeamId"];
+    const headerRow = dataKeys.map((key) => ({
+      value: columns[key].label, type: "string"
+    }));
+    const dataRows = matches.map((match) => dataKeys.map((key) => {
+      let value = match[key] || "";
+      if (key === "locationId" && value.length > 0) {
+        const location = locations.find((locationInList) => locationInList.locationId === value);
+        value = location ? (location.locationName || "") : "";
+      } else if ((key === "homeTeamId" || key === "visitorTeamId") && value.length > 0) {
+        const team = allTeams.find((teamInList) => teamInList.teamId === value);
+        value = team ? (team.teamName || "") : "";
+      }
+      return ({ value, type: "string" });
+    }));
+    const data = [headerRow].concat(dataRows);
+    zipcelx({
+      filename: "Match Schedule",
+      sheet: { data }
+    });
+  };
+
   return (
     <div className="container">
       <PageHeader>Matches</PageHeader>
@@ -157,18 +183,29 @@ export default () => {
         </FormGroup>
       </form>
       {!loadingData && (
-        <Table
-          columns={columns}
-          rows={allMatches}
-          filterRows={filterMatches}
-          setRows={setAllMatches}
-          getRows={() => API.get("atl-backend", "list/match")}
-          itemType="match"
-          API={API}
-          validate={validate}
-          customAddFunction={addMatch}
-          customEditFunction={editMatch}
-        />
+        <>
+          <Table
+            columns={columns}
+            rows={allMatches}
+            filterRows={filterMatches}
+            setRows={setAllMatches}
+            getRows={() => API.get("atl-backend", "list/match")}
+            itemType="match"
+            API={API}
+            validate={validate}
+            customAddFunction={addMatch}
+            customEditFunction={editMatch}
+          />
+          <LoaderButton
+            block
+            type="submit"
+            bsSize="large"
+            bsStyle="primary"
+            onClick={downloadSchedule}
+          >
+            Download Schedule
+          </LoaderButton>
+        </>
       )}
     </div>
   );
