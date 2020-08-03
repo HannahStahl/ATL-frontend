@@ -47,26 +47,22 @@ export default function Calendar() {
               return (
                 <div key={seasonName} className="season-events-container">
                   <h3>{seasonName}</h3>
-                  <div className="season-events">
-                    <span className="key-dates-column">
+                  <table className="key-dates">
+                    <tbody>
                       {season.map((event) => (
-                        <span key={event.eventId} className="key-date">
-                          {event.endDate ? (
-                            `${moment(event.startDate).format("MMM. D")} - ${moment(event.endDate).format("MMM. D")}`
-                          ) : (
-                            moment(event.startDate).format("MMM. D")
-                          )}
-                        </span>
+                        <tr key={event.eventId}>
+                          <td className="key-date bold">
+                            {event.endDate ? (
+                              `${moment(event.startDate).format("MMM. D")} - ${moment(event.endDate).format("MMM. D")}`
+                            ) : (
+                              moment(event.startDate).format("MMM. D")
+                            )}
+                          </td>
+                          <td className="key-date">{event.eventName || ""}</td>
+                        </tr>
                       ))}
-                    </span>
-                    <span className="key-dates-column">
-                      {season.map((event) => (
-                        <span key={event.eventId} className="key-event">
-                          {event.eventName}
-                        </span>
-                      ))}
-                    </span>
-                  </div>
+                    </tbody>
+                  </table>
                 </div>
               );
             })}

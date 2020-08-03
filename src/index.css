@@ -45,7 +45,7 @@ th {
   background-color: #e7e7e7;
 }
 
-th,td {
+th,td:not(.key-date) {
   white-space: nowrap;
 }
 
@@ -243,60 +243,58 @@ th,td {
   align-items: center;
 }
 
-.home-section-3 {
-  background-color: var(--light-blue);
-  padding: 75px 7%;
+.home-section-2-intro {
+  max-width: 830px;
+}
+
+.home-section-2-cards {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+  margin-top: 30px;
 }
 
-.home-section-3-card {
-  padding: 40px;
+.home-section-2-card {
+  padding: 30px;
   border: solid 1px var(--navy);
-  background-color: white;
-  margin: 4%;
-  max-width: 400px;
+  margin: 25px;
+  width: min(320px, 100%);
   flex-basis: 1;
+  border-radius: 10px;
+  background-color: var(--light-blue);
+  box-shadow: -5px 5px 5px 0px #ccc;
 }
 
-.home-section-3-card h3 {
+.home-section-2-card h3 {
   margin-top: 0px;
 }
 
-.home-section-3-card p {
+.home-section-2-card p {
   margin-bottom: 0px;
 }
 
-.home-section-2 p {
-  max-width: 750px;
-  margin-bottom: 40px;
-}
-
 .key-dates {
-  margin-top: 20px;
-  margin-bottom: 30px;
-  padding: 30px;
-  background-color: var(--light-blue);
-  display: flex;
+  margin-bottom: 10px;
 }
 
-.key-dates-column {
-  display: flex;
-  flex-direction: column;
+.home-page-calendar {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .key-date {
-  font-weight: bold;
-  margin-right: 15px;
-  margin-bottom: 15px;
   text-align: left;
+  vertical-align: top;
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 
-.key-event {
-  margin-left: 15px;
-  margin-bottom: 15px;
-  text-align: left;
+.key-date:not(.key-event) {
+  padding-right: 15px;
+}
+
+.bold {
+  font-weight: bold;
 }
 
 .key-date:last-of-type, .key-event:last-of-type {
@@ -309,13 +307,15 @@ th,td {
 }
 
 .season-events-container {
-  margin: 40px;
+  margin: 25px;
   margin-top: 20px;
   border: solid 1px var(--navy);
+  background-color: var(--light-blue);
+  border-radius: 10px;
   padding: 30px;
   flex-basis: 0;
   flex-grow: 1;
-  min-width: 300px;
+  box-shadow: -5px 5px 5px 0px #ccc;
 }
 
 .season-events-container h3 {

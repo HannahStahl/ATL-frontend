@@ -50,53 +50,49 @@ export default function Home() {
         </div>
       </div>
       <div className="home-section-2">
-        <p>
+        <h4 className="home-section-2-intro">
           The Austin Tennis League (ATL) offers all levels of singles and doubles, in both Fall and Spring leagues.
           Matches are held on Saturdays throughout the Austin area, in addition to other ad hoc tennis activities.
-        </p>
-        {season.seasonName && (
-          <>
-            <h3>{`${season.seasonName || ""} Key Dates`}</h3>
-            <div className="key-dates">
-              <span className="key-dates-column">
-                {seasonEvents.map((event) => (
-                  <span key={event.eventId} className="key-date">
-                    {event.endDate ? (
-                      `${moment(event.startDate).format("MMM. D")} - ${moment(event.endDate).format("MMM. D")}`
-                    ) : (
-                      moment(event.startDate).format("MMM. D")
-                    )}
-                  </span>
-                ))}
-              </span>
-              <span className="key-dates-column">
-                {seasonEvents.map((event) => (
-                  <span key={event.eventId} className="key-event">
-                    {event.eventName}
-                  </span>
-                ))}
-              </span>
-            </div>
-            <Link to="/calendar" className="btn btn-info btn-lg">
-              View full calendar
-            </Link>
-          </>
-        )}
-      </div>
-      <div className="home-section-3">
-        <div className="home-section-3-card">
-          <h3>New Player Program</h3>
-          <p>
-            In addition to league play, ATL offers other tennis activities to new players.
-            "New" includes experienced players who are new to Austin or those returning to tennis after a break.
-            For more info, contact Roger Vallejo at <a href="mailto:roger_vallejo@hotmail.com">roger_vallejo@hotmail.com</a>.
-          </p>
-        </div>
-        <div className="home-section-3-card">
-          <h3>Captain Registration</h3>
-          <p>
-            New captains should email Maggie Yanez at <a href="mailto:myanez@pharrtennis.com">myanez@pharrtennis.com</a> or call Maggie at (512) 477-4713 to get set up.
-          </p>
+        </h4>
+        <div className="home-section-2-cards">
+          <div className="home-section-2-card">
+            {season.seasonName && (
+              <>
+                <h3>{`${season.seasonName || ""} Key Dates`}</h3>
+                <table className="key-dates home-page-calendar">
+                  <tbody>
+                    {seasonEvents.map((event) => (
+                      <tr key={event.eventId}>
+                        <td className="key-date bold">
+                          {event.endDate ? (
+                            `${moment(event.startDate).format("MMM. D")} - ${moment(event.endDate).format("MMM. D")}`
+                          ) : (
+                            moment(event.startDate).format("MMM. D")
+                          )}
+                        </td>
+                        <td className="key-date key-event">{event.eventName || ""}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <a href="/calendar">View full calendar</a>
+              </>
+            )}
+          </div>
+          <div className="home-section-2-card">
+            <h3>New Player Program</h3>
+            <p>
+              In addition to league play, ATL offers other tennis activities to new players.
+              "New" includes experienced players who are new to Austin or those returning to tennis after a break.
+              For more info, contact Roger Vallejo at <a href="mailto:roger_vallejo@hotmail.com">roger_vallejo@hotmail.com</a>.
+            </p>
+          </div>
+          <div className="home-section-2-card">
+            <h3>Captain Registration</h3>
+            <p>
+              New captains should email Maggie Yanez at <a href="mailto:myanez@pharrtennis.com">myanez@pharrtennis.com</a> or call Maggie at (512) 477-4713 to get set up.
+            </p>
+          </div>
         </div>
       </div>
     </div>
