@@ -98,11 +98,12 @@ function App() {
           <Navbar.Collapse>
             <Nav className="left-aligned">
               <NavDropdown eventKey={1} title="About the League" id="basic-nav-dropdown">
-                <MenuItem eventKey={1.1} href="/info">General Info</MenuItem>
-                <MenuItem eventKey={1.2} href="/faq">FAQs</MenuItem>
-                <MenuItem eventKey={1.3} href="/history">League History</MenuItem>
-                <MenuItem eventKey={1.4} href="/division-assignments">Division Assignments</MenuItem>
-                <MenuItem eventKey={1.5} href="/bylaws">By-laws</MenuItem>
+                <MenuItem eventKey={1.1} href="/player-signup">New Player Registration</MenuItem>
+                <MenuItem eventKey={1.2} href="/info">General Info</MenuItem>
+                <MenuItem eventKey={1.3} href="/faq">FAQs</MenuItem>
+                <MenuItem eventKey={1.4} href="/history">League History</MenuItem>
+                <MenuItem eventKey={1.5} href="/division-assignments">Division Assignments</MenuItem>
+                <MenuItem eventKey={1.6} href="/bylaws">By-laws</MenuItem>
               </NavDropdown>
               <NavDropdown eventKey={2} title="Season Info" id="basic-nav-dropdown">
                 <MenuItem eventKey={2.1} href="/calendar">Calendar</MenuItem>
