@@ -299,7 +299,7 @@ th,td:not(.key-date) {
   background-color: white;
 }
 
-.home-section-3 h2 {
+.home-section-3 h2, .home-section-4 h2 {
   margin-bottom: 30px;
 }
 
@@ -307,6 +307,17 @@ th,td:not(.key-date) {
   text-align: center;
   background-color: var(--navy);
   color: white;
+}
+
+.home-section-4 {
+  background-color: white;
+  width: 100vw;
+  padding: 75px 7%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .key-dates {
@@ -361,6 +372,26 @@ th,td:not(.key-date) {
 .season-events {
   display: flex;
   margin-top: 20px;
+}
+
+.weather {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.weather-hour {
+  padding: 20px;
+}
+
+.raindrop {
+  margin-right: 10px;
+}
+
+.weather-external-link {
+  margin-left: 10px;
 }
 
 h1, h2, h3, h4 {

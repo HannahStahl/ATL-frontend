@@ -4,11 +4,13 @@ import { Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useAppContext } from "./libs/contextLib";
 import { getOrderedTeamsInDivision } from "./LeaderBoard";
+import config from "./config";
 
 export default function Home() {
   const { seasons, events, divisions, allTeams, standings } = useAppContext();
   const [season, setSeason] = useState({});
   const [seasonEvents, setSeasonEvents] = useState([]);
+  const [weather, setWeather] = useState([]);
 
   useEffect(() => {
     if (seasons.length > 0) {
@@ -37,6 +39,14 @@ export default function Home() {
       setSeasonEvents(eventsWithLeagueDates);
     }
   }, [seasons, events]);
+
+  useEffect(() => {
+    const getWeather = async () => {
+      const weatherJson = await fetch(config.weatherUrl).then((res) => res.json());
+      setWeather(weatherJson.hourly);
+    };
+    getWeather();
+  }, []);
 
   return (
     <div className="Home">
@@ -127,6 +137,48 @@ export default function Home() {
             </div>
           </div>
         )}
+      </div>
+      <div className="home-section-4">
+        <h2>Today in Austin</h2>
+        {weather.length > 0 && (
+          <div className="weather">
+            {[0, 1, 2, 3].map((index) => {
+              const hour = weather[index];
+              return (
+                <div key={index} className="weather-hour">
+                  <img
+                    src={`${config.weatherIconBaseUrl}/${hour.weather[0].icon}@2x.png`}
+                    alt={hour.weather[0].description}
+                  />
+                  <h4>{moment.unix(hour.dt).format("hA")}</h4>
+                  <p>{hour.weather[0].main}</p>
+                  <p>
+                    <i className="raindrop fas fa-tint" />
+                    {`${hour.pop}%`}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        )}
+        <a
+          className="link-below-button"
+          href="https://www.accuweather.com/en/us/austin/78701/hourly-weather-forecast/351193"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View full forecast
+          <i className="weather-external-link fas fa-external-link-alt" />
+        </a>
+        <a
+          className="link-below-button"
+          href="https://www.kvue.com/article/weather/allergy-forecast/allergy-report/269-44055429"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View allergy report
+          <i className="weather-external-link fas fa-external-link-alt" />
+        </a>
       </div>
     </div>
   );
