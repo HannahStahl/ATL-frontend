@@ -128,7 +128,7 @@ function App() {
                   <NavDropdown
                     title={(
                       <p>
-                        {`${profile.firstName} ${profile.lastName}`}
+                        {window.innerWidth > 767 && `${profile.firstName} ${profile.lastName}`}
                         <i className="fas fa-user-circle" />
                       </p>
                     )}
