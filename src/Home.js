@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
+import { Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useAppContext } from "./libs/contextLib";
+import { getOrderedTeamsInDivision } from "./LeaderBoard";
 
 export default function Home() {
-  const { seasons, events } = useAppContext();
+  const { seasons, events, divisions, allTeams, standings } = useAppContext();
   const [season, setSeason] = useState({});
   const [seasonEvents, setSeasonEvents] = useState([]);
 
@@ -94,6 +96,32 @@ export default function Home() {
             </p>
           </div>
         </div>
+      </div>
+      <div className="home-section-3">
+        <h2>Leader Board</h2>
+        {divisions.length > 0 && allTeams.length > 0 && standings.length > 0 && (
+          <Table bordered>
+            <thead>
+              <tr>
+                <th>Division</th>
+                <th>1st</th>
+                <th>2nd</th>
+                <th>3rd</th>
+              </tr>
+            </thead>
+            <tbody>
+              {divisions.map((division) => {
+                const teams = getOrderedTeamsInDivision(allTeams, standings, division.divisionId);
+                return (
+                  <tr key={division.divisionId}>
+                    <td>{division.divisionNumber}</td>
+                    {[0, 1, 2].map((index) => <td key={index}>{teams[index]}</td>)}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </Table>
+        )}
       </div>
     </div>
   );

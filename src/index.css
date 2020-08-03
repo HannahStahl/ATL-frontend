@@ -273,6 +273,32 @@ th,td:not(.key-date) {
   margin-bottom: 0px;
 }
 
+.home-section-3 {
+  background-color: var(--light-blue);
+  width: 100vw;
+  padding: 75px 7%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.home-section-3 table {
+  background-color: white;
+  max-width: 1000px;
+}
+
+.home-section-3 h2 {
+  margin-bottom: 30px;
+}
+
+.home-section-3 th {
+  text-align: center;
+  background-color: var(--navy);
+  color: white;
+}
+
 .key-dates {
   margin-bottom: 10px;
 }

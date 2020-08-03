@@ -2,22 +2,22 @@ import React from "react";
 import { PageHeader, Table } from "react-bootstrap";
 import { useAppContext } from "./libs/contextLib";
 
+export const getOrderedTeamsInDivision = (allTeams, standings, divisionId) => {
+  const teamsInDivision = allTeams.filter((team) => team.divisionId === divisionId);
+  const sortedTeams = teamsInDivision.sort((a, b) => {
+    const team1 = standings.find((standing) => standing.teamId === a.teamId);
+    const team2 =  standings.find((standing) => standing.teamId === b.teamId);
+    if (team1 && !team2) return -1;
+    if (team2 && !team1) return 1;
+    if (team1 && team2 && team1.percentSetsWon > team2.percentSetsWon) return -1;
+    if (team1 && team2 && team2.percentSetsWon > team1.percentSetsWon) return 1;
+    return 0;
+  });
+  return sortedTeams.map((team) => team.teamName);
+};
+
 export default function LeaderBoard() {
   const { divisions, allTeams, standings } = useAppContext();
-
-  const getOrderedTeamsInDivision = (divisionId) => {
-    const teamsInDivision = allTeams.filter((team) => team.divisionId === divisionId);
-    const sortedTeams = teamsInDivision.sort((a, b) => {
-      const team1 = standings.find((standing) => standing.teamId === a.teamId);
-      const team2 =  standings.find((standing) => standing.teamId === b.teamId);
-      if (team1 && !team2) return -1;
-      if (team2 && !team1) return 1;
-      if (team1 && team2 && team1.percentSetsWon > team2.percentSetsWon) return -1;
-      if (team1 && team2 && team2.percentSetsWon > team1.percentSetsWon) return 1;
-      return 0;
-    });
-    return sortedTeams.map((team) => team.teamName);
-  };
 
   return (
     <div className="container">
@@ -39,7 +39,7 @@ export default function LeaderBoard() {
               </thead>
               <tbody>
                 {divisions.map((division) => {
-                  const teams = getOrderedTeamsInDivision(division.divisionId);
+                  const teams = getOrderedTeamsInDivision(allTeams, standings, division.divisionId);
                   return (
                     <tr key={division.divisionId}>
                       <td>{division.divisionNumber}</td>
