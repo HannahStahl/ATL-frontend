@@ -154,7 +154,7 @@ function App() {
             ) : (
               <LinkContainer to="/login">
                 <NavItem>
-                  Login
+                  {window.innerWidth > 767 && 'Login'}
                   <i className="fas fa-user-circle" />
                 </NavItem>
               </LinkContainer>
