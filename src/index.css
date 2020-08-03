@@ -217,9 +217,10 @@ th,td {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  min-height: 400px;
   text-align: center;
-  padding: 75px 7%;
+  margin-top: 50px;
+  padding: 7%;
 }
 
 .home-section-1-content {
