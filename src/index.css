@@ -119,7 +119,9 @@ th,td:not(.key-date) {
 
 .App nav .container-fluid .navbar-brand {
   margin-left: 0px;
-  color: var(--navy);
+  color: var(--red);
+  font-weight: bold;
+  font-size: 28px;
 }
 
 .App .nav .dropdown-toggle .fa-user-circle {
