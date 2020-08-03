@@ -100,27 +100,32 @@ export default function Home() {
       <div className="home-section-3">
         <h2>Leader Board</h2>
         {divisions.length > 0 && allTeams.length > 0 && standings.length > 0 && (
-          <Table bordered>
-            <thead>
-              <tr>
-                <th>Division</th>
-                <th>1st</th>
-                <th>2nd</th>
-                <th>3rd</th>
-              </tr>
-            </thead>
-            <tbody>
-              {divisions.map((division) => {
-                const teams = getOrderedTeamsInDivision(allTeams, standings, division.divisionId);
-                return (
-                  <tr key={division.divisionId}>
-                    <td>{division.divisionNumber}</td>
-                    {[0, 1, 2].map((index) => <td key={index}>{teams[index]}</td>)}
+          <div className="centered-content">
+            <div className="table-container">
+              <Table bordered hover className="interactive-table">
+                <thead>
+                  <tr>
+                    <th>Division</th>
+                    <th>1st</th>
+                    <th>2nd</th>
+                    <th>3rd</th>
                   </tr>
-                );
-              })}
-            </tbody>
-          </Table>
+                </thead>
+                <tbody>
+                  {divisions.map((division) => {
+                    const teams = getOrderedTeamsInDivision(allTeams, standings, division.divisionId);
+                    const standingsUrl = `/standings?divisionId=${division.divisionId}`;
+                    return (
+                      <tr key={division.divisionId} onClick={() => window.location.href = standingsUrl}>
+                        <td>{division.divisionNumber}</td>
+                        {[0, 1, 2].map((index) => <td key={index}>{teams[index]}</td>)}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </Table>
+            </div>
+          </div>
         )}
       </div>
     </div>

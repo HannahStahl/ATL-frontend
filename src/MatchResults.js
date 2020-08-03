@@ -44,7 +44,7 @@ export default function MatchResults() {
             <option value="">All divisions</option>
             {divisions.map((division) => (
               <option key={division.divisionId} value={division.divisionId}>
-                {`Division ${division.divisionNumber} only`}
+                {`Division ${division.divisionNumber}`}
               </option>
             ))}
           </FormControl>
@@ -57,7 +57,7 @@ export default function MatchResults() {
             <option value="">All teams</option>
             {allTeams.filter((team) => divisionId === "" || team.divisionId === divisionId).map((team) => (
               <option key={team.teamId} value={team.teamId}>
-                {`${team.teamName} only`}
+                {`${team.teamName}`}
               </option>
             ))}
           </FormControl>
@@ -70,7 +70,7 @@ export default function MatchResults() {
             <option value="">All weeks</option>
             {weekNumbers.map((weekNumber) => (
               <option key={weekNumber} value={weekNumber}>
-                {`Week ${weekNumber} only`}
+                {`Week ${weekNumber}`}
               </option>
             ))}
           </FormControl>

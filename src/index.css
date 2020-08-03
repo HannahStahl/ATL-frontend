@@ -286,9 +286,12 @@ th,td:not(.key-date) {
   align-items: center;
 }
 
+.home-section-3 .centered-content {
+  width: 100%;
+}
+
 .home-section-3 table {
   background-color: white;
-  max-width: 1000px;
 }
 
 .home-section-3 h2 {

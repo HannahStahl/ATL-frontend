@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { PageHeader, FormControl, Table } from "react-bootstrap";
 import { useAppContext } from "./libs/contextLib";
 
 export default function Standings() {
   const { divisions, allTeams, standings, allMatches } = useAppContext();
   const [divisionId, setDivisionId] = useState("");
+
+  useEffect(() => {
+    const selectedDivisionId = window.location.search.split('?divisionId=')[1];
+    if (selectedDivisionId) setDivisionId(selectedDivisionId);
+  }, []);
 
   const getSets = (teamId, weekNumber) => {
     const match = allMatches.find((matchInList) => (
@@ -47,7 +52,7 @@ export default function Standings() {
               <option value="">All divisions</option>
               {divisions.map((division) => (
                 <option key={division.divisionId} value={division.divisionId}>
-                  {`Division ${division.divisionNumber} only`}
+                  {`Division ${division.divisionNumber}`}
                 </option>
               ))}
             </FormControl>
