@@ -386,8 +386,12 @@ th,td:not(.key-date) {
   padding: 20px;
 }
 
+.weather-hour h3 {
+  margin-top: 10px;
+}
+
 .raindrop {
-  margin-right: 10px;
+  margin-right: 7px;
 }
 
 .weather-external-link {

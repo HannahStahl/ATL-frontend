@@ -151,6 +151,7 @@ export default function Home() {
                     alt={hour.weather[0].description}
                   />
                   <h4>{moment.unix(hour.dt).format("hA")}</h4>
+                  <h3>{`${hour.temp.toFixed(0)}°F`}</h3>
                   <p>{hour.weather[0].main}</p>
                   <p>
                     <i className="raindrop fas fa-tint" />
