@@ -54,7 +54,7 @@ export default function Signup() {
     } else {
       try {
         const newUser = await Auth.signUp({
-          username: email, password: password,
+          username: email, password: password, validationData: [{ Name: "accessCode", Value: accessCode }]
         });
         setIsLoading(false);
         setNewUser(newUser);

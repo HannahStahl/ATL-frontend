@@ -5,8 +5,8 @@ const dev = {
   },
   cognito: {
     REGION: "us-east-1",
-    USER_POOL_ID: "us-east-1_wrFJ8HV2C",
-    APP_CLIENT_ID: "1sf1n0igogsfmdpe3vefgsgf55",
+    USER_POOL_ID: "us-east-1_T7RNtjSjL",
+    APP_CLIENT_ID: "5ngii5r8ostvao26h5olb5t4vd",
     IDENTITY_POOL_ID: "us-east-1:ff559f05-ac79-4fd0-a1d7-19477e39ae78"
   },
   adminEmail: "hls62@cornell.edu"
