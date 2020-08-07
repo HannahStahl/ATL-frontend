@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
+import Masonry from "react-masonry-component";
 import { Table } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import { useAppContext } from "./libs/contextLib";
 import { getOrderedTeamsInDivision } from "./LeaderBoard";
 import config from "./config";
@@ -11,6 +11,7 @@ export default function Home() {
   const [season, setSeason] = useState({});
   const [seasonEvents, setSeasonEvents] = useState([]);
   const [weather, setWeather] = useState([]);
+  const weatherHours = window.innerWidth >= 850 ? [0, 1, 2, 3, 4, 5] : [0, 1, 2, 3];
 
   useEffect(() => {
     if (seasons.length > 0) {
@@ -63,8 +64,50 @@ export default function Home() {
           The Austin Tennis League (ATL) offers all levels of singles and doubles, in both Fall and Spring leagues.
           Matches are held on Saturdays throughout the Austin area, in addition to other ad hoc tennis activities.
         </h4>
-        <div className="home-section-2-cards">
+        <Masonry
+          className="masonry-layout"
+          options={{ isFitWidth: true }}
+        >
           <div className="home-section-2-card">
+            <h3>Sign Up to Play</h3>
+            <p>
+              New to Austin or ATL? <a href="/player-signup">Sign up to participate</a> in the league.
+            </p>
+          </div>
+          <div className="home-section-2-card leader-board-card">
+            <h3>Leader Board</h3>
+            <div className="table-container">
+              <Table hover className="home-page-leader-board interactive-table">
+                <thead>
+                  <tr>
+                    <th>Division</th>
+                    <th>1st</th>
+                    <th>2nd</th>
+                    <th>3rd</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {divisions.map((division) => {
+                    const teams = getOrderedTeamsInDivision(allTeams, standings, division.divisionId);
+                    const standingsUrl = `/standings?divisionId=${division.divisionId}`;
+                    return (
+                      <tr key={division.divisionId} onClick={() => window.location.href = standingsUrl}>
+                        <td>{division.divisionNumber}</td>
+                        {[0, 1, 2].map((index) => <td key={index}>{teams[index]}</td>)}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </Table>
+            </div>
+          </div>
+          <div className="home-section-2-card">
+            <h3>Captain Registration</h3>
+            <p>
+              New captains should email Maggie Yanez at <a href="mailto:myanez@pharrtennis.com">myanez@pharrtennis.com</a> or call Maggie at (512) 477-4713 to get set up.
+            </p>
+          </div>
+          <div className="home-section-2-card calendar-card">
             {season.seasonName && (
               <>
                 <h3>{`${season.seasonName || ""} Key Dates`}</h3>
@@ -96,87 +139,50 @@ export default function Home() {
               For more info, contact Roger Vallejo at <a href="mailto:roger_vallejo@hotmail.com">roger_vallejo@hotmail.com</a>.
             </p>
           </div>
-          <div className="home-section-2-card">
-            <h3>Captain Registration</h3>
-            <p>
-              New captains should email Maggie Yanez at <a href="mailto:myanez@pharrtennis.com">myanez@pharrtennis.com</a> or call Maggie at (512) 477-4713 to get set up.
-            </p>
+          <div className="home-section-2-card weather-card">
+            <h2>Today in Austin</h2>
+            {weather.length > 0 && (
+              <div className="weather">
+                {weatherHours.map((index) => {
+                  const hour = weather[index];
+                  return (
+                    <div key={index} className="weather-hour">
+                      <img
+                        src={`${config.weatherIconBaseUrl}/${hour.weather[0].icon}@2x.png`}
+                        alt={hour.weather[0].description}
+                      />
+                      <h4>{moment.unix(hour.dt).format("hA")}</h4>
+                      <h3>{`${hour.temp.toFixed(0)}°F`}</h3>
+                      <p>{hour.weather[0].main}</p>
+                      <p>
+                        <i className="raindrop fas fa-tint" />
+                        {`${hour.pop.toFixed(0)}%`}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+            <a
+              className="link-below-button"
+              href="https://www.accuweather.com/en/us/austin/78701/hourly-weather-forecast/351193"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View full forecast
+              <i className="weather-external-link fas fa-external-link-alt" />
+            </a>
+            <a
+              className="link-below-button"
+              href="https://www.kvue.com/article/weather/allergy-forecast/allergy-report/269-44055429"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View allergy report
+              <i className="weather-external-link fas fa-external-link-alt" />
+            </a>
           </div>
-        </div>
-      </div>
-      <div className="home-section-3">
-        <h2>Leader Board</h2>
-        {divisions.length > 0 && allTeams.length > 0 && standings.length > 0 && (
-          <div className="centered-content">
-            <div className="table-container">
-              <Table bordered hover className="interactive-table">
-                <thead>
-                  <tr>
-                    <th>Division</th>
-                    <th>1st</th>
-                    <th>2nd</th>
-                    <th>3rd</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {divisions.map((division) => {
-                    const teams = getOrderedTeamsInDivision(allTeams, standings, division.divisionId);
-                    const standingsUrl = `/standings?divisionId=${division.divisionId}`;
-                    return (
-                      <tr key={division.divisionId} onClick={() => window.location.href = standingsUrl}>
-                        <td>{division.divisionNumber}</td>
-                        {[0, 1, 2].map((index) => <td key={index}>{teams[index]}</td>)}
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </Table>
-            </div>
-          </div>
-        )}
-      </div>
-      <div className="home-section-4">
-        <h2>Today in Austin</h2>
-        {weather.length > 0 && (
-          <div className="weather">
-            {[0, 1, 2, 3].map((index) => {
-              const hour = weather[index];
-              return (
-                <div key={index} className="weather-hour">
-                  <img
-                    src={`${config.weatherIconBaseUrl}/${hour.weather[0].icon}@2x.png`}
-                    alt={hour.weather[0].description}
-                  />
-                  <h4>{moment.unix(hour.dt).format("hA")}</h4>
-                  <h3>{`${hour.temp.toFixed(0)}°F`}</h3>
-                  <p>{hour.weather[0].main}</p>
-                  <p>
-                    <i className="raindrop fas fa-tint" />
-                    {`${hour.pop.toFixed(0)}%`}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-        )}
-        <a
-          className="link-below-button"
-          href="https://www.accuweather.com/en/us/austin/78701/hourly-weather-forecast/351193"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          View full forecast
-          <i className="weather-external-link fas fa-external-link-alt" />
-        </a>
-        <a
-          className="link-below-button"
-          href="https://www.kvue.com/article/weather/allergy-forecast/allergy-report/269-44055429"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          View allergy report
-          <i className="weather-external-link fas fa-external-link-alt" />
-        </a>
+        </Masonry>
       </div>
     </div>
   );

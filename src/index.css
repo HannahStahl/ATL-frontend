@@ -100,6 +100,7 @@ th,td:not(.key-date) {
   border-radius: 0;
   background-color: white;
   margin-bottom: 0px;
+  z-index: 10;
 }
 
 .App nav .navbar-nav:not(.left-aligned) {
@@ -221,7 +222,7 @@ th,td:not(.key-date) {
   align-items: center;
   text-align: center;
   margin-top: 50px;
-  padding: 60px 5%;
+  padding: 60px;
 }
 
 .home-section-1-content {
@@ -235,7 +236,7 @@ th,td:not(.key-date) {
 .home-section-2 {
   background-color: white;
   width: 100vw;
-  padding: 60px 7%;
+  padding: 60px;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -245,21 +246,24 @@ th,td:not(.key-date) {
 
 .home-section-2-intro {
   max-width: 830px;
+  line-height: 1.25;
+  padding-bottom: 30px;
 }
 
 .home-section-2-cards {
   display: flex;
   justify-content: center;
+  align-items: flex-start;
   flex-wrap: wrap;
   margin-top: 30px;
+  max-width: 100%;
 }
 
 .home-section-2-card {
   padding: 30px;
   border: solid 1px var(--navy);
-  margin: 25px;
-  width: min(320px, 100%);
-  flex-basis: 1;
+  margin: 20px;
+  width: min(320px, calc(100% - 40px));
   border-radius: 10px;
   background-color: var(--light-blue);
   box-shadow: -5px 5px 5px 0px #ccc;
@@ -273,10 +277,15 @@ th,td:not(.key-date) {
   margin-bottom: 0px;
 }
 
-.home-section-3 {
-  background-color: var(--light-blue);
-  width: 100vw;
-  padding: 60px 7%;
+.calendar-card, .leader-board-card {
+  width: min(680px, calc(100% - 40px));
+}
+
+.weather-card {
+  width: min(1040px, calc(100% - 40px));
+}
+
+.weather-card {
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -284,42 +293,13 @@ th,td:not(.key-date) {
   align-items: center;
 }
 
-.home-section-3 .centered-content {
-  width: 100%;
-}
-
-.home-section-3 .table-container {
-  width: 100%;
-  max-width: 1000px;
-}
-
-.home-section-3 table {
-  background-color: white;
-}
-
-.home-section-3 h2 {
-  margin-bottom: 30px;
-}
-
-.home-section-4 h2 {
+.home-page-leader-board {
   margin-bottom: 0px;
 }
 
-.home-section-3 th {
+.home-page-leader-board th {
   text-align: center;
-  background-color: var(--navy);
-  color: white;
-}
-
-.home-section-4 {
-  background-color: white;
-  width: 100vw;
-  padding: 60px 7%;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  background-color: var(--light-blue);
 }
 
 .key-dates {
@@ -339,7 +319,7 @@ th,td:not(.key-date) {
 }
 
 .key-date:not(.key-event) {
-  padding-right: 15px;
+  padding-right: 20px;
 }
 
 .bold {
@@ -589,6 +569,21 @@ h3.welcome {
   color: #999;
 }
 
+.masonry-layout {
+  width: 100%;
+}
+
+@media all and (min-width: 768px) and (max-width: 1199px) {
+  .home-section-2-card {
+    width: 800px;
+    max-width: calc(100% - 40px);
+  }
+
+  .weather-hour {
+    padding: 0px;
+  }
+}
+
 @media all and (max-width: 767px) {
   .navbar-brand {
     position: fixed;
@@ -614,6 +609,20 @@ h3.welcome {
 
   .season-events-container {
     margin: 10px;
+  }
+
+  .home-section-2 {
+    padding: 40px;
+  }
+
+  .home-section-2-card {
+    margin-left: 0px;
+    margin-right: 0px;
+    width: 100%;
+  }
+
+  .weather-hour {
+    padding: 0px;
   }
 }
 
