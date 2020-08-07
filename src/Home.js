@@ -56,9 +56,6 @@ export default function Home() {
         <div className="home-section-1-content">
           <h1 className="welcome">Welcome to the Austin Tennis League!</h1>
           <h3 className="welcome">Sponsoring Team Tennis for Men and Women Since 1971</h3>
-          <Link to="/player-signup" className="btn btn-info btn-lg">
-            Sign up to play
-          </Link>
         </div>
       </div>
       <div className="home-section-2">
