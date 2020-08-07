@@ -132,7 +132,7 @@ export default ({
                   const value = columns[key].children ? joinChildren(row, columns[key]) : (
                     columns[key].joiningTable ? getValueFromJoiningTable(key, columns[key], row) : row[key]
                   );
-                  return <td key={key}>{columns[key].render ? columns[key].render(value) : value}</td>;
+                  return <td key={key}>{columns[key].render ? columns[key].render(value, row) : value}</td>;
                 })}
                 {setRows && !removeDisabled && (
                   <td className="remove-row">

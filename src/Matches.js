@@ -1,16 +1,32 @@
 import React, { useState, useEffect } from "react";
+import { Modal } from "react-bootstrap";
 import moment from "moment";
 import { API } from "aws-amplify";
 import Table from "./Table";
 import { useAppContext } from "./libs/contextLib";
 
 export default ({ team }) => {
-  const { allMatches, setAllMatches, locations, allTeams, loadingData } = useAppContext();
+  const { allMatches, setAllMatches, allCaptains, locations, allTeams, loadingData } = useAppContext();
+  const [matches, setMatches] = useState([]);
   const [allPlayers, setAllPlayers] = useState([]);
+  const [selectedCaptain, setSelectedCaptain] = useState(undefined);
 
   useEffect(() => {
     API.get("atl-backend", "list/player").then(setAllPlayers);
   }, []);
+
+  useEffect(() => {
+    if (!loadingData && allMatches.length > 0 && allCaptains.length > 0 && allTeams.length > 0) {
+      const matches = allMatches.map((match) => {
+        const homeTeam = allTeams.find((team) => team.teamId === match.homeTeamId);
+        const visitorTeam = allTeams.find((team) => team.teamId === match.visitorTeamId);
+        const homeCaptainId = homeTeam.captainId;
+        const visitorCaptainId = visitorTeam.captainId;
+        return { ...match, homeCaptainId, visitorCaptainId };
+      });
+      setMatches(matches);
+    }
+  }, [loadingData, allTeams, allMatches, allCaptains])
 
   const playerColumn = (label, home) => ({
     label,
@@ -53,6 +69,24 @@ export default ({ team }) => {
       joiningTableFieldNames: ["teamName"],
       readOnly: true
     },
+    homeCaptainId: {
+      label: "Home Captain",
+      joiningTable: allCaptains,
+      joiningTableKey: "userId",
+      joiningTableFieldNames: ["firstName", "lastName"],
+      readOnly: true,
+      render: (value, row) => (
+        row.homeCaptainId && row.homeCaptainId.length > 0 && (
+          // eslint-disable-next-line jsx-a11y/anchor-is-valid
+          <a
+            href="#"
+            onClick={() => setSelectedCaptain(allCaptains.find((captain) => captain.userId === row.homeCaptainId))}
+          >
+            {value}
+          </a>
+        )
+      )
+    },
     visitorTeamId: {
       label: "Visiting Team",
       joiningTable: allTeams,
@@ -60,6 +94,24 @@ export default ({ team }) => {
       joiningTableFieldNames: ["teamName"],
       readOnly: true
     }, // TODO change these to Home boolean and Opponent name
+    visitorCaptainId: {
+      label: "Visitor Captain",
+      joiningTable: allCaptains,
+      joiningTableKey: "userId",
+      joiningTableFieldNames: ["firstName", "lastName"],
+      readOnly: true,
+      render: (value, row) => (
+        row.visitorCaptainId && row.visitorCaptainId.length > 0 && (
+          // eslint-disable-next-line jsx-a11y/anchor-is-valid
+          <a
+            href="#"
+            onClick={() => setSelectedCaptain(allCaptains.find((captain) => captain.userId === row.visitorCaptainId))}
+          >
+            {value}
+          </a>
+        )
+      )
+    },
     singles1HomePlayerId: playerColumn("S1 Home Player", true),
     singles1VisitorPlayerId: playerColumn("S1 Visitor Player", false),
     singles2HomePlayerId: playerColumn("S2 Home Player", true),
@@ -98,7 +150,7 @@ export default ({ team }) => {
       <h1 className="team-details-page-header">Matches</h1>
       <Table
         columns={columns}
-        rows={allMatches}
+        rows={matches}
         filterRows={filterMatches}
         setRows={setAllMatches}
         getRows={() => API.get("atl-backend", "list/match")}
@@ -107,6 +159,15 @@ export default ({ team }) => {
         createDisabled
         removeDisabled
       />
+      <Modal show={selectedCaptain !== undefined} onHide={() => setSelectedCaptain(undefined)}>
+        <Modal.Header closeButton>
+          <h2>{selectedCaptain ? `${selectedCaptain.firstName || ""} ${selectedCaptain.lastName || ""}` : ""}</h2>
+        </Modal.Header>
+        <Modal.Body>
+            <p><b>Phone:</b> {selectedCaptain ? (selectedCaptain.phone || "") : ""}</p>
+            <p><b>Email:</b> {selectedCaptain ? (selectedCaptain.email || "") : ""}</p>
+        </Modal.Body>
+      </Modal>
     </>
   ) : <div />;
 }
