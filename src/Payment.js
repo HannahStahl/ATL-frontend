@@ -20,7 +20,7 @@ export default function Payment({ team }) {
           <p>Note that you do not have to have a PayPal account to use PayPal. All you need is a credit card.</p>
           <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
             <input type="hidden" name="cmd" value="_xclick" />
-            <input type="hidden" name="business" value="hannahstahl14@gmail.com" />
+            <input type="hidden" name="business" value="atl@atltennis.org" />
             <input type="hidden" name="lc" value="US" />
             <input type="hidden" name="item_name" value="Fee Payment" />
             <input type="hidden" name="amount" value="206.28" />
