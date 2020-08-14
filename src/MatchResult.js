@@ -5,7 +5,7 @@ import { API } from "aws-amplify";
 import { useAppContext } from "./libs/contextLib";
 
 export default function MatchResult() {
-  const { allMatches, allTeams, locations } = useAppContext();
+  const { allMatches, matchResults, allTeams, locations } = useAppContext();
   const matchId = window.location.pathname.split('match-results/')[1];
   const [match, setMatch] = useState({});
 
@@ -25,9 +25,12 @@ export default function MatchResult() {
       ]);
       return `${player1}${player1 && player2 ? ', ' : ''}${player2}`;
     };
-    if (allMatches && allMatches.length > 0) {
+    if (allMatches && allMatches.length > 0 && matchResults && matchResults.length > 0) {
       const getMatchInfo = async () => {
-        const matchInfo = allMatches.find((matchInList) => matchInList.matchId === matchId);
+        const matchInfo = {
+          ...allMatches.find((matchInList) => matchInList.matchId === matchId),
+          ...matchResults.find((matchResultInList) => matchResultInList.matchId === matchId)
+        };
         const [
           singles1HomePlayer, singles1VisitorPlayer,
           singles2HomePlayer, singles2VisitorPlayer,
@@ -52,7 +55,7 @@ export default function MatchResult() {
       };
       if (matchId && matchId.length > 0) getMatchInfo();
     }
-  }, [allMatches, matchId]);
+  }, [allMatches, matchResults, matchId]);
 
   if (!matchId || matchId.length === 0) {
     window.location.pathname = "/match-results";

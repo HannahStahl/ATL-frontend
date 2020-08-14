@@ -24,37 +24,39 @@ function App() {
   const [events, setEvents] = useState([]);
   const [standings, setStandings] = useState([]);
   const [allMatches, setAllMatches] = useState([]);
+  const [matchResults, setMatchResults] = useState([]);
   const [loadingPublicData, setLoadingPublicData] = useState(true);
   const [loadingData, setLoadingData] = useState(true);
 
-  async function fetchPublicData() {
-    const [
-      users, teams, locations, divisions, associations, seasons, events, standings, matches
-    ] = await Promise.all([
-      API.get("atl-backend", "list/user"),
-      API.get("atl-backend", "list/team"),
-      API.get("atl-backend", "list/location"),
-      API.get("atl-backend", "list/division"),
-      API.get("atl-backend", "list/association"),
-      API.get("atl-backend", "list/season"),
-      API.get("atl-backend", "list/event"),
-      API.get("atl-backend", "list/standing"),
-      API.get("atl-backend", "list/match")
-    ]);
-    setUsers(users);
-    setAllCaptains(users.filter((user) => user.isCaptain));
-    setAllTeams(teams);
-    setLocations(locations);
-    setDivisions(divisions);
-    setAssociations(associations);
-    setSeasons(seasons);
-    setEvents(events);
-    setStandings(standings);
-    setAllMatches(matches);
-    setLoadingPublicData(false);
-  }
-
   useEffect(() => {
+    async function fetchPublicData() {
+      const [
+        users, teams, locations, divisions, associations, seasons, events, standings, matches, matchResults
+      ] = await Promise.all([
+        API.get("atl-backend", "list/user"),
+        API.get("atl-backend", "list/team"),
+        API.get("atl-backend", "list/location"),
+        API.get("atl-backend", "list/division"),
+        API.get("atl-backend", "list/association"),
+        API.get("atl-backend", "list/season"),
+        API.get("atl-backend", "list/event"),
+        API.get("atl-backend", "list/standing"),
+        API.get("atl-backend", "list/match"),
+        API.get("atl-backend", "list/matchResult")
+      ]);
+      setUsers(users);
+      setAllCaptains(users.filter((user) => user.isCaptain));
+      setAllTeams(teams);
+      setLocations(locations);
+      setDivisions(divisions);
+      setAssociations(associations);
+      setSeasons(seasons);
+      setEvents(events);
+      setStandings(standings);
+      setAllMatches(matches);
+      setMatchResults(matchResults);
+      setLoadingPublicData(false);
+    }
     async function onLoad() {
       try {
         await Auth.currentSession();
@@ -187,7 +189,9 @@ function App() {
             standings,
             setStandings,
             allMatches,
-            setAllMatches
+            setAllMatches,
+            matchResults,
+            setMatchResults
           }}>
             <Routes />
           </AppContext.Provider>

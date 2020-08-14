@@ -10,9 +10,22 @@ import { onError } from "./libs/errorLib";
 import SchedulePDF from "./SchedulePDF";
 
 export default () => {
-  const { allMatches, setAllMatches, locations, allTeams, loadingData } = useAppContext();
+  const {
+    allMatches, setAllMatches, matchResults, setMatchResults, locations, allTeams, loadingData
+  } = useAppContext();
   const [locationId, setLocationId] = useState("");
   const [allPlayers, setAllPlayers] = useState([]);
+  const [matches, setMatches] = useState([]);
+
+  useEffect(() => {
+    if (!loadingData && allMatches.length > 0 && matchResults.length > 0) {
+      const matches = allMatches.map((match) => {
+        const matchResult = matchResults.find((result) => result.matchId === match.matchId);
+        return { ...match, ...matchResult };
+      });
+      setMatches(matches);
+    }
+  }, [loadingData, allMatches, matchResults]);
 
   useEffect(() => {
     API.get("atl-backend", "list/player").then(setAllPlayers);
@@ -129,18 +142,43 @@ export default () => {
   const addMatch = async (body) => {
     body.totalHomeSetsWon = getTotalHomeSetsWon(body);
     body.totalVisitorSetsWon = getTotalVisitorSetsWon(body);
-    await API.post("atl-backend", "create/match", { body });
-    const updatedMatches = await API.get("atl-backend", "list/match");
+    const { matchId } = await API.post("atl-backend", "create/match", { body });
+    await API.post("atl-backend", "create/matchResult", { body: { ...body, matchId } })
+    const [updatedMatches, updatedMatchResults] = await Promise.all([
+      API.get("atl-backend", "list/match"),
+      API.get("atl-backend", "list/matchResult")
+    ]);
     setAllMatches([...updatedMatches]);
+    setMatchResults([...updatedMatchResults]);
   };
 
   const editMatch = async (matchId, body) => {
     body.totalHomeSetsWon = getTotalHomeSetsWon(body);
     body.totalVisitorSetsWon = getTotalVisitorSetsWon(body);
-    await API.put("atl-backend", `update/match/${matchId}`, { body });
-    const updatedMatches = await API.get("atl-backend", "list/match");
+    await Promise.all([
+      API.put("atl-backend", `update/match/${matchId}`, { body }),
+      API.put("atl-backend", `update/matchResult/${matchId}`, { body })
+    ]);
+    const [updatedMatches, updatedMatchResults] = await Promise.all([
+      API.get("atl-backend", "list/match"),
+      API.get("atl-backend", "list/matchResult")
+    ]);
     setAllMatches([...updatedMatches]);
+    setMatchResults([...updatedMatchResults]);
   };
+
+  const deleteMatch = async (matchId) => {
+    await Promise.all([
+      API.del("atl-backend", `delete/match/${matchId}`),
+      API.del("atl-backend", `delete/matchResult/${matchId}`)
+    ]);
+    const [updatedMatches, updatedMatchResults] = await Promise.all([
+      API.get("atl-backend", "list/match"),
+      API.get("atl-backend", "list/matchResult")
+    ]);
+    setAllMatches([...updatedMatches]);
+    setMatchResults([...updatedMatchResults]);
+  }
 
   const dataKeys = ["weekNumber", "matchDate", "startTime", "locationId", "homeTeamId", "visitorTeamId"];
 
@@ -192,7 +230,7 @@ export default () => {
         <>
           <Table
             columns={columns}
-            rows={allMatches}
+            rows={matches}
             filterRows={filterMatches}
             setRows={setAllMatches}
             getRows={() => API.get("atl-backend", "list/match")}
@@ -201,6 +239,7 @@ export default () => {
             validate={validate}
             customAddFunction={addMatch}
             customEditFunction={editMatch}
+            customDeleteFunction={deleteMatch}
           />
           <p className="centered-text">
             <b>Download schedule:</b>
@@ -211,6 +250,7 @@ export default () => {
             </a>
             <span className="download-schedule-link">
               <PDFDownloadLink
+                key={Math.random()}
                 document={
                   <SchedulePDF
                     dataKeys={dataKeys}

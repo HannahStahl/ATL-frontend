@@ -3,7 +3,7 @@ import { PageHeader, FormControl, Table } from "react-bootstrap";
 import { useAppContext } from "./libs/contextLib";
 
 export default function Standings() {
-  const { divisions, allTeams, standings, allMatches } = useAppContext();
+  const { divisions, allTeams, standings, allMatches, matchResults } = useAppContext();
   const [divisionId, setDivisionId] = useState("");
 
   useEffect(() => {
@@ -16,9 +16,10 @@ export default function Standings() {
       (matchInList.homeTeamId === teamId || matchInList.visitorTeamId === teamId) &&
       parseInt(matchInList.weekNumber) === parseInt(weekNumber)
     ));
+    const matchResult = match && matchResults.find((matchResult) => matchResult.matchId === match.matchId);
     return {
-      setsWon: match ? (match.homeTeamId === teamId ? match.totalHomeSetsWon : match.totalVisitorSetsWon) : "",
-      setsLost: match ? (match.homeTeamId === teamId ? match.totalVisitorSetsWon : match.totalHomeSetsWon) : ""
+      setsWon: match ? (match.homeTeamId === teamId ? matchResult.totalHomeSetsWon : matchResult.totalVisitorSetsWon) : "",
+      setsLost: match ? (match.homeTeamId === teamId ? matchResult.totalVisitorSetsWon : matchResult.totalHomeSetsWon) : ""
     };
   };
 
@@ -40,7 +41,13 @@ export default function Standings() {
   return (
     <div className="container">
       <PageHeader>Standings</PageHeader>
-      {divisions.length > 0 && allTeams.length > 0 && standings.length > 0 && allMatches.length > 0 && (
+      {(
+        divisions.length > 0 &&
+        allTeams.length > 0 &&
+        standings.length > 0 &&
+        allMatches.length > 0 &&
+        matchResults.length > 0
+      ) && (
         <div className="centered-content">
           <div className="centered-content-inner">
             <FormControl

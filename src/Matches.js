@@ -6,7 +6,9 @@ import Table from "./Table";
 import { useAppContext } from "./libs/contextLib";
 
 export default ({ team }) => {
-  const { allMatches, setAllMatches, allCaptains, locations, allTeams, loadingData } = useAppContext();
+  const {
+    allMatches, setAllMatches, matchResults, setMatchResults, allCaptains, locations, allTeams, loadingData
+  } = useAppContext();
   const [matches, setMatches] = useState([]);
   const [allPlayers, setAllPlayers] = useState([]);
   const [selectedCaptain, setSelectedCaptain] = useState(undefined);
@@ -16,17 +18,24 @@ export default ({ team }) => {
   }, []);
 
   useEffect(() => {
-    if (!loadingData && allMatches.length > 0 && allCaptains.length > 0 && allTeams.length > 0) {
+    if (
+      !loadingData &&
+      allMatches.length > 0 &&
+      matchResults.length > 0 &&
+      allCaptains.length > 0 &&
+      allTeams.length > 0
+    ) {
       const matches = allMatches.map((match) => {
         const homeTeam = allTeams.find((team) => team.teamId === match.homeTeamId);
         const visitorTeam = allTeams.find((team) => team.teamId === match.visitorTeamId);
+        const matchResult = matchResults.find((result) => result.matchId === match.matchId);
         const homeCaptainId = homeTeam.captainId;
         const visitorCaptainId = visitorTeam.captainId;
-        return { ...match, homeCaptainId, visitorCaptainId };
+        return { ...match, ...matchResult, homeCaptainId, visitorCaptainId };
       });
       setMatches(matches);
     }
-  }, [loadingData, allTeams, allMatches, allCaptains])
+  }, [loadingData, allTeams, allMatches, matchResults, allCaptains])
 
   const playerColumn = (label, home) => ({
     label,
@@ -135,7 +144,17 @@ export default ({ team }) => {
     singles1Score: { label: "S1 Score", type: "text" },
     singles2Score: { label: "S2 Score", type: "text" },
     doubles1Score: { label: "D1 Score", type: "text" },
-    doubles2Score: { label: "D2 Score", type: "text" }
+    doubles2Score: { label: "D2 Score", type: "text" },
+    singles1HomeSetsWon: { label: "S1 Home Sets Won", type: "number", hideFromTable: true },
+    singles1VisitorSetsWon: { label: "S1 Visitor Sets Won", type: "number", hideFromTable: true },
+    singles2HomeSetsWon: { label: "S2 Home Sets Won", type: "number", hideFromTable: true },
+    singles2VisitorSetsWon: { label: "S2 Visitor Sets Won", type: "number", hideFromTable: true },
+    doubles1HomeSetsWon: { label: "D1 Home Sets Won", type: "number", hideFromTable: true },
+    doubles1VisitorSetsWon: { label: "D1 Visitor Sets Won", type: "number", hideFromTable: true },
+    doubles2HomeSetsWon: { label: "D2 Home Sets Won", type: "number", hideFromTable: true },
+    doubles2VisitorSetsWon: { label: "D2 Visitor Sets Won", type: "number", hideFromTable: true },
+    totalHomeSetsWon: { label: "Home Sets Won", type: "number", readOnly: true },
+    totalVisitorSetsWon: { label: "Visitor Sets Won", type: "number", readOnly: true },
   };
 
   const { teamId } = team;
@@ -143,6 +162,35 @@ export default ({ team }) => {
   const filterMatches = (list) => list.filter(
     (match) => match.homeTeamId === teamId || match.visitorTeamId === teamId
   );
+
+  const getTotalHomeSetsWon = (match) => (
+    parseInt(match.singles1HomeSetsWon || 0) +
+    parseInt(match.singles2HomeSetsWon || 0) +
+    parseInt(match.doubles1HomeSetsWon || 0) +
+    parseInt(match.doubles2HomeSetsWon || 0)
+  );
+
+  const getTotalVisitorSetsWon = (match) => (
+    parseInt(match.singles1VisitorSetsWon || 0) +
+    parseInt(match.singles2VisitorSetsWon || 0) +
+    parseInt(match.doubles1VisitorSetsWon || 0) +
+    parseInt(match.doubles2VisitorSetsWon || 0)
+  );
+
+  const editMatch = async (matchId, body) => {
+    body.totalHomeSetsWon = getTotalHomeSetsWon(body);
+    body.totalVisitorSetsWon = getTotalVisitorSetsWon(body);
+    await Promise.all([
+      API.put("atl-backend", `update/match/${matchId}`, { body }),
+      API.put("atl-backend", `update/matchResult/${matchId}`, { body })
+    ]);
+    const [updatedMatches, updatedMatchResults] = await Promise.all([
+      API.get("atl-backend", "list/match"),
+      API.get("atl-backend", "list/matchResult")
+    ]);
+    setAllMatches([...updatedMatches]);
+    setMatchResults([...updatedMatchResults]);
+  };
 
   return !loadingData && teamId ? (
     <>
@@ -156,6 +204,7 @@ export default ({ team }) => {
         getRows={() => API.get("atl-backend", "list/match")}
         itemType="match"
         API={API}
+        customEditFunction={editMatch}
         createDisabled
         removeDisabled
       />
