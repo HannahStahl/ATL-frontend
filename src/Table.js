@@ -37,16 +37,6 @@ export default ({
     if (customEditFunction) await customEditFunction(rowId, body);
     else {
       const result = await API.put("atl-backend", `update/${itemType}/${rowId}`, { body });
-      if (itemType === "match") {
-        const matchResultBody = { ...body };
-        delete matchResultBody.homeTeamId;
-        delete matchResultBody.visitorTeamId;
-        delete matchResultBody.locationId;
-        delete matchResultBody.weekNumber;
-        delete matchResultBody.matchDate;
-        delete matchResultBody.startTime;
-        await API.post("atl-backend", "create/matchResult", { body: matchResultBody });
-      }
       const newRows = await getRows(result);
       setRows([...newRows]);
     }

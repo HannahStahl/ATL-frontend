@@ -138,14 +138,6 @@ export default () => {
     body.totalHomeSetsWon = getTotalHomeSetsWon(body);
     body.totalVisitorSetsWon = getTotalVisitorSetsWon(body);
     await API.put("atl-backend", `update/match/${matchId}`, { body });
-    const matchResultBody = { ...body };
-    delete matchResultBody.homeTeamId;
-    delete matchResultBody.visitorTeamId;
-    delete matchResultBody.locationId;
-    delete matchResultBody.weekNumber;
-    delete matchResultBody.matchDate;
-    delete matchResultBody.startTime;
-    await API.post("atl-backend", "create/matchResult", { body: matchResultBody });
     const updatedMatches = await API.get("atl-backend", "list/match");
     setAllMatches([...updatedMatches]);
   };
