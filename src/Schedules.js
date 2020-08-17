@@ -155,10 +155,13 @@ export default () => {
   const editMatch = async (matchId, body) => {
     body.totalHomeSetsWon = getTotalHomeSetsWon(body);
     body.totalVisitorSetsWon = getTotalVisitorSetsWon(body);
-    await Promise.all([
-      API.put("atl-backend", `update/match/${matchId}`, { body }),
-      API.put("atl-backend", `update/matchResult/${matchId}`, { body })
-    ]);
+    const promises = [API.put("atl-backend", `update/match/${matchId}`, { body })];
+    if (matchResults.find((matchResult) => matchResult.matchId === body.matchId)) {
+      promises.push(API.put("atl-backend", `update/matchResult/${matchId}`, { body }));
+    } else {
+      promises.push(API.post("atl-backend", "create/matchResult", { body }));
+    }
+    await Promise.all(promises);
     const [updatedMatches, updatedMatchResults] = await Promise.all([
       API.get("atl-backend", "list/match"),
       API.get("atl-backend", "list/matchResult")
