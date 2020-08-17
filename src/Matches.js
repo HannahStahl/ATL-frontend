@@ -180,15 +180,8 @@ export default ({ team }) => {
   const editMatch = async (matchId, body) => {
     body.totalHomeSetsWon = getTotalHomeSetsWon(body);
     body.totalVisitorSetsWon = getTotalVisitorSetsWon(body);
-    await Promise.all([
-      API.put("atl-backend", `update/match/${matchId}`, { body }),
-      API.put("atl-backend", `update/matchResult/${matchId}`, { body })
-    ]);
-    const [updatedMatches, updatedMatchResults] = await Promise.all([
-      API.get("atl-backend", "list/match"),
-      API.get("atl-backend", "list/matchResult")
-    ]);
-    setAllMatches([...updatedMatches]);
+    await API.put("atl-backend", `update/matchResult/${matchId}`, { body });
+    const updatedMatchResults = await API.get("atl-backend", "list/matchResult");
     setMatchResults([...updatedMatchResults]);
   };
 
