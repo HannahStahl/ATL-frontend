@@ -28,7 +28,7 @@ export default () => {
   return (
     <div className="container">
       <PageHeader>Associations</PageHeader>
-      {!loadingData && (
+      {loadingData ? <p className="centered-text">Loading...</p> : (
         <Table
           columns={columns}
           rows={associations}

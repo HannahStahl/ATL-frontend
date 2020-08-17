@@ -90,7 +90,7 @@ export default function MatchResult() {
     <div className="container">
       <PageHeader>Match Results</PageHeader>
       <div className="centered-content">
-        {match.matchId && (
+        {match.matchId ? (
           <div className="centered-content-inner">
             <div className="centered-content match-result-intro">
               <div>
@@ -158,7 +158,7 @@ export default function MatchResult() {
               </Table>
             </div>
           </div>
-        )}
+        ) : <p>Loading...</p>}
       </div>
     </div>
   );

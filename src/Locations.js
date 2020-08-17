@@ -55,7 +55,7 @@ export default () => {
   return (
     <div className="container">
       <PageHeader>Court Locations</PageHeader>
-      {!loadingData && (
+      {loadingData ? <p className="centered-text">Loading...</p> : (
         <Table
           columns={columns}
           rows={locations}

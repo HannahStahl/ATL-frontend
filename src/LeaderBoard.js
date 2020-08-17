@@ -22,7 +22,7 @@ export default function LeaderBoard() {
   return (
     <div className="container">
       <PageHeader>Leader Board</PageHeader>
-      {divisions.length > 0 && allTeams.length > 0 && standings.length > 0 && (
+      {divisions.length > 0 && allTeams.length > 0 && standings.length > 0 ? (
         <div className="centered-content">
           <div className="table-container">
             <Table bordered>
@@ -53,7 +53,7 @@ export default function LeaderBoard() {
             </Table>
           </div>
         </div>
-      )}
+      ) : <p className="centered-text">Loading...</p>}
     </div>
   );
 }

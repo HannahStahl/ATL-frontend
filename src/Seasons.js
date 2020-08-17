@@ -49,7 +49,7 @@ export default () => {
   return (
     <div className="container">
       <PageHeader>Seasons</PageHeader>
-      {!loadingData && (
+      {loadingData ? <p className="centered-text">Loading...</p> : (
         <Table
           columns={columns}
           rows={seasons}

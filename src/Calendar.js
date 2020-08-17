@@ -39,7 +39,7 @@ export default function Calendar() {
   return (
     <div className="container">
       <PageHeader>Calendar</PageHeader>
-      {Object.keys(seasonEvents).length > 0 && (
+      {Object.keys(seasonEvents).length > 0 ? (
         <div className="centered-content">
           <div className="season-calendars">
             {Object.keys(seasonEvents).map((seasonName) => {
@@ -68,7 +68,7 @@ export default function Calendar() {
             })}
           </div>
         </div>
-      )}
+      ) : <p className="centered-text">Loading...</p>}
     </div>
   );
 }

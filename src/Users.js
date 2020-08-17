@@ -37,7 +37,7 @@ export default () => {
   return (
     <div className="container">
       <PageHeader>Users</PageHeader>
-      {!loadingData && (
+      {loadingData ? <p className="centered-text">Loading...</p> : (
         <Table
           columns={columns}
           rows={users}

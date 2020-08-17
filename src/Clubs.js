@@ -8,21 +8,23 @@ export default function TennisClubs() {
     <div className="container">
       <PageHeader>Local Tennis Clubs</PageHeader>
       <div className="centered-content">
-        <ul>
-          {locations.filter((location) => location.locationType === "Club").map((location) => {
-            const { tennisMapsUrl, locationName, locationId } = location;
-            return (
-              <li key={locationId}>
-                <p>
-                  {tennisMapsUrl
-                    ? <a href={tennisMapsUrl.startsWith('http') ? tennisMapsUrl : `http://${tennisMapsUrl}`}>{locationName}</a>
-                    : locationName
-                  }
-                </p>
-              </li>
-            );
-          })}
-        </ul>
+        {locations.length > 0 ? (
+          <ul>
+            {locations.filter((location) => location.locationType === "Club").map((location) => {
+              const { tennisMapsUrl, locationName, locationId } = location;
+              return (
+                <li key={locationId}>
+                  <p>
+                    {tennisMapsUrl
+                      ? <a href={tennisMapsUrl.startsWith('http') ? tennisMapsUrl : `http://${tennisMapsUrl}`}>{locationName}</a>
+                      : locationName
+                    }
+                  </p>
+                </li>
+              );
+            })}
+          </ul>
+        ) : <p>Loading...</p>}
       </div>
     </div>
   );

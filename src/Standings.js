@@ -47,7 +47,7 @@ export default function Standings() {
         standings.length > 0 &&
         allMatches.length > 0 &&
         matchResults.length > 0
-      ) && (
+      ) ? (
         <div className="centered-content">
           <div className="centered-content-inner">
             <FormControl
@@ -128,7 +128,7 @@ export default function Standings() {
             </div>
           </div>
         </div>
-      )}
+      ) : <p className="centered-text">Loading...</p>}
     </div>
   );
 }

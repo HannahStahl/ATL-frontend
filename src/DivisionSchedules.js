@@ -43,7 +43,7 @@ export default function DivisionSchedules() {
       )}
       <div className="centered-content">
         <div className="centered-content-inner">
-          {teams.length > 0 && (
+          {teams.length > 0 ? (
             <div className="table-container">
               <Table bordered>
                 <thead>
@@ -71,12 +71,14 @@ export default function DivisionSchedules() {
                 </tbody>
               </Table>
             </div>
-          )}
+          ) : <p className="centered-text">Loading...</p>}
         </div>
       </div>
-      <div className="centered-content">
-        <p>The home team must supply 4 cans of USTA-approved tennis balls.</p>
-      </div>
+      {teams.length > 0 && (
+        <div className="centered-content">
+          <p>The home team must supply 4 cans of USTA-approved tennis balls.</p>
+        </div>
+      )}
       <div className="centered-content">
         <div className="centered-content-inner">
           {schedule.length > 0 && (

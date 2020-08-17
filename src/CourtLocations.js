@@ -51,15 +51,19 @@ export default function CourtLocations() {
   return (
     <div className="container">
       <PageHeader>Court Locations</PageHeader>
-      <p className="court-locations-intro">
-        Click on a location to view directions to it.
-        If you have any questions regarding the directions, it is suggested that you check with the Home Captain before the day of the match.
-        It is the responsibility of the Captain to inform players of court locations.
-        Maps are available at: <a href="http://tennismaps.com">Tennis Maps</a>.
-      </p>
-      <ul className="court-locations-list">
-        {locations.map((location) => <CourtLocation key={location.locationId} {...location} />)}
-      </ul>
+      {locations.length > 0 ? (
+        <>
+          <p className="court-locations-intro">
+            Click on a location to view directions to it.
+            If you have any questions regarding the directions, it is suggested that you check with the Home Captain before the day of the match.
+            It is the responsibility of the Captain to inform players of court locations.
+            Maps are available at: <a href="http://tennismaps.com">Tennis Maps</a>.
+          </p>
+          <ul className="court-locations-list">
+            {locations.map((location) => <CourtLocation key={location.locationId} {...location} />)}
+          </ul>
+        </>
+      ) : <p className="centered-content">Loading...</p>}
     </div>
   );
 }

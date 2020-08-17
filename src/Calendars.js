@@ -89,7 +89,7 @@ export default () => {
           </FormControl>
         </FormGroup>
       </form>
-      {!loadingData && (
+      {loadingData ? <p className="centered-text">Loading...</p> : (
         <>
           <Table
             columns={columns}
