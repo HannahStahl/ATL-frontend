@@ -79,13 +79,15 @@ export default function PlayerSignup() {
             All information entered is kept in the strictest confidence and used only for ATL matters.
             No information will be sold or given to third parties.
           </p>
-          <EditForm
-            fields={columns}
-            save={createPlayer}
-            isLoading={isLoading}
-            buttonText="Submit"
-            labelsAbove
-          />
+          <div className="player-signup-form-container max-width-form">
+            <EditForm
+              fields={columns}
+              save={createPlayer}
+              isLoading={isLoading}
+              buttonText="Submit"
+              labelsAbove
+            />
+          </div>
         </>
       )}
     </div>

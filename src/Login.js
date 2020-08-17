@@ -33,7 +33,7 @@ export default function Login() {
   return (
     <div className="container Login">
       <PageHeader>Login</PageHeader>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="max-width-form">
         <table className="form-table">
           <tbody>
             <tr>

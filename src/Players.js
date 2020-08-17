@@ -112,11 +112,13 @@ export default () => {
       {addingPlayer ? (
         <>
           <PageHeader>Add New Player</PageHeader>
-          <EditForm
-            fields={getFormFields()}
-            save={createPlayer}
-            isLoading={isLoading}
-          />
+          <div className="max-width-form">
+            <EditForm
+              fields={getFormFields()}
+              save={createPlayer}
+              isLoading={isLoading}
+            />
+          </div>
         </>
       ) : (
         <>

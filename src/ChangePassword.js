@@ -40,7 +40,7 @@ export default function ChangePassword() {
   return (
     <div className="container">
       <PageHeader>Change Password</PageHeader>
-      <form onSubmit={handleChangeClick}>
+      <form onSubmit={handleChangeClick} className="max-width-form">
         <table className="form-table">
           <tbody>
             <tr>

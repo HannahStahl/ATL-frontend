@@ -12,6 +12,16 @@ body {
   --light-blue: #E4EBF8;
 }
 
+.max-width-form {
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.player-signup-form-container {
+  margin-top: 30px;
+}
+
 select.form-control,
 textarea.form-control,
 input.form-control {

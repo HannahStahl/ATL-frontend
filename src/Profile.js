@@ -57,7 +57,7 @@ export default function Profile() {
   };
 
   const renderEmailConfirmationForm = () => (
-    <form onSubmit={verifyNewEmail}>
+    <form onSubmit={verifyNewEmail} className="max-width-form">
     <div className="centered-content">
       <p>A confirmation code has been sent to your email inbox and should arrive within 1 minute.</p>
     </div>
@@ -98,7 +98,7 @@ export default function Profile() {
     <div className="container">
       <PageHeader>Your Profile</PageHeader>
       {emailCodeSent ? renderEmailConfirmationForm() : (
-        <>
+        <div className="max-width-form">
           <EditForm
             fields={columns}
             original={profile}
@@ -108,7 +108,7 @@ export default function Profile() {
           <div className="link-below-button">
             <a href="/change-password">Need to change your password?</a>
           </div>
-        </>
+        </div>
       )}
     </div>
   );

@@ -96,7 +96,7 @@ export default function Signup() {
 
   function renderConfirmationForm() {
     return (
-      <form onSubmit={handleConfirmationSubmit}>
+      <form onSubmit={handleConfirmationSubmit} className="max-width-form">
         <div className="centered-content">
           <p>A confirmation code has been sent to your email inbox and should arrive within 1 minute.</p>
         </div>
@@ -137,7 +137,7 @@ export default function Signup() {
 
   function renderForm() {
     return (
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="max-width-form">
         <table className="form-table">
           <tbody>
             <tr>

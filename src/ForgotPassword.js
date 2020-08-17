@@ -58,7 +58,7 @@ export default function ForgotPassword() {
         </div>
       ) : (
         codeSent ? (
-          <form onSubmit={handleConfirmationSubmit}>
+          <form onSubmit={handleConfirmationSubmit} className="forgot-password-form">
             <div className="centered-content">
               <p>A confirmation code has been sent to your email inbox and should arrive within 1 minute.</p>
             </div>
@@ -128,7 +128,7 @@ export default function ForgotPassword() {
             </LoaderButton>
           </form>
         ) : (
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="max-width-form">
             <table className="form-table">
               <tbody>
                 <tr>
