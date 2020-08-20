@@ -8,6 +8,7 @@ import { onError } from "./libs/errorLib";
 import ErrorBoundary from "./ErrorBoundary";
 import Routes from "./Routes";
 import Footer from "./Footer";
+import config from "./config";
 
 function App() {
   const history = useHistory();
@@ -87,13 +88,17 @@ function App() {
     history.push("/login");
   }
 
+  const logoFilename = window.devicePixelRatio === 2 ? "logo_2x" : "logo";
+
   return (
     !isAuthenticating && (
       <div className="App">
         <Navbar fluid collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
-              <Link to="/">ATL</Link>
+              <Link to="/">
+                <img src={`${config.cloudfrontUrl}/${logoFilename}.png`} alt="ATL" />
+              </Link>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>

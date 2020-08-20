@@ -133,6 +133,13 @@ th,td:not(.key-date) {
   color: var(--red);
   font-weight: bold;
   font-size: 28px;
+  padding: 10px 15px;
+}
+
+.App .navbar-brand img {
+  height: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .App .nav .dropdown-toggle .fa-user-circle {
@@ -598,7 +605,7 @@ h3.welcome {
   .navbar-brand {
     position: fixed;
     top: 0;
-    left: calc(50% - 25px);
+    left: calc(50% - 86px);
   }
 
   .navbar-toggle {

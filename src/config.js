@@ -35,5 +35,6 @@ export default {
   // Add common config values here
   weatherUrl: "https://api.openweathermap.org/data/2.5/onecall?lat=30.27&lon=-97.74&appid=044de181891b481b0eb773aa67c52058&exclude=current,daily,minutely&units=imperial",
   weatherIconBaseUrl: "http://openweathermap.org/img/wn",
+  cloudfrontUrl: "http://d3ei5u4i73hour.cloudfront.net",
   ...config
 };

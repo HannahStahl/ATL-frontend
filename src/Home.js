@@ -51,7 +51,7 @@ export default function Home() {
 
   return (
     <div className="Home">
-      <img className="landing-img" src="http://d3ei5u4i73hour.cloudfront.net/austin.jpg" alt="Austin Tennis League" />
+      <img className="landing-img" src={`${config.cloudfrontUrl}/austin.jpg`} alt="Austin Tennis League" />
       <div className="photo-overlay" />
       <div className="home-section-1">
         <div className="home-section-1-content">
