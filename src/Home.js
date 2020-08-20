@@ -104,7 +104,7 @@ export default function Home() {
           <div className="home-section-2-card">
             <h3>Captain Registration</h3>
             <p>
-              New captains should email Maggie Yanez at <a href="mailto:myanez@pharrtennis.com">myanez@pharrtennis.com</a> or call Maggie at (512) 477-4713 to get set up.
+              New captains should email Maggie Yanez at <a href="mailto:myanez@pharrtennis.com">myanez@pharrtennis.com</a> or call Maggie at (512) 477-7773 to get set up.
             </p>
           </div>
           <div className="home-section-2-card calendar-card">
