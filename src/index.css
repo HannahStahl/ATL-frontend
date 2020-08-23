@@ -189,6 +189,10 @@ th,td:not(.key-date) {
   text-align: center;
 }
 
+.season-toggle {
+  margin-bottom: 15px;
+}
+
 .download-schedule-link {
   margin-left: 15px;
 }
@@ -564,7 +568,7 @@ h3.welcome {
   margin-right: 20px;
 }
 
-.update-standings-btn {
+.update-standings-btn, .publish-schedule-btn {
   margin-bottom: 15px;
 }
 

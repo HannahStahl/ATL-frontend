@@ -25,6 +25,7 @@ function App() {
   const [events, setEvents] = useState([]);
   const [standings, setStandings] = useState([]);
   const [allMatches, setAllMatches] = useState([]);
+  const [draftMatches, setDraftMatches] = useState([]);
   const [matchResults, setMatchResults] = useState([]);
   const [loadingPublicData, setLoadingPublicData] = useState(true);
   const [loadingData, setLoadingData] = useState(true);
@@ -32,7 +33,8 @@ function App() {
   useEffect(() => {
     async function fetchPublicData() {
       const [
-        users, teams, locations, divisions, associations, seasons, events, standings, matches, matchResults
+        users, teams, locations, divisions, associations, seasons, events,
+        standings, matches, draftMatches, matchResults
       ] = await Promise.all([
         API.get("atl-backend", "list/user"),
         API.get("atl-backend", "list/team"),
@@ -43,6 +45,7 @@ function App() {
         API.get("atl-backend", "list/event"),
         API.get("atl-backend", "list/standing"),
         API.get("atl-backend", "list/match"),
+        API.get("atl-backend", "list/draftMatch"),
         API.get("atl-backend", "list/matchResult")
       ]);
       setUsers(users);
@@ -55,6 +58,7 @@ function App() {
       setEvents(events);
       setStandings(standings);
       setAllMatches(matches);
+      setDraftMatches(draftMatches);
       setMatchResults(matchResults);
       setLoadingPublicData(false);
     }
@@ -195,6 +199,8 @@ function App() {
             setStandings,
             allMatches,
             setAllMatches,
+            draftMatches,
+            setDraftMatches,
             matchResults,
             setMatchResults
           }}>
