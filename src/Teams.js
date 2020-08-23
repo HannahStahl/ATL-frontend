@@ -98,6 +98,8 @@ export default () => {
           <Table
             columns={columns}
             rows={allTeams}
+            filterRows={(list) => list.filter((row) => row.isActive)}
+            getInactiveRows={(list) => list.filter((row) => !row.isActive)}
             setRows={setAllTeams}
             getRows={() => API.get("atl-backend", "list/team")}
             itemType="team"

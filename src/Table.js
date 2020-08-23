@@ -6,7 +6,7 @@ import DeleteConfirmationModal from './DeleteConfirmationModal';
 export default ({
   columns, rows, filterRows, getRows, setRows, itemType, API, categoryName, customSelect,
   CustomAddComponent, customAddFunction, customEditFunction, customRemoveFunction, validate,
-  createDisabled, removeDisabled, primaryKey
+  createDisabled, removeDisabled, primaryKey, getInactiveRows
 }) => {
   const [rowSelectedForEdit, setRowSelectedForEdit] = useState(undefined);
   const [rowSelectedForRemoval, setRowSelectedForRemoval] = useState(undefined);
@@ -127,6 +127,31 @@ export default ({
                   }
                 } : undefined}
                 className={row.readOnly ? "disabled" : undefined}
+              >
+                {Object.keys(columns).filter((key) => !columns[key].hideFromTable).map((key) => {
+                  const value = columns[key].children ? joinChildren(row, columns[key]) : (
+                    columns[key].joiningTable ? getValueFromJoiningTable(key, columns[key], row) : row[key]
+                  );
+                  return <td key={key}>{columns[key].render ? columns[key].render(value, row) : value}</td>;
+                })}
+                {setRows && !removeDisabled && (
+                  <td className="remove-row">
+                    {!row.readOnly && (
+                      <i className="fas fa-times-circle" onClick={() => setRowSelectedForRemoval(row)} />
+                    )}
+                  </td>
+                )}
+              </tr>
+            ))}
+            {getInactiveRows && getInactiveRows(rows).map((row) => (
+              <tr
+                key={row[itemId]}
+                onClick={!row.readOnly && (setRows || customSelect) ? (e) => {
+                  if (!e.target.className.includes("fas") && !e.target.href) {
+                    customSelect ? customSelect(row) : setRowSelectedForEdit(row);
+                  }
+                } : undefined}
+                className={`inactive-row${row.readOnly ? " disabled" : ""}`}
               >
                 {Object.keys(columns).filter((key) => !columns[key].hideFromTable).map((key) => {
                   const value = columns[key].children ? joinChildren(row, columns[key]) : (

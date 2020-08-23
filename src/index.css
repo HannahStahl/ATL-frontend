@@ -63,6 +63,11 @@ th,td:not(.key-date) {
   overflow-x: scroll;
 }
 
+.inactive-row {
+  font-style: italic;
+  color: gray;
+}
+
 .remove-row {
   width: 30px;
 }
