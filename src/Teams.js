@@ -41,7 +41,12 @@ export default () => {
     },
     courtNumber: { label: "Court Number", type: "number" },
     courtTime: { label: "Court Time", type: "text" },
-    comments: { label: "Comments", type: "textarea" }
+    comments: { label: "Comments", type: "textarea" },
+    isActive: {
+      label: "Active",
+      type: "checkbox",
+      render: (value) => value ? <i className="fas fa-check" /> : ""
+    }
   };
 
   const emailCaptain = async (captainId, teamName, url, captainOrCocaptain) => {
