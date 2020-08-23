@@ -6,20 +6,20 @@ import Matches from "./Matches";
 
 export default function Team() {
   const { loadingData, profile, allTeams, allCaptains, locations, divisions, users } = useAppContext();
-  const { userId, isAdmin } = profile;
+  const { isAdmin } = profile;
   const [loadingTeam, setLoadingTeam] = useState(true);
   const [team, setTeam] = useState({});
   const [teams, setTeams] = useState([]);
-  const [selectedUserId, setSelectedUserId] = useState(userId);
+  const [selectedUser, setSelectedUser] = useState(profile);
   
   useEffect(() => {
-    setSelectedUserId(userId);
-  }, [userId]);
+    setSelectedUser(profile);
+  }, [profile]);
 
   useEffect(() => {
     async function fetchTeam() {
       const captainTeams = allTeams.filter((teamInList) => (
-        teamInList.captainId === selectedUserId || teamInList.cocaptainId === selectedUserId
+        teamInList.captainId === selectedUser.userId || teamInList.cocaptainId === selectedUser.userId
       ));
       setTeams(captainTeams);
       const captainTeam = captainTeams[0];
@@ -27,7 +27,7 @@ export default function Team() {
       setLoadingTeam(false);
     }
     if (!loadingData) fetchTeam();
-  }, [loadingData, selectedUserId, allTeams]);
+  }, [loadingData, selectedUser, allTeams]);
 
   const getCaptain = () => {
     const captain = team.captainId && team.captainId.length > 0 ? (
@@ -85,9 +85,9 @@ export default function Team() {
                   <td className="form-label">Viewing team info for:</td>
                   <td className="form-field">
                     <FormControl
-                      value={selectedUserId || ""}
+                      value={selectedUser.userId || ""}
                       componentClass="select"
-                      onChange={e => setSelectedUserId(e.target.value)}
+                      onChange={e => setSelectedUser(users.find((user) => user.userId === e.target.value))}
                     >
                       {users.map((user) => (
                         <option key={user.userId} value={user.userId}>
@@ -175,10 +175,16 @@ export default function Team() {
                 </tbody>
               </table>
             ) : (
-              <p className="centered-text">
-                Maggie is working on associating you with your team(s).
-                You will receive an email when this process is complete.
-              </p>
+              selectedUser.isCaptain ? (
+                <p className="centered-text">
+                  Maggie is working on associating you with your team(s).
+                  You will receive an email when this process is complete.
+                </p>
+              ) : (
+                <p className="centered-text">
+                  You are not the captain of any teams.
+                </p>
+              )
             )
           )}
         </div>
