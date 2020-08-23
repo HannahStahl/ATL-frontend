@@ -147,7 +147,7 @@ function App() {
                     id="basic-nav-dropdown"
                   >
                     <MenuItem href="/profile">My Profile</MenuItem>
-                    <MenuItem href="/team-info">Team Info</MenuItem>
+                    <MenuItem href="/team-info">My Team Info</MenuItem>
                     <MenuItem href="/payment">Payment</MenuItem>
                     {profile.isAdmin && <MenuItem href="/seasons">Seasons</MenuItem>}
                     {profile.isAdmin && <MenuItem href="/season-calendars">Season Calendars</MenuItem>}
