@@ -590,6 +590,12 @@ h3.welcome {
   color: #999;
 }
 
+.masonry-container {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+}
+
 .masonry-layout {
   width: 100%;
 }
