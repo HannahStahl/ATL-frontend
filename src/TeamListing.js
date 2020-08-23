@@ -20,7 +20,7 @@ export default function TeamListing() {
               </thead>
               <tbody>
                 {divisions.map((division) => (
-                  allTeams.filter((team) => team.divisionId === division.divisionId).map((team) => {
+                  allTeams.filter((team) => team.isActive && (team.divisionId === division.divisionId)).map((team) => {
                     const captain = allCaptains.find((captain) => captain.userId === team.captainId);
                     return (
                       <tr key={team.teamId} onClick={() => window.location.pathname = `/roster/${team.teamId}`}>
