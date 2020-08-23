@@ -654,6 +654,12 @@ h3.welcome {
   }
 }
 
+@media all and  (min-width: 1000px) {
+  .App .nav a {
+    font-size: 18px;
+  }
+}
+
 @media all and (min-width: 768px) {
   .court-locations-list {
     columns: 2;

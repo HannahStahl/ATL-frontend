@@ -136,7 +136,7 @@ function App() {
                   <NavDropdown
                     title={(
                       <p>
-                        {window.innerWidth > 767 && `${profile.firstName} ${profile.lastName}`}
+                        {window.innerWidth > 1000 && `${profile.firstName} ${profile.lastName}`}
                         <i className="fas fa-user-circle" />
                       </p>
                     )}
@@ -162,7 +162,7 @@ function App() {
             ) : (
               <LinkContainer to="/login">
                 <NavItem>
-                  {window.innerWidth > 767 && 'Login'}
+                  {window.innerWidth > 1000 && 'Login'}
                   <i className="fas fa-user-circle" />
                 </NavItem>
               </LinkContainer>
