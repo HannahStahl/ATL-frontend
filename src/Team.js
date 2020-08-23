@@ -5,16 +5,21 @@ import Roster from "./Roster";
 import Matches from "./Matches";
 
 export default function Team() {
-  const { loadingData, profile, allTeams, allCaptains, locations, divisions } = useAppContext();
-  const { userId } = profile;
+  const { loadingData, profile, allTeams, allCaptains, locations, divisions, users } = useAppContext();
+  const { userId, isAdmin } = profile;
   const [loadingTeam, setLoadingTeam] = useState(true);
   const [team, setTeam] = useState({});
   const [teams, setTeams] = useState([]);
+  const [selectedUserId, setSelectedUserId] = useState(userId);
+  
+  useEffect(() => {
+    setSelectedUserId(userId);
+  }, [userId]);
 
   useEffect(() => {
     async function fetchTeam() {
       const captainTeams = allTeams.filter((teamInList) => (
-        teamInList.captainId === userId || teamInList.cocaptainId === userId
+        teamInList.captainId === selectedUserId || teamInList.cocaptainId === selectedUserId
       ));
       setTeams(captainTeams);
       const captainTeam = captainTeams[0];
@@ -22,7 +27,7 @@ export default function Team() {
       setLoadingTeam(false);
     }
     if (!loadingData) fetchTeam();
-  }, [loadingData, userId, allTeams]);
+  }, [loadingData, selectedUserId, allTeams]);
 
   const getCaptain = () => {
     const captain = team.captainId && team.captainId.length > 0 ? (
@@ -72,6 +77,32 @@ export default function Team() {
     <div className="container">
       <div className="team-details">
         <h1 className="team-details-page-header">Team Details</h1>
+        {isAdmin && (
+          <>
+            <table>
+              <tbody>
+                <tr>
+                  <td className="form-label">Viewing team info for:</td>
+                  <td className="form-field">
+                    <FormControl
+                      value={selectedUserId || ""}
+                      componentClass="select"
+                      onChange={e => setSelectedUserId(e.target.value)}
+                    >
+                      {users.map((user) => (
+                        <option key={user.userId} value={user.userId}>
+                          {`${user.firstName || ""} ${user.lastName || ""}`}
+                        </option>
+                      ))}
+                    </FormControl>
+
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <hr className="team-details-page-break" />
+          </>
+        )}
         {teams.length > 1 && (
           <>
             <table>
