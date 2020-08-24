@@ -33,14 +33,14 @@ export default () => {
       joiningTableFieldNames: ["divisionNumber"]
     },
     locationId: {
-      label: "Location",
+      label: "Home Courts",
       type: "dropdown",
       joiningTable: locations,
       joiningTableKey: "locationId",
       joiningTableFieldNames: ["locationName"]
     },
-    courtNumber: { label: "Court Number", type: "number" },
-    courtTime: { label: "Court Time", type: "text" },
+    courtNumber: { label: "# of Courts", type: "number" },
+    courtTime: { label: "Preferred Time", type: "text" },
     isActive: {
       label: "Active",
       type: "checkbox",
