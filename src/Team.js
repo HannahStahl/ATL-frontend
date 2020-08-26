@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { FormControl } from "react-bootstrap";
+import { API } from "aws-amplify";
 import { useAppContext } from "./libs/contextLib";
+import { onError } from "./libs/errorLib";
 import Roster from "./Roster";
 import Matches from "./Matches";
+import EditForm from "./EditForm";
 
 export default function Team() {
-  const { loadingData, profile, allTeams, allCaptains, locations, divisions, users } = useAppContext();
+  const {
+    loadingData, profile, allTeams, setAllTeams, allCaptains, locations, divisions, users,
+  } = useAppContext();
   const { isAdmin } = profile;
   const [loadingTeam, setLoadingTeam] = useState(true);
   const [team, setTeam] = useState({});
   const [teams, setTeams] = useState([]);
   const [selectedUser, setSelectedUser] = useState(profile);
+  const [isSaving, setIsSaving] = useState(false);
   
   useEffect(() => {
     setSelectedUser(profile);
@@ -29,48 +35,84 @@ export default function Team() {
     if (!loadingData) fetchTeam();
   }, [loadingData, selectedUser, allTeams]);
 
-  const getCaptain = () => {
-    const captain = team.captainId && team.captainId.length > 0 ? (
-      allCaptains.find((captainInList) => captainInList.userId === team.captainId)
-    ) : "";
-    return captain ? (
-      <>
-        {`${captain.firstName} ${captain.lastName}`}
-        <br />
-        {captain.email}
-        <br />
-        {captain.phone}
-      </>
-    ) : "";
+  const formFields = {
+    divisionId: {
+      label: "Division",
+      type: "dropdown",
+      joiningTable: divisions,
+      joiningTableKey: "divisionId",
+      joiningTableFieldNames: ["divisionNumber"],
+      staticField: true,
+    },
+    teamName: { label: "Team Name", type: "text", required: true },
+    captainId: {
+      label: "Captain",
+      type: "dropdown",
+      joiningTable: allCaptains,
+      joiningTableKey: "userId",
+      joiningTableFieldNames: ["firstName", "lastName"],
+      extraNotes: (team) => {
+        if (team.captainId && team.captainId.length > 0) {
+          const captain = allCaptains.find((captain) => captain.userId === team.captainId);
+          return <span>{captain.email}<br />{captain.phone}</span>;
+        }
+        return "";
+      },
+    },
+    cocaptainId: {
+      label: "Co-Captain",
+      type: "dropdown",
+      joiningTable: allCaptains,
+      joiningTableKey: "userId",
+      joiningTableFieldNames: ["firstName", "lastName"],
+      extraNotes: (team) => {
+        if (team.cocaptainId && team.cocaptainId.length > 0) {
+          const cocaptain = allCaptains.find((captain) => captain.userId === team.cocaptainId);
+          return <span>{cocaptain.email}<br />{cocaptain.phone}</span>;
+        }
+        return "";
+      },
+    },
+    locationId: {
+      label: "Home Courts",
+      type: "dropdown",
+      joiningTable: locations,
+      joiningTableKey: "locationId",
+      joiningTableFieldNames: ["locationName"]
+    },
+    courtTime: { label: "Preferred Start Time", type: "text" }
   };
 
-  const getCocaptain = () => {
-    const cocaptain = team.cocaptainId && team.cocaptainId.length > 0 ? (
-      allCaptains.find((captainInList) => captainInList.userId === team.cocaptainId)
-    ) : "";
-    return cocaptain ? (
-      <>
-        {`${cocaptain.firstName} ${cocaptain.lastName}`}
-        <br />
-        {cocaptain.email}
-        <br />
-        {cocaptain.phone}
-      </>
-    ) : "";
+  const emailCaptain = async (captainId, teamName, url, captainOrCocaptain) => {
+    const captain = allCaptains.find((captainInList) => captainInList.userId === captainId);
+    const { firstName, email: captainEmail } = captain;
+    await API.post("atl-backend", "emailCaptain", {
+      body: { firstName, teamName, captainOrCocaptain, url, captainEmail }
+    });
   };
 
-  const getDivision = () => {
-    const division = team.divisionId && team.divisionId.length > 0 ? (
-      divisions.find((divisionInList) => divisionInList.divisionId === team.divisionId)
-    ) : "";
-    return division ? (division.divisionNumber || "") : "";
-  };
-
-  const getLocation = () => {
-    const location = team.locationId && team.locationId.length > 0 ? (
-      locations.find((locationInList) => locationInList.locationId === team.locationId)
-    ) : "";
-    return location ? (location.locationName || "") : "";
+  const saveTeamDetails = async (event, body) => {
+    event.preventDefault();
+    const { teamId, captainId, cocaptainId, teamName } = body;
+    if (profile.userId !== captainId && profile.userId !== cocaptainId) {
+      onError("You must be either the captain or the co-captain of this team.");
+      return;
+    }
+    setIsSaving(true);
+    const original = await API.get("atl-backend", `get/team/${teamId}`);
+    await API.put("atl-backend", `update/team/${teamId}`, { body });
+    const updatedTeams = await API.get("atl-backend", "list/team");
+    const url = window.location.origin;
+    const promises = [];
+    if (captainId && captainId.length > 0 && captainId !== original.captainId) {
+      promises.push(emailCaptain(captainId, teamName, url, "captain"));
+    }
+    if (cocaptainId && cocaptainId.length > 0 && cocaptainId !== original.cocaptainId) {
+      promises.push(emailCaptain(cocaptainId, teamName, url, "co-captain"));
+    }
+    await Promise.all(promises);
+    setAllTeams([...updatedTeams]);
+    setIsSaving(false);
   };
 
   return (
@@ -130,50 +172,12 @@ export default function Team() {
         <div className="centered-content"> 
           {loadingTeam ? <p>Loading...</p> : (
             team.teamId ? (
-              <table className="team-details-table">
-                <tbody>
-                  <tr>
-                    <td>
-                      <p><b>Team Name:</b></p>
-                    </td>
-                    <td>
-                      <p>{team.teamName || ""}</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <p><b>Captain:</b></p>
-                    </td>
-                    <td>
-                      <p>{getCaptain()}</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <p><b>Co-Captain:</b></p>
-                    </td>
-                    <td>
-                      <p>{getCocaptain()}</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <p><b>Division:</b></p>
-                    </td>
-                    <td>
-                      <p>{getDivision()}</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <p><b>Home Courts:</b></p>
-                    </td>
-                    <td>
-                      <p>{getLocation()}</p>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              <EditForm
+                fields={formFields}
+                original={team}
+                save={saveTeamDetails}
+                isLoading={isSaving}
+              />
             ) : (
               selectedUser.isCaptain ? (
                 <p className="centered-text">

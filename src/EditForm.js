@@ -22,10 +22,20 @@ export default ({ fields, original, save, isLoading, buttonText, labelsAbove }) 
     return valid;
   };
 
+  const renderStaticValue = (fields, key) => {
+    const {
+      joiningTable, joiningTableKey, joiningTableFieldNames,
+    } = fields[key];
+    const item = joiningTable.find((item) => item[joiningTableKey] === updated[key]);
+    return (
+      <span>{joiningTableFieldNames.map((fieldName) => item[fieldName]).join(' ')}</span>
+    );
+  };
+
   const renderValue = (key) => {
     const {
-      type, joiningTable, joiningTableFilter, joiningTableKey,
-      joiningTableFieldNames, options, placeholder, helpText
+      type, joiningTable, joiningTableFilter, joiningTableKey, staticField,
+      joiningTableFieldNames, options, placeholder, helpText, extraNotes
     } = fields[key];
     return (
       <>
@@ -54,29 +64,32 @@ export default ({ fields, original, save, isLoading, buttonText, labelsAbove }) 
           />
         )}
         {type === "dropdown" && (
-          <FormControl
-            value={updated[key] || ''}
-            componentClass="select"
-            onChange={e => setUpdated({ ...updated, [key]: e.target.value })}
-          >
-            <option value="" />
-            {options ? options.map((option) => (
-              <option key={option.value} value={option.value}>{option.name}</option>
-            )) : (
-              joiningTableFilter
-                ? joiningTable.filter((row) => (
-                  updated[joiningTableFilter.key] && row[joiningTableFilter.joiningTableKey] === updated[joiningTableFilter.key]
-                )) : joiningTable
-              ).map((item) => {
-                return (
-                  <option key={item[joiningTableKey]} value={item[joiningTableKey]}>
-                    {joiningTableFieldNames.map((fieldName) => item[fieldName]).join(' ')}
-                  </option>
-                );
-              }
-            )}
-          </FormControl>
+          staticField ? renderStaticValue(fields, key) : (
+            <FormControl
+              value={updated[key] || ''}
+              componentClass="select"
+              onChange={e => setUpdated({ ...updated, [key]: e.target.value })}
+            >
+              <option value="" />
+              {options ? options.map((option) => (
+                <option key={option.value} value={option.value}>{option.name}</option>
+              )) : (
+                joiningTableFilter
+                  ? joiningTable.filter((row) => (
+                    updated[joiningTableFilter.key] && row[joiningTableFilter.joiningTableKey] === updated[joiningTableFilter.key]
+                  )) : joiningTable
+                ).map((item) => {
+                  return (
+                    <option key={item[joiningTableKey]} value={item[joiningTableKey]}>
+                      {joiningTableFieldNames.map((fieldName) => item[fieldName]).join(' ')}
+                    </option>
+                  );
+                }
+              )}
+            </FormControl>
+          )
         )}
+        {extraNotes && <HelpBlock className="no-margin-bottom">{extraNotes(updated)}</HelpBlock>}
       </>
     );
   };
@@ -107,10 +120,10 @@ export default ({ fields, original, save, isLoading, buttonText, labelsAbove }) 
         <table className='form-table'>
           <tbody>
             {Object.keys(fields).filter(isEditable).map((key) => {
-              const { label } = fields[key];
+              const { label, extraNotes } = fields[key];
               return (
                 <tr key={key}>
-                  <td className='form-label'>{label || ''}</td>
+                  <td className={`form-label${extraNotes ? ' top-aligned' : ''}`}>{label || ''}</td>
                   <td className='form-field'>{renderValue(key)}</td>
                 </tr>
               );

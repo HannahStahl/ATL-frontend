@@ -47,6 +47,11 @@ input.form-control {
   font-weight: bold;
 }
 
+.top-aligned {
+  vertical-align: top;
+  padding-top: 7px;
+}
+
 .form-field {
   width: 100%;
 }
@@ -428,11 +433,6 @@ h3.welcome {
 .team-details-page-break {
   margin-top: 45px;
   margin-bottom: 45px;
-}
-
-.team-details-table td {
-  padding-right: 10px;
-  vertical-align: top;
 }
 
 .landing-img {
