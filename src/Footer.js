@@ -8,7 +8,10 @@ const Footer = ({ handleLogout }) => (
     <a href="https://websitesbyhannah.com" target="_blank" rel="noopener noreferrer">
       <p>Websites By Hannah</p>
     </a>
-    <a href="#" onClick={handleLogout}><p>Log out</p></a>
+    {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+    <a href="#" onClick={handleLogout}>
+      <p>Log out</p>
+    </a>
   </div>
 );
 
