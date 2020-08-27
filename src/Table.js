@@ -101,8 +101,8 @@ export default ({
         <Table bordered hover className={setRows || customSelect ? 'interactive-table' : undefined}>
           <thead>
             <tr>
-              {Object.keys(columns).filter((key) => !columns[key].hideFromTable).map((key) => <th key={key}>{columns[key].label}</th>)}
               {setRows && !removeDisabled && <th />}
+              {Object.keys(columns).filter((key) => !columns[key].hideFromTable).map((key) => <th key={key}>{columns[key].label}</th>)}
             </tr>
           </thead>
           <tbody>
@@ -128,12 +128,6 @@ export default ({
                 } : undefined}
                 className={row.readOnly ? "disabled" : undefined}
               >
-                {Object.keys(columns).filter((key) => !columns[key].hideFromTable).map((key) => {
-                  const value = columns[key].children ? joinChildren(row, columns[key]) : (
-                    columns[key].joiningTable ? getValueFromJoiningTable(key, columns[key], row) : row[key]
-                  );
-                  return <td key={key}>{columns[key].render ? columns[key].render(value, row) : value}</td>;
-                })}
                 {setRows && !removeDisabled && (
                   <td className="remove-row">
                     {!row.readOnly && (
@@ -141,6 +135,12 @@ export default ({
                     )}
                   </td>
                 )}
+                {Object.keys(columns).filter((key) => !columns[key].hideFromTable).map((key) => {
+                  const value = columns[key].children ? joinChildren(row, columns[key]) : (
+                    columns[key].joiningTable ? getValueFromJoiningTable(key, columns[key], row) : row[key]
+                  );
+                  return <td key={key}>{columns[key].render ? columns[key].render(value, row) : value}</td>;
+                })}
               </tr>
             ))}
             {getInactiveRows && getInactiveRows(rows).map((row) => (
@@ -153,12 +153,6 @@ export default ({
                 } : undefined}
                 className={`inactive-row${row.readOnly ? " disabled" : ""}`}
               >
-                {Object.keys(columns).filter((key) => !columns[key].hideFromTable).map((key) => {
-                  const value = columns[key].children ? joinChildren(row, columns[key]) : (
-                    columns[key].joiningTable ? getValueFromJoiningTable(key, columns[key], row) : row[key]
-                  );
-                  return <td key={key}>{columns[key].render ? columns[key].render(value, row) : value}</td>;
-                })}
                 {setRows && !removeDisabled && (
                   <td className="remove-row">
                     {!row.readOnly && (
@@ -166,6 +160,12 @@ export default ({
                     )}
                   </td>
                 )}
+                {Object.keys(columns).filter((key) => !columns[key].hideFromTable).map((key) => {
+                  const value = columns[key].children ? joinChildren(row, columns[key]) : (
+                    columns[key].joiningTable ? getValueFromJoiningTable(key, columns[key], row) : row[key]
+                  );
+                  return <td key={key}>{columns[key].render ? columns[key].render(value, row) : value}</td>;
+                })}
               </tr>
             ))}
           </tbody>
