@@ -207,7 +207,7 @@ function App() {
             <Routes />
           </AppContext.Provider>
         </ErrorBoundary>
-        <Footer />
+        <Footer handleLogout={handleLogout} />
       </div>
     )
   );

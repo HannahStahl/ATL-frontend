@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Footer = () => (
+const Footer = ({ handleLogout }) => (
   <div className="footer">
     <p>
       {`© Austin Tennis League, ${(new Date()).getFullYear()}. All Rights Reserved.`}
@@ -8,6 +8,7 @@ const Footer = () => (
     <a href="https://websitesbyhannah.com" target="_blank" rel="noopener noreferrer">
       <p>Websites By Hannah</p>
     </a>
+    <a href="#" onClick={handleLogout}><p>Log out</p></a>
   </div>
 );
 
