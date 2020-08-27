@@ -6,6 +6,7 @@ import { onError } from "./libs/errorLib";
 import Roster from "./Roster";
 import Matches from "./Matches";
 import EditForm from "./EditForm";
+import Division from "./Division";
 
 export default function Team() {
   const {
@@ -195,6 +196,7 @@ export default function Team() {
       </div>
       {!loadingTeam && <Roster team={team} />}
       {!loadingTeam && <Matches team={team} />}
+      {!loadingTeam && <Division team={team} />}
     </div>
   );
 }

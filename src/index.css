@@ -551,6 +551,10 @@ h3.welcome {
   margin-bottom: 0px;
 }
 
+.white {
+  color: white;
+}
+
 .help-block {
   padding-bottom: 0px !important;
 }
