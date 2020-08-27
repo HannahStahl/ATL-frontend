@@ -18,8 +18,8 @@ export default function Standings() {
     ));
     const matchResult = match && matchResults.find((matchResult) => matchResult.matchId === match.matchId);
     return {
-      setsWon: match ? (match.homeTeamId === teamId ? matchResult.totalHomeSetsWon : matchResult.totalVisitorSetsWon) : "",
-      setsLost: match ? (match.homeTeamId === teamId ? matchResult.totalVisitorSetsWon : matchResult.totalHomeSetsWon) : ""
+      setsWon: matchResult ? (match.homeTeamId === teamId ? matchResult.totalHomeSetsWon : matchResult.totalVisitorSetsWon) : "",
+      setsLost: matchResult ? (match.homeTeamId === teamId ? matchResult.totalVisitorSetsWon : matchResult.totalHomeSetsWon) : ""
     };
   };
 
