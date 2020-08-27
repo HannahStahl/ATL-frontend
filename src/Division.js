@@ -45,14 +45,16 @@ export default ({ team }) => {
                           <td>{(captain && captain.phone) || ""}</td>
                           <td>{(captain && captain.email) || ""}</td>
                         </tr>
-                        <tr>
-                          <td className="white">{team.teamName}</td>
-                          <td>
-                            {cocaptain ? `${cocaptain.firstName || ""} ${cocaptain.lastName || ""}` : ""}
-                          </td>
-                          <td>{(cocaptain && cocaptain.phone) || ""}</td>
-                          <td>{(cocaptain && cocaptain.email) || ""}</td>
-                        </tr>
+                        {cocaptain && (
+                          <tr>
+                            <td className="white">{team.teamName}</td>
+                            <td>
+                              {cocaptain ? `${cocaptain.firstName || ""} ${cocaptain.lastName || ""}` : ""}
+                            </td>
+                            <td>{(cocaptain && cocaptain.phone) || ""}</td>
+                            <td>{(cocaptain && cocaptain.email) || ""}</td>
+                          </tr>
+                        )}
                       </React.Fragment>
                     );
                   })}
