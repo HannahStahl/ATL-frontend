@@ -21,7 +21,6 @@ export default ({ team }) => {
     if (
       !loadingData &&
       allMatches.length > 0 &&
-      matchResults.length > 0 &&
       allCaptains.length > 0 &&
       allTeams.length > 0
     ) {
