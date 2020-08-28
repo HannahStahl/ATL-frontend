@@ -80,7 +80,6 @@ function App() {
     async function fetchPrivateData() {
       try {
         const user = await API.get("atl-backend", "getUser");
-        console.log(user);
         setProfile(user);
       } catch(e) {
         console.log(e);

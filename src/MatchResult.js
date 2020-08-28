@@ -94,6 +94,7 @@ export default function MatchResult() {
           <div className="centered-content-inner">
             <div className="centered-content match-result-intro">
               <div>
+                <p><b>Match #:</b> {match.matchNumber || ""}</p>
                 <p><b>Date:</b> {match.matchDate ? moment(match.matchDate).format("M/D/YYYY") : ""}</p>
                 <p><b>Home:</b> {getHomeTeam()}</p>
                 <p><b>Visitor:</b> {getVisitorTeam()}</p>

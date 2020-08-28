@@ -84,6 +84,7 @@ export default function MatchResults() {
             <Table bordered hover className="interactive-table">
               <thead>
                 <tr>
+                  <th>Match #</th>
                   <th>Date</th>
                   <th>Home</th>
                   <th>Visitor</th>
@@ -95,6 +96,7 @@ export default function MatchResults() {
                   const visitor = match.visitorTeamId && allTeams.find((team) => team.teamId === match.visitorTeamId);
                   return (
                     <tr key={match.matchId} onClick={() => window.location.pathname = `/match-results/${match.matchId}`}>
+                      <td>{match.matchNumber || ''}</td>
                       <td>{match.matchDate ? moment(match.matchDate).format("M/D/YYYY") : ''}</td>
                       <td>{home ? home.teamName : ''}</td>
                       <td>{visitor ? visitor.teamName : ''}</td>

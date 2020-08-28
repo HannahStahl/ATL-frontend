@@ -87,6 +87,7 @@ export default function DivisionSchedules() {
                 <thead>
                   <tr>
                     <th>Week</th>
+                    <th>Match #</th>
                     <th>Date</th>
                     <th>Home</th>
                     <th>Visitor</th>
@@ -102,6 +103,7 @@ export default function DivisionSchedules() {
                     return (
                       <tr key={match.matchId}>
                         <td>{match.weekNumber || ""}</td>
+                        <td>{match.matchNumber || ""}</td>
                         <td>{match.matchDate ? moment(match.matchDate).format("M/D/YYYY") : ""}</td>
                         <td>{home ? home.teamName : ""}</td>
                         <td>{visitor ? visitor.teamName : ""}</td>

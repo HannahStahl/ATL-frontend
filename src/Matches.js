@@ -56,6 +56,7 @@ export default ({ team }) => {
 
   const columns = {
     weekNumber: { label: "Week", readOnly: true },
+    matchNumber: { label: "Match #", readOnly: true },
     matchDate: {
       label: "Date",
       type: "date",

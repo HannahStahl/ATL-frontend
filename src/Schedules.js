@@ -55,6 +55,7 @@ export default () => {
 
   let columns = {
     weekNumber: { label: "Week", type: "number", required: true },
+    matchNumber: { label: "Match #", type: "number", required: true },
     matchDate: { label: "Date", type: "date", render: (value) => value && moment(value).format("M/D/YYYY") },
     startTime: { label: "Time", type: "text" },
     locationId: {
@@ -70,7 +71,6 @@ export default () => {
       joiningTable: allTeams,
       joiningTableKey: "teamId",
       joiningTableFieldNames: ["teamName"],
-      required: true,
     },
     visitorTeamId: {
       label: "Visiting Team",
@@ -78,7 +78,6 @@ export default () => {
       joiningTable: allTeams,
       joiningTableKey: "teamId",
       joiningTableFieldNames: ["teamName"],
-      required: true
     }
   };
 
@@ -127,9 +126,14 @@ export default () => {
   const filterMatches = (list) => locationId === "" ? list : list.filter((match) => match.locationId === locationId);
 
   const validate = (body) => {
-    const { homeTeamId, visitorTeamId } = body;
-    if (homeTeamId === visitorTeamId) {
+    const { homeTeamId, visitorTeamId, matchNumber, matchId } = body;
+    if (homeTeamId && visitorTeamId && homeTeamId.length > 0 && visitorTeamId.length > 0 && homeTeamId === visitorTeamId) {
       onError("Home team and visiting team must be different.");
+      return false;
+    }
+    const otherMatchNumbers = allMatches.filter((match) => match.matchId !== matchId).map((match) => match.matchNumber);
+    if (matchNumber && matchNumber.length > 0 && otherMatchNumbers.indexOf(matchNumber) > -1 ) {
+      onError("Match number must be unique.");
       return false;
     }
     return true;
@@ -219,7 +223,7 @@ export default () => {
     if (key === "locationId" && value.length > 0) {
       const location = locations.find((locationInList) => locationInList.locationId === value);
       value = location ? (location.locationName || "") : "";
-    } else if ((key === "homeTeamId" || key === "visitorTeamId") && value.length > 0) {
+    } else if ((key === "homeTeamId" || key === "visitorTeamId") && value && value.length > 0) {
       const team = allTeams.find((teamInList) => teamInList.teamId === value);
       value = team ? (team.teamName || "") : "";
     }
