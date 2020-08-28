@@ -68,6 +68,7 @@ export default function Standings() {
                 <thead>
                   <tr>
                     <th>Division</th>
+                    <th>Team #</th>
                     <th>Team Name</th>
                     <th>Sets Won</th>
                     <th>Sets Lost</th>
@@ -79,6 +80,7 @@ export default function Standings() {
                     <th>Forf. Sets</th>
                   </tr>
                   <tr>
+                    <th />
                     <th />
                     <th />
                     <th />
@@ -112,6 +114,7 @@ export default function Standings() {
                       return (
                         <tr key={team.teamId}>
                           <td>{getDivisionNumber(team)}</td>
+                          <td>{team.teamNumber || ""}</td>
                           <td>{team.teamName}</td>
                           <td>{teamStanding && teamStanding.setsWon}</td>
                           <td>{teamStanding && teamStanding.setsLost}</td>

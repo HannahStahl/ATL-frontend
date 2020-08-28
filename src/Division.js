@@ -24,6 +24,7 @@ export default ({ team }) => {
               <Table bordered>
                 <thead>
                   <tr>
+                    <th>Team #</th>
                     <th>Team Name</th>
                     <th>Captain/Co-Captain</th>
                     <th>Phone</th>
@@ -38,6 +39,7 @@ export default ({ team }) => {
                     return (
                       <React.Fragment key={team.teamId}>
                         <tr>
+                          <td>{team.teamNumber || ""}</td>
                           <td>{team.teamName}</td>
                           <td>
                             {captain ? `${captain.firstName || ""} ${captain.lastName || ""}` : ""}

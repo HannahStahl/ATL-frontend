@@ -3,6 +3,7 @@ import { PageHeader } from "react-bootstrap";
 import { API } from "aws-amplify";
 import Table from "./Table";
 import { useAppContext } from "./libs/contextLib";
+import { onError } from "./libs/errorLib";
 
 export default () => {
   const {
@@ -10,6 +11,7 @@ export default () => {
   } = useAppContext();
 
   const columns = {
+    teamNumber: { label: "Team #", type: "number" },
     teamName: { label: "Team Name", type: "text", required: true },
     captainId: {
       label: "Captain",
@@ -90,6 +92,20 @@ export default () => {
     setAllTeams([...updatedTeams]);
   };
 
+  const validate = (body) => {
+    const { teamId, teamNumber, isActive } = body;
+    if (isActive && (!teamNumber || teamNumber.length === 0)) {
+      onError("Must provide team number.");
+      return false;
+    }
+    const otherTeamNumbers = allTeams.filter((team) => team.teamId !== teamId).map((team) => team.teamNumber);
+    if (teamNumber && teamNumber.length > 0 && otherTeamNumbers.indexOf(teamNumber) > -1 ) {
+      onError("Team number must be unique.");
+      return false;
+    }
+    return true;
+  };
+
   return (
     <div className="container">
       <PageHeader>Teams</PageHeader>
@@ -106,6 +122,7 @@ export default () => {
             API={API}
             customAddFunction={createTeam}
             customEditFunction={editTeam}
+            validate={validate}
           />
         </>
       )}

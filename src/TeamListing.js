@@ -14,6 +14,7 @@ export default function TeamListing() {
               <thead>
                 <tr>
                   <th>Division</th>
+                  <th>Team #</th>
                   <th>Team Name</th>
                   <th>Captain</th>
                 </tr>
@@ -25,6 +26,7 @@ export default function TeamListing() {
                     return (
                       <tr key={team.teamId} onClick={() => window.location.pathname = `/roster/${team.teamId}`}>
                         <td>{division.divisionNumber}</td>
+                        <td>{team.teamNumber || ""}</td>
                         <td>{team.teamName}</td>
                         <td>{captain ? `${captain.firstName || ''} ${captain.lastName || ''}` : ''}</td>
                       </tr>
