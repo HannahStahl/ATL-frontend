@@ -78,8 +78,13 @@ function App() {
 
   useEffect(() => {
     async function fetchPrivateData() {
-      const user = await API.get("atl-backend", "getUser");
-      setProfile(user);
+      try {
+        const user = await API.get("atl-backend", "getUser");
+        console.log(user);
+        setProfile(user);
+      } catch(e) {
+        console.log(e);
+      }
       setLoadingData(false);
     }
     if (isAuthenticated && !loadingPublicData) fetchPrivateData();
