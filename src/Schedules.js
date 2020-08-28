@@ -12,7 +12,7 @@ import LoaderButton from "./LoaderButton";
 
 export default () => {
   const {
-    allMatches, setAllMatches, draftMatches, setDraftMatches,
+    allMatches, setAllMatches, draftMatches, setDraftMatches, divisions,
     matchResults, setMatchResults, locations, allTeams, loadingData
   } = useAppContext();
   const [locationId, setLocationId] = useState("");
@@ -56,6 +56,13 @@ export default () => {
   let columns = {
     weekNumber: { label: "Week", type: "number", required: true },
     matchNumber: { label: "Match #", type: "number", required: true },
+    divisionId: {
+      label: "Division",
+      type: "dropdown",
+      joiningTable: divisions,
+      joiningTableKey: "divisionId",
+      joiningTableFieldNames: ["divisionNumber"]
+    },
     matchDate: { label: "Date", type: "date", render: (value) => value && moment(value).format("M/D/YYYY") },
     startTime: { label: "Time", type: "text" },
     locationId: {
