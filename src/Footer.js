@@ -1,16 +1,12 @@
 import React from 'react';
 
-const Footer = ({ handleLogout }) => (
+const Footer = () => (
   <div className="footer">
     <p>
       {`© Austin Tennis League, ${(new Date()).getFullYear()}. All Rights Reserved.`}
     </p>
     <a href="https://websitesbyhannah.com" target="_blank" rel="noopener noreferrer">
       <p>Websites By Hannah</p>
-    </a>
-    {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-    <a href="#" onClick={handleLogout}>
-      <p>Log out</p>
     </a>
   </div>
 );
