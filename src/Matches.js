@@ -28,8 +28,8 @@ export default ({ team }) => {
         const homeTeam = allTeams.find((team) => team.teamId === match.homeTeamId);
         const visitorTeam = allTeams.find((team) => team.teamId === match.visitorTeamId);
         const matchResult = matchResults.find((result) => result.matchId === match.matchId);
-        const homeCaptainId = homeTeam.captainId;
-        const visitorCaptainId = visitorTeam.captainId;
+        const homeCaptainId = homeTeam && homeTeam.captainId;
+        const visitorCaptainId = visitorTeam && visitorTeam.captainId;
         return { ...match, ...matchResult, homeCaptainId, visitorCaptainId };
       });
       setMatches(matches);

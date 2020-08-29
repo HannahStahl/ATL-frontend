@@ -82,6 +82,9 @@ export default ({ team }) => {
         customRemoveFunction={removePlayerFromTeam}
         categoryName="team"
       />
+      <div className="centered-content">
+        <a href="/players-looking">View list of players looking for a team</a>
+      </div>
       <AddPlayerModal
         columns={columns}
         allPlayers={allPlayers}
