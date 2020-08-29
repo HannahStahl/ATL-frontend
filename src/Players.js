@@ -97,10 +97,10 @@ export default () => {
     setPlayersWithLastName([...getPlayersWithLastName(updatedAllPlayers)]);
   };
 
-  const deletePlayer = async (playerId) => {
+  const deactivatePlayer = async (playerId) => {
     const index = allPlayers.findIndex((player) => player.playerId === playerId);
     const index2 = playersWithLastName.findIndex((player) => player.playerId === playerId);
-    await API.del("atl-backend", `delete/player/${playerId}`);
+    await API.post("atl-backend", `deactivatePlayer/${playerId}`);
     allPlayers.splice(index, 1);
     playersWithLastName.splice(index2, 1);
     setAllPlayers([...allPlayers]);
@@ -169,7 +169,7 @@ export default () => {
                 }}
                 createDisabled
                 customEditFunction={editPlayer}
-                customRemoveFunction={deletePlayer}
+                customRemoveFunction={deactivatePlayer}
                 API={API}
               />
             )}
