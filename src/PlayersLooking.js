@@ -37,7 +37,11 @@ export default () => {
                 </tr>
               </thead>
               <tbody>
-                {playersLooking.map((player) => {
+                {playersLooking.sort((a, b) => {
+                  if (!a.rating || a.rating < b.rating) return -1;
+                  if (!b.rating || a.rating > b.rating) return 1;
+                  return 0;
+                }).map((player) => {
                   return (
                     <tr key={player.playerId}>
                       <td>{`${player.firstName || ""} ${player.lastName || ""}`}</td>

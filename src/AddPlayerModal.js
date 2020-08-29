@@ -82,7 +82,11 @@ export default ({ columns, allPlayers, setAllPlayers, teamId, addingPlayer, setA
             <Table
               columns={columns}
               rows={allPlayers}
-              filterRows={(list) => list.filter((player) => !player.teamId)}
+              filterRows={(list) => list.filter((player) => !player.teamId).sort((a, b) => {
+                if (!a.rating || a.rating < b.rating) return -1;
+                if (!b.rating || a.rating > b.rating) return 1;
+                return 0;
+              })}
               itemType="player"
               customSelect={addPlayerToTeam}
             />
