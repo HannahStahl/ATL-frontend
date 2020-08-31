@@ -111,7 +111,7 @@ export default () => {
     <div className="container">
       {addingPlayer ? (
         <>
-          <PageHeader>Add New Player</PageHeader>
+          <PageHeader>Add a Player</PageHeader>
           <div className="max-width-form">
             <EditForm
               fields={getFormFields()}

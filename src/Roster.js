@@ -52,6 +52,8 @@ export default ({ team }) => {
     const index = allPlayers.findIndex((player) => player.playerId === playerId);
     allPlayers[index].teamId = undefined;
     await API.put("atl-backend", `update/player/${playerId}`, { body: allPlayers[index] });
+    await API.post("atl-backend", `deactivatePlayer/${playerId}`);
+    allPlayers.splice(index, 1);
     setAllPlayers([...allPlayers]);
   };
 
@@ -60,7 +62,7 @@ export default ({ team }) => {
       colSpan={Object.keys(columns).filter((key) => !columns[key].hideFromTable).length + 1}
       onClick={() => setAddingPlayer(true)}
     >
-      + Add new player
+      + Add a player
     </td>
   );
 

@@ -160,7 +160,7 @@ export default ({ columns, allPlayers, setAllPlayers, teamId, addingPlayer, setA
       }}
     >
       <Modal.Header closeButton>
-        <h2>Add new player</h2>
+        <h2>Add a player</h2>
       </Modal.Header>
       <Modal.Body>
         {!selectingPlayer ? (
@@ -175,6 +175,7 @@ export default ({ columns, allPlayers, setAllPlayers, teamId, addingPlayer, setA
               Select a player from the database
               <i className="fas fa-arrow-right" />
             </LoaderButton>
+            <p className="centered-text">or enter a new player into the database:</p>
             <EditForm
               fields={getFormFields()}
               save={createPlayer}
