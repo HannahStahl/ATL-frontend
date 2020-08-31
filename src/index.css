@@ -310,10 +310,12 @@ th,td:not(.key-date) {
 
 .calendar-card, .leader-board-card {
   width: min(680px, calc(100% - 40px));
+  background-color: var(--light-red);
 }
 
 .weather-card {
   width: min(1040px, calc(100% - 40px));
+  background-color: var(--light-red);
 }
 
 .weather-card {
@@ -328,9 +330,14 @@ th,td:not(.key-date) {
   margin-bottom: 0px;
 }
 
-.home-page-leader-board th {
+.home-page-leader-board thead tr th {
   text-align: center;
-  background-color: var(--light-blue);
+  background-color: var(--light-red);
+  border-color: transparent;
+}
+
+.home-page-leader-board tbody tr td {
+  border-color: transparent;
 }
 
 .key-dates {
