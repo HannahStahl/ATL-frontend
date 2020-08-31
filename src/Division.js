@@ -49,6 +49,7 @@ export default ({ team }) => {
                         </tr>
                         {cocaptain && (
                           <tr>
+                            <td className="white">{team.teamNumber || ""}</td>
                             <td className="white">{team.teamName}</td>
                             <td>{`${cocaptain.firstName || ""} ${cocaptain.lastName || ""}`}</td>
                             <td>{cocaptain.phone || ""}</td>
