@@ -27,11 +27,15 @@ Amplify.configure({
   }
 });
 
-Auth.currentAuthenticatedUser({
-  bypassCache: true
-}).then((user) => {
-  DateUtils.setClockOffset(-(user.signInUserSession.clockDrift * 1000));
-});
+try {
+  Auth.currentAuthenticatedUser({
+    bypassCache: true
+  }).then((user) => {
+    DateUtils.setClockOffset(-(user.signInUserSession.clockDrift * 1000));
+  });
+} catch(e) {
+  console.log(e);
+}
 
 ReactDOM.render(
   <Router>
