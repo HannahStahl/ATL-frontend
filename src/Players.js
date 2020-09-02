@@ -82,7 +82,7 @@ export default () => {
   const createPlayer = async (event, body) => {
     event.preventDefault();
     setIsLoading(true);
-    await API.post("atl-backend", "create/player", { body });
+    await API.post("atl-backend", "createPlayer", { body });
     const updatedAllPlayers = await API.get("atl-backend", "list/player");
     setAllPlayers([...updatedAllPlayers]);
     setPlayersWithLastName([...getPlayersWithLastName(updatedAllPlayers)]);

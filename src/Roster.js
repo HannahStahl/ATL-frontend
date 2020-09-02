@@ -14,6 +14,10 @@ export default ({ team }) => {
   }, []);
 
   const columns = {
+    "playerNumber": {
+      label: "Number",
+      readOnly: true
+    },
     "name": {
       label: "Name",
       children: [

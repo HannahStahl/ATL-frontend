@@ -144,7 +144,7 @@ export default ({ columns, allPlayers, setAllPlayers, teamId, addingPlayer, setA
     event.preventDefault();
     setIsLoading(true);
     body.teamId = teamId;
-    await API.post("atl-backend", "create/player", { body });
+    await API.post("atl-backend", "createPlayer", { body });
     const updatedAllPlayers = await API.get("atl-backend", "list/player");
     setAllPlayers([...updatedAllPlayers]);
     setIsLoading(false);

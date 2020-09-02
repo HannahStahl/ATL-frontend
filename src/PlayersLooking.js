@@ -22,6 +22,7 @@ export default () => {
             <Table bordered>
               <thead>
                 <tr>
+                  <th>Number</th>
                   <th>Name</th>
                   <th>Phone</th>
                   <th>Email</th>
@@ -44,6 +45,7 @@ export default () => {
                 }).map((player) => {
                   return (
                     <tr key={player.playerId}>
+                      <td>{player.playerNumber || ""}</td>
                       <td>{`${player.firstName || ""} ${player.lastName || ""}`}</td>
                       <td>{player.phone || ""}</td>
                       <td>{player.email || ""}</td>
