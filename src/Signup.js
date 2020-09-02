@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Auth, API } from "aws-amplify";
+import { DateUtils } from '@aws-amplify/core';
 import { useHistory } from "react-router-dom";
 import { FormControl, PageHeader, HelpBlock } from "react-bootstrap";
 import LoaderButton from "./LoaderButton";
@@ -71,6 +72,11 @@ export default function Signup() {
     try {
       await Auth.confirmSignUp(email, confirmationCode);
       await Auth.signIn(email, password);
+      await Auth.currentAuthenticatedUser({
+        bypassCache: true
+      }).then((user) => {
+        DateUtils.setClockOffset(-(user.signInUserSession.clockDrift * 1000));
+      });
       const isCaptain = (
         accessCode === process.env.REACT_APP_CAPTAIN_ACCESS_CODE ||
         accessCode === process.env.REACT_APP_ADMIN_CAPTAIN_ACCESS_CODE

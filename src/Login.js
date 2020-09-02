@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Auth } from "aws-amplify";
+import { DateUtils } from '@aws-amplify/core';
 import { useHistory } from "react-router-dom";
 import { FormControl, PageHeader } from "react-bootstrap";
 import LoaderButton from "./LoaderButton";
@@ -22,6 +23,11 @@ export default function Login() {
     setIsLoading(true);
     try {
       await Auth.signIn(email, password);
+      await Auth.currentAuthenticatedUser({
+        bypassCache: true
+      }).then((user) => {
+        DateUtils.setClockOffset(-(user.signInUserSession.clockDrift * 1000));
+      });
       userHasAuthenticated(true);
       history.push("/portal");
     } catch (e) {
