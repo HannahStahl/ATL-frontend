@@ -75,7 +75,7 @@ export default () => {
 
   const getPlayersWithLastName = (list) => (
     (list || allPlayers).filter(
-      (player) => player.lastName.toLowerCase().includes(playerLastName.toLowerCase())
+      (player) => playerLastName && player.lastName.toLowerCase().includes(playerLastName.toLowerCase())
     )
   );
 
@@ -135,7 +135,7 @@ export default () => {
           <form onSubmit={(event) => {
             event.preventDefault();
             setPlayersWithLastName(allPlayers.filter(
-              (player) => player.lastName.toLowerCase().includes(playerLastName.toLowerCase())
+              (player) => playerLastName && player.lastName.toLowerCase().includes(playerLastName.toLowerCase())
             ));
           }}>
             <FormGroup>

@@ -47,7 +47,7 @@ export default ({ columns, allPlayers, setAllPlayers, teamId, addingPlayer, setA
       <form onSubmit={(event) => {
         event.preventDefault();
         setPlayersWithLastName(playersNotOnTeam.filter(
-          (player) => player.lastName.toLowerCase().includes(playerLastName.toLowerCase())
+          (player) => playerLastName && player.lastName.toLowerCase().includes(playerLastName.toLowerCase())
         ));
       }}>
         <FormGroup>
