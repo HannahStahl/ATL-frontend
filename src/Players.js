@@ -8,14 +8,22 @@ import EditForm from "./EditForm";
 
 export default () => {
   const { allTeams } = useAppContext();
-  const [allPlayers, setAllPlayers] = useState([]);
+  const [activePlayers, setActivePlayers] = useState([]);
+  const [inactivePlayers, setInactivePlayers] = useState([]);
   const [playerLastName, setPlayerLastName] = useState(undefined);
   const [playersWithLastName, setPlayersWithLastName] = useState([]);
   const [addingPlayer, setAddingPlayer] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    API.get("atl-backend", "list/player").then(setAllPlayers);
+    Promise.all([
+      API.get("atl-backend", "list/player"),
+      API.get("atl-backend", "list/inactivePlayer"),
+    ]).then((results) => {
+      const [activePlayers, inactivePlayers] = results;
+      setActivePlayers(activePlayers);
+      setInactivePlayers(inactivePlayers);
+    });
   }, []);
 
   const columns = {
@@ -73,37 +81,29 @@ export default () => {
     return fields;
   };
 
-  const getPlayersWithLastName = (list) => (
-    (list || allPlayers).filter(
-      (player) => playerLastName && player.lastName.toLowerCase().includes(playerLastName.toLowerCase())
-    )
-  );
-
   const createPlayer = async (event, body) => {
     event.preventDefault();
     setIsLoading(true);
-    await API.post("atl-backend", "createPlayer", { body });
-    const updatedAllPlayers = await API.get("atl-backend", "list/player");
-    setAllPlayers([...updatedAllPlayers]);
-    setPlayersWithLastName([...getPlayersWithLastName(updatedAllPlayers)]);
+    const newPlayer = await API.post("atl-backend", "createPlayer", { body });
+    setActivePlayers([newPlayer, ...activePlayers]);
     setIsLoading(false);
     setAddingPlayer(false);
   };
 
   const editPlayer = async (playerId, body) => {
-    await API.put("atl-backend", `update/player/${playerId}`, { body });
-    const updatedAllPlayers = await API.get("atl-backend", "list/player");
-    setAllPlayers([...updatedAllPlayers]);
-    setPlayersWithLastName([...getPlayersWithLastName(updatedAllPlayers)]);
-  };
-
-  const deactivatePlayer = async (playerId) => {
-    const index = allPlayers.findIndex((player) => player.playerId === playerId);
-    const index2 = playersWithLastName.findIndex((player) => player.playerId === playerId);
-    await API.post("atl-backend", `deactivatePlayer/${playerId}`);
-    allPlayers.splice(index, 1);
-    playersWithLastName.splice(index2, 1);
-    setAllPlayers([...allPlayers]);
+    const index = playersWithLastName.findIndex((player) => player.playerId === playerId);
+    playersWithLastName[index] = body;
+    const activePlayerIndex = activePlayers.findIndex((player) => player.playerId === playerId);
+    if (activePlayerIndex > -1) {
+      await API.put("atl-backend", `update/player/${playerId}`, { body });
+      activePlayers[activePlayerIndex] = body;
+      setActivePlayers([...activePlayers]);
+    } else {
+      const inactivePlayerIndex = inactivePlayers.findIndex((player) => player.playerId === playerId);
+      await API.put("atl-backend", `update/inactivePlayer/${playerId}`, { body });
+      inactivePlayers[inactivePlayerIndex] = body;
+      setInactivePlayers([...inactivePlayers]);
+    }
     setPlayersWithLastName([...playersWithLastName]);
   };
 
@@ -134,7 +134,7 @@ export default () => {
           <hr />
           <form onSubmit={(event) => {
             event.preventDefault();
-            setPlayersWithLastName(allPlayers.filter(
+            setPlayersWithLastName([...activePlayers, ...inactivePlayers].filter(
               (player) => playerLastName && player.lastName.toLowerCase().includes(playerLastName.toLowerCase())
             ));
           }}>
@@ -161,15 +161,10 @@ export default () => {
                 columns={columns}
                 rows={playersWithLastName}
                 itemType="player"
-                setRows={setAllPlayers}
-                getRows={(result) => {
-                  const index = allPlayers.findIndex((playerInList) => playerInList.playerId === result.playerId);
-                  allPlayers[index] = result;
-                  return allPlayers;
-                }}
+                setRows={setActivePlayers} // Doesn't actually get used, so doesn't matter what it is
                 createDisabled
+                removeDisabled
                 customEditFunction={editPlayer}
-                customRemoveFunction={deactivatePlayer}
                 API={API}
               />
             )}

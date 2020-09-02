@@ -1,27 +1,45 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, FormControl, FormGroup, ControlLabel } from "react-bootstrap";
 import { API } from "aws-amplify";
 import Table from "./Table";
 import LoaderButton from "./LoaderButton";
 import EditForm from "./EditForm";
 
-export default ({ columns, allPlayers, setAllPlayers, teamId, addingPlayer, setAddingPlayer }) => {
+export default ({ columns, activePlayers, setActivePlayers, teamId, addingPlayer, setAddingPlayer }) => {
+  const [inactivePlayers, setInactivePlayers] = useState([]);
   const [playerIdToAdd, setPlayerIdToAdd] = useState(undefined);
   const [playerLastName, setPlayerLastName] = useState(undefined);
   const [playersWithLastName, setPlayersWithLastName] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectingPlayer, setSelectingPlayer] = useState(false);
 
-  const playersNotOnTeam = allPlayers.filter((player) => player.teamId !== teamId);
+  useEffect(() => {
+    API.get("atl-backend", "list/inactivePlayer").then(setInactivePlayers);
+  }, []);
+
+  const playersNotOnTeam = [...activePlayers, ...inactivePlayers].filter((player) => player.teamId !== teamId);
 
   const addPlayerToTeam = async (player) => {
     const { playerId } = player;
     if (player.teamId) setPlayerIdToAdd(player.playerId);
     else {
-      const index = allPlayers.findIndex((playerInList) => playerInList.playerId === playerId);
-      allPlayers[index].teamId = teamId;
-      await API.put("atl-backend", `update/player/${playerId}`, { body: allPlayers[index] });
-      setAllPlayers([...allPlayers]);
+      const activePlayerIndex = activePlayers.findIndex((player) => player.playerId === playerId);
+      if (activePlayerIndex > -1) {
+        activePlayers[activePlayerIndex].teamId = teamId;
+        const body = activePlayers[activePlayerIndex];
+        await API.put("atl-backend", `update/player/${playerId}`, { body });
+        setActivePlayers([...activePlayers]);
+      } else {
+        const inactivePlayerIndex = inactivePlayers.findIndex((player) => player.playerId === playerId);
+        inactivePlayers[inactivePlayerIndex].teamId = teamId;
+        const body = inactivePlayers[inactivePlayerIndex];
+        await API.put("atl-backend", `update/inactivePlayer/${playerId}`, { body });
+        await API.post("atl-backend", `reactivatePlayer/${playerId}`);
+        const updatedActivePlayers = await API.get("atl-backend", "list/player");
+        inactivePlayers.splice(inactivePlayerIndex, 1);
+        setInactivePlayers([...inactivePlayers]);
+        setActivePlayers([...updatedActivePlayers]);
+      }
       setAddingPlayer(false);
       setPlayerLastName(undefined);
       setPlayersWithLastName([]);
@@ -30,11 +48,11 @@ export default ({ columns, allPlayers, setAllPlayers, teamId, addingPlayer, setA
 
   const addPlayerFromOtherTeam = async () => {
     setIsLoading(true);
-    const index = allPlayers.findIndex((playerInList) => playerInList.playerId === playerIdToAdd);
-    allPlayers[index].teamId = teamId;
-    await API.put("atl-backend", `update/player/${playerIdToAdd}`, { body: allPlayers[index] });
-    const newAllPlayers = await API.get("atl-backend", "list/player");
-    setAllPlayers([...newAllPlayers]);
+    const index = activePlayers.findIndex((playerInList) => playerInList.playerId === playerIdToAdd);
+    activePlayers[index].teamId = teamId;
+    await API.put("atl-backend", `update/player/${playerIdToAdd}`, { body: activePlayers[index] });
+    const newActivePlayers = await API.get("atl-backend", "list/player");
+    setActivePlayers([...newActivePlayers]);
     setPlayerIdToAdd(undefined);
     setAddingPlayer(false);
     setPlayerLastName(undefined);
@@ -75,13 +93,13 @@ export default ({ columns, allPlayers, setAllPlayers, teamId, addingPlayer, setA
           </>
         )}
       </form>
-      {allPlayers.filter((player) => !player.teamId).length > 0 && (
+      {activePlayers.filter((player) => !player.teamId).length > 0 && (
         <>
           <hr />
             <ControlLabel>Or select from the list of players looking for a team:</ControlLabel>
             <Table
               columns={columns}
-              rows={allPlayers}
+              rows={activePlayers}
               filterRows={(list) => list.filter((player) => !player.teamId).sort((a, b) => {
                 if (!a.rating || a.rating < b.rating) return -1;
                 if (!b.rating || a.rating > b.rating) return 1;
@@ -145,8 +163,8 @@ export default ({ columns, allPlayers, setAllPlayers, teamId, addingPlayer, setA
     setIsLoading(true);
     body.teamId = teamId;
     await API.post("atl-backend", "createPlayer", { body });
-    const updatedAllPlayers = await API.get("atl-backend", "list/player");
-    setAllPlayers([...updatedAllPlayers]);
+    const updatedActivePlayers = await API.get("atl-backend", "list/player");
+    setActivePlayers([...updatedActivePlayers]);
     setIsLoading(false);
     setAddingPlayer(false);
   };

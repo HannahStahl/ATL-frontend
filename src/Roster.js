@@ -93,8 +93,8 @@ export default ({ team }) => {
       </div>
       <AddPlayerModal
         columns={columns}
-        allPlayers={allPlayers}
-        setAllPlayers={setAllPlayers}
+        activePlayers={allPlayers}
+        setActivePlayers={setAllPlayers}
         teamId={teamId}
         addingPlayer={addingPlayer}
         setAddingPlayer={setAddingPlayer}
