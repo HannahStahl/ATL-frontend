@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Amplify, Auth } from 'aws-amplify';
-import { DateUtils } from '@aws-amplify/core';
+import { Amplify } from 'aws-amplify';
 import { BrowserRouter as Router } from 'react-router-dom';
 import './index.css';
 import App from './App';
@@ -25,12 +24,6 @@ Amplify.configure({
       },
     ]
   }
-});
-
-Auth.currentAuthenticatedUser({
-  bypassCache: true
-}).then((user) => {
-  DateUtils.setClockOffset(-(user.signInUserSession.clockDrift * 1000));
 });
 
 ReactDOM.render(
