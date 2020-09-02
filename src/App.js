@@ -64,13 +64,11 @@ function App() {
     }
     async function onLoad() {
       try {
-        console.log("here");
         await Auth.currentSession();
-        console.log("here2");
         userHasAuthenticated(true);
       }
       catch(e) {
-        if (e !== 'No current user') onError(e);
+        if (e && e !== 'No current user') onError(e);
       }
       setIsAuthenticating(false);
       fetchPublicData();
