@@ -64,7 +64,9 @@ function App() {
     }
     async function onLoad() {
       try {
+        console.log("here");
         await Auth.currentSession();
+        console.log("here2");
         userHasAuthenticated(true);
       }
       catch(e) {
