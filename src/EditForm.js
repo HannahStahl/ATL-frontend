@@ -35,7 +35,7 @@ export default ({ fields, original, save, isLoading, buttonText, labelsAbove }) 
   const renderValue = (key) => {
     const {
       type, joiningTable, joiningTableFilter, joiningTableKey, staticField,
-      joiningTableFieldNames, options, placeholder, helpText, extraNotes
+      joiningTableFieldNames, options, placeholder, helpText, extraNotes, step
     } = fields[key];
     return (
       <>
@@ -46,6 +46,7 @@ export default ({ fields, original, save, isLoading, buttonText, labelsAbove }) 
             type={type}
             onChange={e => setUpdated({ ...updated, [key]: e.target.value })}
             placeholder={placeholder}
+            step={step}
           />
         )}
         {type === "checkbox" && (
