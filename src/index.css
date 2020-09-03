@@ -720,4 +720,8 @@ h3.welcome {
   .toggle-directions:hover {
     cursor: pointer;
   }
+
+  .link:hover {
+    cursor: pointer;
+  }
 }

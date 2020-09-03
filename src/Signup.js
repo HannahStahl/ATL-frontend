@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Auth, API } from "aws-amplify";
 import { DateUtils } from '@aws-amplify/core';
 import { useHistory } from "react-router-dom";
-import { FormControl, PageHeader, HelpBlock } from "react-bootstrap";
+import { FormGroup, FormControl, PageHeader, HelpBlock, Radio } from "react-bootstrap";
 import LoaderButton from "./LoaderButton";
 import { useAppContext } from "./libs/contextLib";
 import { onError } from "./libs/errorLib";
@@ -11,7 +11,7 @@ import config from "./config";
 export default function Signup() {
   const history = useHistory();
   const [newUser, setNewUser] = useState(null);
-  const { userHasAuthenticated } = useAppContext();
+  const { userHasAuthenticated, allTeams } = useAppContext();
   const [isLoading, setIsLoading] = useState(false);
   const [accessCode, setAccessCode] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -21,6 +21,8 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmationCode, setConfirmationCode] = useState("");
+  const [selectedTeams, setSelectedTeams] = useState([""]);
+  const [captainOfTeams, setCaptainOfTeams] = useState([true]);
 
   function validateForm() {
     return (
@@ -85,9 +87,19 @@ export default function Signup() {
         accessCode === process.env.REACT_APP_ADMIN_ACCESS_CODE ||
         accessCode === process.env.REACT_APP_ADMIN_CAPTAIN_ACCESS_CODE
       );
-      const body = { firstName, lastName, email, phone, isCaptain, isAdmin };
-      await API.post("atl-backend", "create/user", { body });
-      if (isCaptain) {
+      let body = { firstName, lastName, email, phone, isCaptain, isAdmin };
+      const { userId } = await API.post("atl-backend", "create/user", { body });
+      const promises = [];
+      selectedTeams.forEach((selectedTeam, index) => {
+        if (selectedTeam.length > 0) {
+          body = allTeams.find((team) => team.teamId === selectedTeam);
+          if (captainOfTeams[index]) body.captainId = userId;
+          else body.cocaptainId = userId;
+          promises.push(API.put("atl-backend", `update/team/${selectedTeam}`, { body }));
+        }
+      });
+      await Promise.all(promises);
+      if (isCaptain && promises.length === 0) {
         await API.post("atl-backend", "emailAdmin", {
           body: { ...body, adminEmail: config.adminEmail, url: window.location.origin }
         });
@@ -233,6 +245,70 @@ export default function Signup() {
             </tr>
           </tbody>
         </table>
+        <hr />
+        <p className="centered-text">Are you the captain/co-captain of any existing teams?</p>
+        {selectedTeams.map((selectedTeam, index) => (
+          <React.Fragment key={selectedTeam}>
+            <FormGroup>
+              <FormControl
+                value={selectedTeams[index]}
+                componentClass="select"
+                onChange={(e) => {
+                  selectedTeams[index] = e.target.value;
+                  setSelectedTeams([...selectedTeams]);
+                }}
+              >
+                <option value="">Select team</option>
+                {allTeams
+                  .filter((team) => team.isActive)
+                  .sort((a, b) => a.teamName.toLowerCase() < b.teamName.toLowerCase() ? -1 : 1)
+                  .map((team) => <option key={team.teamId} value={team.teamId}>{team.teamName}</option>)
+                }
+              </FormControl>
+            </FormGroup>
+            {selectedTeams[index].length > 0 && (
+              <div className="centered-content">
+                <FormGroup>
+                  <Radio
+                    inline
+                    checked={captainOfTeams[index]}
+                    onChange={() => {
+                      captainOfTeams[index] = !captainOfTeams[index];
+                      setCaptainOfTeams([...captainOfTeams]);
+                    }}
+                  >
+                    Captain
+                  </Radio>
+                  <Radio
+                    inline
+                    checked={!captainOfTeams[index]}
+                    onChange={() => {
+                      captainOfTeams[index] = !captainOfTeams[index];
+                      setCaptainOfTeams([...captainOfTeams]);
+                    }}
+                  >
+                    Co-captain
+                  </Radio>
+                </FormGroup>
+              </div>
+            )}
+          </React.Fragment>
+        ))}
+        {selectedTeams[selectedTeams.length - 1].length > 0 && (
+          <div className="centered-content">
+            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+            <a
+              className="link"
+              onClick={() => {
+                setSelectedTeams([...selectedTeams, ""]);
+                setCaptainOfTeams([...captainOfTeams, true]);
+              }}
+            >
+              + Add another team
+            </a>
+          </div>
+        )}
+        <hr />
         <LoaderButton
           block
           type="submit"
