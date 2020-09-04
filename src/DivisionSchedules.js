@@ -20,9 +20,8 @@ export default function DivisionSchedules() {
   }, [allTeams, division]);
 
   useEffect(() => {
-    const teamIds = teams.map((team) => team.teamId);
-    setSchedule(allMatches.filter((match) => teamIds.includes(match.homeTeamId) || teamIds.includes(match.visitorTeamId)));
-  }, [allMatches, teams]);
+    setSchedule(allMatches.filter((match) => match.divisionId === division.divisionId));
+  }, [allMatches, division]);
 
   return (
     <div className="container">
