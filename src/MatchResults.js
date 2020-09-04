@@ -25,15 +25,11 @@ export default function MatchResults() {
   }, [allMatches, matchResults]);
 
   useEffect(() => {
-    setFilteredMatches(matches.filter((match) => {
-      const home = match.homeTeamId && allTeams.find((team) => team.teamId === match.homeTeamId);
-      const visitor = match.visitorTeamId && allTeams.find((team) => team.teamId === match.visitorTeamId);
-      return (
-        (divisionId === "" || (home && home.divisionId === divisionId) || (visitor && visitor.divisionId === divisionId)) &&
-        (teamId === "" || match.homeTeamId === teamId || match.visitorTeamId === teamId) &&
-        (weekNumber === "" || match.weekNumber === weekNumber)
-      );
-    }));
+    setFilteredMatches(matches.filter((match) => (
+      (divisionId === "" || match.divisionId === divisionId) &&
+      (teamId === "" || match.homeTeamId === teamId || match.visitorTeamId === teamId) &&
+      (weekNumber === "" || match.weekNumber === weekNumber)
+    )));
   }, [divisionId, teamId, weekNumber, allTeams, matches]);
 
   return (
