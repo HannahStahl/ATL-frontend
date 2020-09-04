@@ -76,6 +76,10 @@ export default () => {
       label: "Home Team",
       type: "dropdown",
       joiningTable: allTeams,
+      joiningTableFilter: {
+        key: "divisionId",
+        joiningTableKey: "divisionId"
+      },
       joiningTableKey: "teamId",
       joiningTableFieldNames: ["teamName"],
     },
@@ -83,6 +87,10 @@ export default () => {
       label: "Visiting Team",
       type: "dropdown",
       joiningTable: allTeams,
+      joiningTableFilter: {
+        key: "divisionId",
+        joiningTableKey: "divisionId"
+      },
       joiningTableKey: "teamId",
       joiningTableFieldNames: ["teamName"],
     }
