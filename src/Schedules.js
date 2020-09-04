@@ -75,7 +75,7 @@ export default () => {
     homeTeamId: {
       label: "Home Team",
       type: "dropdown",
-      joiningTable: allTeams,
+      joiningTable: allTeams.filter((team) => team.isActive),
       joiningTableFilter: {
         key: "divisionId",
         joiningTableKey: "divisionId"
@@ -86,7 +86,7 @@ export default () => {
     visitorTeamId: {
       label: "Visiting Team",
       type: "dropdown",
-      joiningTable: allTeams,
+      joiningTable: allTeams.filter((team) => team.isActive),
       joiningTableFilter: {
         key: "divisionId",
         joiningTableKey: "divisionId"
