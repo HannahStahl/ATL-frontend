@@ -724,4 +724,8 @@ h3.welcome {
   .link:hover {
     cursor: pointer;
   }
+
+  .download-schedule-link:hover {
+    cursor: pointer;
+  }
 }

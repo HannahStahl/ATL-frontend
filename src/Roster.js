@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { API } from "aws-amplify";
+import zipcelx from "zipcelx";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import Table from "./Table";
 import { useAppContext } from "./libs/contextLib";
 import AddPlayerModal from "./AddPlayerModal";
+import RosterPDF from "./RosterPDF";
 
 export default ({ team }) => {
   const { loadingData } = useAppContext();
@@ -55,6 +58,8 @@ export default ({ team }) => {
     "comments": { label: "Comments", type: "textarea" },
   };
 
+  const exportFields = ["playerNumber", "name", "phone", "email"];
+
   const { teamId } = team;
 
   const removePlayerFromTeam = async (playerId) => {
@@ -77,6 +82,21 @@ export default ({ team }) => {
 
   const filterPlayers = (list) => list.filter((player) => player.teamId === teamId);
 
+  const getExportValue = (player, key) => {
+    if (key === "name") return `${player.firstName || ""} ${player.lastName || ""}`;
+    else return player[key] || "";
+  };
+
+  const downloadExcel = () => {
+    const roster = filterPlayers(allPlayers);
+    const headerRow = exportFields.map((key) => ({ value: columns[key].label, type: "string" }));
+    const dataRows = roster.map((player) => exportFields.map((key) => ({
+      value: getExportValue(player, key), type: "string"
+    })));
+    const data = [headerRow].concat(dataRows);
+    zipcelx({ filename: `ATL Team Roster - ${team.teamName}`, sheet: { data } });
+  };
+
   return !loadingData && teamId ? (
     <>
       <hr className="team-details-page-break" />
@@ -93,6 +113,31 @@ export default ({ team }) => {
         customRemoveFunction={removePlayerFromTeam}
         categoryName="team"
       />
+      <p className="centered-text">
+        <b>Download roster:</b>
+        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+        <a onClick={downloadExcel} className="download-schedule-link">
+          <i className="fas fa-file-excel" />
+          Excel
+        </a>
+        <span className="download-schedule-link">
+          <PDFDownloadLink
+            key={Math.random()}
+            document={
+              <RosterPDF
+                exportFields={exportFields}
+                columns={columns}
+                players={filterPlayers(allPlayers)}
+                getValue={getExportValue}
+              />
+            }
+            fileName={`ATL Team Roster - ${team.teamName}.pdf`}
+          >
+            <i className="fas fa-file-pdf" />
+            PDF
+          </PDFDownloadLink>
+        </span>
+      </p>
       <div className="centered-content">
         <a href="/players-looking">View list of players looking for a team</a>
       </div>
