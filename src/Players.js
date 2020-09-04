@@ -37,7 +37,7 @@ export default () => {
     "teamId": {
       label: "Team",
       type: "dropdown",
-      joiningTable: allTeams,
+      joiningTable: allTeams.filter((team) => team.isActive),
       joiningTableKey: "teamId",
       joiningTableFieldNames: ["teamName"]
     },
