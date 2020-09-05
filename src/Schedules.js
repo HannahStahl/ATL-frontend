@@ -352,8 +352,8 @@ export default () => {
               </div>
               <p className="centered-text">
                 <b>NOTE:</b> Publishing this schedule will replace the website's match schedule with this one.
-                So if you would like to save a copy of the current season's match results,
-                be sure to do so before publishing.
+                So if you would like to download a copy of the current season's match results,
+                be sure to do so on <a href="/update-standings">the Standings page</a> before publishing.
               </p>
             </>
           )}
