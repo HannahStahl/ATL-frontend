@@ -146,7 +146,8 @@ export default () => {
       onError("Home team and visiting team must be different.");
       return false;
     }
-    const otherMatchNumbers = allMatches.filter((match) => match.matchId !== matchId).map((match) => match.matchNumber);
+    const otherMatches = draftView ? draftMatches : allMatches;
+    const otherMatchNumbers = otherMatches.filter((match) => match.matchId !== matchId).map((match) => match.matchNumber);
     if (matchNumber && matchNumber.length > 0 && otherMatchNumbers.indexOf(matchNumber) > -1 ) {
       onError("Match number must be unique.");
       return false;
