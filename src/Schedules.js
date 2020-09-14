@@ -13,13 +13,15 @@ import LoaderButton from "./LoaderButton";
 export default () => {
   const {
     allMatches, setAllMatches, draftMatches, setDraftMatches, divisions,
-    matchResults, setMatchResults, locations, allTeams, loadingData
+    matchResults, setMatchResults, locations, allTeams, seasons, loadingData
   } = useAppContext();
   const [locationId, setLocationId] = useState("");
   const [allPlayers, setAllPlayers] = useState([]);
   const [matches, setMatches] = useState([]);
   const [draftView, setDraftView] = useState(false);
   const [publishing, setPublishing] = useState(false);
+  const currentSeason = seasons.find((season) => draftView ? !season.currentSeason : season.currentSeason);
+  const seasonName = currentSeason ? currentSeason.seasonName : "";
 
   useEffect(() => {
     if (!loadingData && allMatches.length > 0) {
@@ -323,6 +325,7 @@ export default () => {
                 key={Math.random()}
                 document={
                   <SchedulePDF
+                    title={`${seasonName} Austin Tennis League`}
                     dataKeys={dataKeys}
                     columns={columns}
                     filterMatches={filterMatches}

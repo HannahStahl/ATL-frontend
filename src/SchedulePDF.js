@@ -1,8 +1,11 @@
 import React from "react";
 import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
 
-export default ({ dataKeys, columns, filterMatches, allMatches, getValue, primaryKey }) => {
+export default ({ dataKeys, columns, filterMatches, allMatches, getValue, primaryKey, title }) => {
   const pdfStyles = StyleSheet.create({
+    header: {
+      textAlign: "center"
+    },
     table: {
       display: "table",
       width: "auto",
@@ -32,6 +35,11 @@ export default ({ dataKeys, columns, filterMatches, allMatches, getValue, primar
   return (
     <Document>
       <Page style={pdfStyles.body} orientation="landscape">
+        {title && (
+          <View style={pdfStyles.header}>
+            <Text>{title}</Text>
+          </View>
+        )}
         <View style={pdfStyles.table}>
           <View style={pdfStyles.tableRow}>
             {dataKeys.map((key) => (
