@@ -232,7 +232,7 @@ export default () => {
     }
   }
 
-  const dataKeys = ["weekNumber", "matchDate", "startTime", "locationId", "homeTeamId", "visitorTeamId"];
+  const dataKeys = ["matchNumber", "weekNumber", "matchDate", "startTime", "locationId", "homeTeamId", "visitorTeamId"];
 
   const getValue = (match, key) => {
     let value = match[key] || "";
