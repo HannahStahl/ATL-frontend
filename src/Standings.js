@@ -44,9 +44,7 @@ export default function Standings() {
       {(
         divisions.length > 0 &&
         allTeams.length > 0 &&
-        standings.length > 0 &&
-        allMatches.length > 0 &&
-        matchResults.length > 0
+        allMatches.length > 0
       ) ? (
         <div className="centered-content">
           <div className="centered-content-inner">
@@ -63,72 +61,76 @@ export default function Standings() {
                 </option>
               ))}
             </FormControl>
-            <div className="table-container">
-              <Table bordered>
-                <thead>
-                  <tr>
-                    <th>Division</th>
-                    <th>Team #</th>
-                    <th>Team Name</th>
-                    <th>Sets Won</th>
-                    <th>Sets Lost</th>
-                    <th>Total Sets</th>
-                    <th>%</th>
-                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((weekNumber) => (
-                      <th key={weekNumber} colSpan={2}>Week {weekNumber}</th>
-                    ))}
-                    <th>Forf. Sets</th>
-                  </tr>
-                  <tr>
-                    <th />
-                    <th />
-                    <th />
-                    <th />
-                    <th />
-                    <th />
-                    <th />
-                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((weekNumber) => (
-                      <React.Fragment key={weekNumber}>
-                        <th>W</th>
-                        <th>L</th>
-                      </React.Fragment>
-                    ))}
-                    <th />
-                  </tr>
-                </thead>
-                <tbody>
-                  {allTeams
-                    .filter((team) => team.isActive && (divisionId === "" || team.divisionId === divisionId))
-                    .sort((a, b) => {
-                      const team1 = standings.find((standing) => standing.teamId === a.teamId);
-                      const team2 =  standings.find((standing) => standing.teamId === b.teamId);
-                      if (a.divisionId < b.divisionId) return -1;
-                      if (b.divisionId < a.divisionId) return 1;
-                      if (team1 && !team2) return -1;
-                      if (team2 && !team1) return 1;
-                      if (team1 && team2 && team1.percentSetsWon > team2.percentSetsWon) return -1;
-                      if (team1 && team2 && team2.percentSetsWon > team1.percentSetsWon) return 1;
-                      return 0;
-                    }).map((team) => {
-                      const teamStanding = standings.find((standing) => standing.teamId === team.teamId);
-                      return (
-                        <tr key={team.teamId}>
-                          <td>{getDivisionNumber(team)}</td>
-                          <td>{team.teamNumber || ""}</td>
-                          <td>{team.teamName}</td>
-                          <td>{teamStanding && teamStanding.setsWon}</td>
-                          <td>{teamStanding && teamStanding.setsLost}</td>
-                          <td>{teamStanding && teamStanding.setsPlayed}</td>
-                          <td>{teamStanding && (parseFloat(teamStanding.percentSetsWon || 0) * 100).toFixed(2)}</td>
-                          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((weekNumber) => renderWL(team.teamId, weekNumber))}
-                          <td>{teamStanding && teamStanding.setsForfeited}</td>
-                        </tr>
-                      );
-                    })
-                  }
-                </tbody>
-              </Table>
-            </div>
+            {standings.length > 0 ? (
+              <div className="table-container">
+                <Table bordered>
+                  <thead>
+                    <tr>
+                      <th>Division</th>
+                      <th>Team #</th>
+                      <th>Team Name</th>
+                      <th>Sets Won</th>
+                      <th>Sets Lost</th>
+                      <th>Total Sets</th>
+                      <th>%</th>
+                      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((weekNumber) => (
+                        <th key={weekNumber} colSpan={2}>Week {weekNumber}</th>
+                      ))}
+                      <th>Forf. Sets</th>
+                    </tr>
+                    <tr>
+                      <th />
+                      <th />
+                      <th />
+                      <th />
+                      <th />
+                      <th />
+                      <th />
+                      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((weekNumber) => (
+                        <React.Fragment key={weekNumber}>
+                          <th>W</th>
+                          <th>L</th>
+                        </React.Fragment>
+                      ))}
+                      <th />
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {allTeams
+                      .filter((team) => team.isActive && (divisionId === "" || team.divisionId === divisionId))
+                      .sort((a, b) => {
+                        const team1 = standings.find((standing) => standing.teamId === a.teamId);
+                        const team2 =  standings.find((standing) => standing.teamId === b.teamId);
+                        if (a.divisionId < b.divisionId) return -1;
+                        if (b.divisionId < a.divisionId) return 1;
+                        if (team1 && !team2) return -1;
+                        if (team2 && !team1) return 1;
+                        if (team1 && team2 && team1.percentSetsWon > team2.percentSetsWon) return -1;
+                        if (team1 && team2 && team2.percentSetsWon > team1.percentSetsWon) return 1;
+                        return 0;
+                      }).map((team) => {
+                        const teamStanding = standings.find((standing) => standing.teamId === team.teamId);
+                        return (
+                          <tr key={team.teamId}>
+                            <td>{getDivisionNumber(team)}</td>
+                            <td>{team.teamNumber || ""}</td>
+                            <td>{team.teamName}</td>
+                            <td>{teamStanding && teamStanding.setsWon}</td>
+                            <td>{teamStanding && teamStanding.setsLost}</td>
+                            <td>{teamStanding && teamStanding.setsPlayed}</td>
+                            <td>{teamStanding && (parseFloat(teamStanding.percentSetsWon || 0) * 100).toFixed(2)}</td>
+                            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((weekNumber) => renderWL(team.teamId, weekNumber))}
+                            <td>{teamStanding && teamStanding.setsForfeited}</td>
+                          </tr>
+                        );
+                      })
+                    }
+                  </tbody>
+                </Table>
+              </div>
+            ) : (
+              <p className="centered-text">No standings for this season yet.</p>
+            )}
           </div>
         </div>
       ) : <p className="centered-text">Loading...</p>}

@@ -94,7 +94,7 @@ export default function Home() {
                       return (
                         <tr key={division.divisionId} onClick={() => window.location.href = standingsUrl}>
                           <td>{division.divisionNumber}</td>
-                          {[0, 1, 2].map((index) => <td key={index}>{teams[index]}</td>)}
+                          {[0, 1, 2].map((index) => <td key={index}>{teams[index] || "TBD"}</td>)}
                         </tr>
                       );
                     })}
