@@ -15,7 +15,11 @@ export default function DivisionSchedules() {
 
   useEffect(() => {
     if (allTeams && allTeams.length > 0 && division) {
-      setTeams(allTeams.filter((team) => team.isActive && team.divisionId === division.divisionId));
+      setTeams(allTeams.filter((team) => (
+        team.isActive &&
+        team.teamName !== "Bye" &&
+        team.divisionId === division.divisionId
+      )));
     }
   }, [allTeams, division]);
 

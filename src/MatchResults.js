@@ -57,7 +57,11 @@ export default function MatchResults() {
             onChange={e => setTeamId(e.target.value)}
           >
             <option value="">All teams</option>
-            {allTeams.filter((team) => team.isActive && (divisionId === "" || team.divisionId === divisionId)).map((team) => (
+            {allTeams.filter((team) => (
+              team.isActive &&
+              team.teamName !== "Bye" &&
+              (divisionId === "" || team.divisionId === divisionId)
+            )).map((team) => (
               <option key={team.teamId} value={team.teamId}>
                 {`${team.teamName}`}
               </option>

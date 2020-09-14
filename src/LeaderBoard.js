@@ -4,7 +4,11 @@ import { useAppContext } from "./libs/contextLib";
 
 export const getOrderedTeamsInDivision = (allTeams, standings, divisionId) => {
   if (standings.length > 0) {
-    const teamsInDivision = allTeams.filter((team) => team.isActive && team.divisionId === divisionId);
+    const teamsInDivision = allTeams.filter((team) => (
+      team.isActive &&
+      team.teamName !== "Bye" &&
+      team.divisionId === divisionId
+    ));
     const sortedTeams = teamsInDivision.sort((a, b) => {
       const team1 = standings.find((standing) => standing.teamId === a.teamId);
       const team2 =  standings.find((standing) => standing.teamId === b.teamId);

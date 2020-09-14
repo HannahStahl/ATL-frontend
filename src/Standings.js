@@ -97,7 +97,11 @@ export default function Standings() {
                   </thead>
                   <tbody>
                     {allTeams
-                      .filter((team) => team.isActive && (divisionId === "" || team.divisionId === divisionId))
+                      .filter((team) => (
+                        team.isActive &&
+                        team.teamName !== "Bye" &&
+                        (divisionId === "" || team.divisionId === divisionId)
+                      ))
                       .sort((a, b) => {
                         const team1 = standings.find((standing) => standing.teamId === a.teamId);
                         const team2 =  standings.find((standing) => standing.teamId === b.teamId);

@@ -9,7 +9,11 @@ export default ({ team }) => {
 
   useEffect(() => {
     if (allTeams && allTeams.length > 0 && divisionId) {
-      setTeams(allTeams.filter((team) => team.isActive && team.divisionId === divisionId));
+      setTeams(allTeams.filter((team) => (
+        team.isActive &&
+        team.teamName !== "Bye" &&
+        team.divisionId === divisionId
+      )));
     }
   }, [allTeams, divisionId]);
 

@@ -260,7 +260,7 @@ export default function Signup() {
               >
                 <option value="">Select team</option>
                 {allTeams
-                  .filter((team) => team.isActive)
+                  .filter((team) => team.isActive && team.teamName !== "Bye")
                   .sort((a, b) => a.teamName.toLowerCase() < b.teamName.toLowerCase() ? -1 : 1)
                   .map((team) => <option key={team.teamId} value={team.teamId}>{team.teamName}</option>)
                 }
