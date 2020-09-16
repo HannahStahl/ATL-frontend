@@ -20,6 +20,7 @@ export default () => {
   const [matches, setMatches] = useState([]);
   const [draftView, setDraftView] = useState(false);
   const [publishing, setPublishing] = useState(false);
+  const [adding, setAdding] = useState(false);
   const currentSeason = seasons.find((season) => draftView ? !season.currentSeason : season.currentSeason);
   const seasonName = currentSeason ? currentSeason.seasonName : "";
 
@@ -274,6 +275,24 @@ export default () => {
     setDraftView(false);
   };
 
+  const addToSchedule = async () => {
+    setAdding(true);
+    const promises = [];
+    draftMatches.forEach((body) => {
+      const { draftMatchId } = body;
+      delete body.draftMatchId;
+      delete body.createdAt;
+      promises.push(API.post("atl-backend", "create/match", { body }));
+      promises.push(API.del("atl-backend", `delete/draftMatch/${draftMatchId}`));
+    });
+    await Promise.all(promises);
+    const updatedMatches = await API.get("atl-backend", "list/match");
+    setAdding(false);
+    setAllMatches([...updatedMatches]);
+    setDraftMatches([]);
+    setDraftView(false);
+  };
+
   return (
     <div className="container">
       <PageHeader>Matches</PageHeader>
@@ -347,17 +366,33 @@ export default () => {
                 <LoaderButton
                   bsSize="large"
                   bsStyle="primary"
+                  onClick={addToSchedule}
+                  isLoading={adding}
+                  className="publish-schedule-btn"
+                >
+                  Add Matches to Live Schedule
+                </LoaderButton>
+              </div>
+              <p className="centered-text">
+                <b>NOTE:</b> Adding matches to the live schedule will add all matches on this page to the live match schedule on the website.
+                It will not remove any of the matches currently on the website's match schedule.
+              </p>
+              <div className="centered-content">
+                <LoaderButton
+                  bsSize="large"
+                  bsStyle="primary"
                   onClick={publishSchedule}
                   isLoading={publishing}
                   className="publish-schedule-btn"
                 >
-                  Publish Schedule
+                  Publish New Schedule
                 </LoaderButton>
               </div>
               <p className="centered-text">
-                <b>NOTE:</b> Publishing this schedule will replace the website's match schedule with this one.
-                So if you would like to download a copy of the current season's match results,
-                be sure to do so on <a href="/update-standings">the Standings page</a> before publishing.
+                <b>NOTE:</b> Publishing this schedule will <i><b>completely replace</b></i> the website's match schedule with this one.
+                It will also clear all match results and standings currently saved on the website.
+                So be sure to do download a copy of the current season's match results
+                on <a href="/update-standings">the Standings page</a> before proceeding.
               </p>
             </>
           )}
