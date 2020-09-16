@@ -157,7 +157,7 @@ export default function Home() {
                         <p>{hour.weather[0].main}</p>
                         <p>
                           <i className="raindrop fas fa-tint" />
-                          {`${hour.pop.toFixed(0)}%`}
+                          {`${hour.pop * 100}%`}
                         </p>
                       </div>
                     );
