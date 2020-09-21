@@ -41,6 +41,7 @@ export default function MatchResult() {
           getPlayer(matchInfo, "Visitor", "singles1"),
           getPlayer(matchInfo, "Home", "singles2"),
           getPlayer(matchInfo, "Visitor", "singles2"),
+          getPlayers(matchInfo, "Home", "doubles1"),
           getPlayers(matchInfo, "Visitor", "doubles1"),
           getPlayers(matchInfo, "Home", "doubles2"),
           getPlayers(matchInfo, "Visitor", "doubles2")
