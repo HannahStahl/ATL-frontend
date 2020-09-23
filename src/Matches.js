@@ -178,7 +178,8 @@ export default ({ team }) => {
       label: "Verified by Visitor",
       type: "checkbox",
       render: (value) => value ? <i className="fas fa-check" /> : "",
-      disabled: ({ visitorCaptainId }) => profile.userId !== visitorCaptainId
+      disabled: ({ visitorCaptainId }) => profile.userId !== visitorCaptainId,
+      extraNotes: () => "Only check your box once ALL scores have been entered. By checking the box, you are submitting the final scores and will not be able to edit them afterward. If you are only entering partial scores, leave the box unchecked and save."
     }
   };
 
@@ -216,7 +217,7 @@ export default ({ team }) => {
   };
 
   const editMatch = async (id, body) => {
-    const { matchId, homeCaptainId, visitorCaptainId, homeVerified, visitorVerified } = body;
+    const { matchId } = body;
     body.totalHomeSetsWon = getTotalHomeSetsWon(body);
     body.totalVisitorSetsWon = getTotalVisitorSetsWon(body);
     if (matchResults.find((matchResult) => matchResult.matchId === matchId)) {
@@ -224,12 +225,7 @@ export default ({ team }) => {
     } else {
       await API.post("atl-backend", "create/matchResult", { body });
     }
-    if (
-      (profile.userId === homeCaptainId && homeVerified) ||
-      (profile.userId === visitorCaptainId && visitorVerified)
-    ) {
-      await emailOtherCaptain(body);
-    }
+    await emailOtherCaptain(body);
     const updatedMatchResults = await API.get("atl-backend", "list/matchResult");
     setMatchResults([...updatedMatchResults]);
   };

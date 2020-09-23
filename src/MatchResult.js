@@ -13,8 +13,12 @@ export default function MatchResult() {
     const getPlayer = async (matchInfo, homeOrAway, line, index) => {
       const playerId = matchInfo[`${line}${homeOrAway}Player${index || ""}Id`];
       if (playerId && playerId.length > 0) {
-        const player = await API.get("atl-backend", `get/player/${playerId}`);
-        return `${player.firstName || ""} ${player.lastName}`;
+        try {
+          const player = await API.get("atl-backend", `get/player/${playerId}`);
+          return `${player.firstName || ""} ${player.lastName}`;
+        } catch(e) {
+          return "";
+        }
       }
       return "";
     };

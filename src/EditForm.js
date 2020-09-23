@@ -91,7 +91,7 @@ export default ({ fields, original, save, isLoading, buttonText, labelsAbove }) 
             </FormControl>
           )
         )}
-        {extraNotes && <HelpBlock className="no-margin-bottom">{extraNotes(updated)}</HelpBlock>}
+        {extraNotes && <HelpBlock className="no-margin-bottom extra-notes">{extraNotes(updated)}</HelpBlock>}
       </>
     );
   };
@@ -126,7 +126,7 @@ export default ({ fields, original, save, isLoading, buttonText, labelsAbove }) 
               return (
                 <tr key={key}>
                   <td className={`form-label${extraNotes ? ' top-aligned' : ''}`}>{label || ''}</td>
-                  <td className='form-field'>{renderValue(key)}</td>
+                  <td className={`form-field${extraNotes ? ' extra-notes' : ''}`}>{renderValue(key)}</td>
                 </tr>
               );
             })}
