@@ -6,8 +6,9 @@ import Table from "./Table";
 import { useAppContext } from "./libs/contextLib";
 
 export default ({ team }) => {
+  const { teamId } = team;
   const {
-    allMatches, setAllMatches, matchResults, setMatchResults, allCaptains, locations, allTeams, loadingData
+    allMatches, setAllMatches, matchResults, setMatchResults, allCaptains, locations, allTeams, loadingData, profile
   } = useAppContext();
   const [matches, setMatches] = useState([]);
   const [allPlayers, setAllPlayers] = useState([]);
@@ -30,11 +31,23 @@ export default ({ team }) => {
         const matchResult = matchResults.find((result) => result.matchId === match.matchId);
         const homeCaptainId = homeTeam && homeTeam.captainId;
         const visitorCaptainId = visitorTeam && visitorTeam.captainId;
-        return { ...match, ...matchResult, homeCaptainId, visitorCaptainId };
+        return {
+          ...match,
+          ...matchResult,
+          homeCaptainId,
+          visitorCaptainId,
+          readOnly: (
+            matchResult &&
+            (
+              (teamId === homeTeam.teamId && matchResult.homeVerified) ||
+              (teamId === visitorTeam.teamId && matchResult.visitorVerified)
+            )
+          )
+        };
       });
       setMatches(matches);
     }
-  }, [loadingData, allTeams, allMatches, matchResults, allCaptains])
+  }, [loadingData, allTeams, allMatches, matchResults, allCaptains, teamId])
 
   const playerColumn = (label, home) => ({
     label,
@@ -155,9 +168,19 @@ export default ({ team }) => {
     doubles2VisitorSetsWon: { label: "D2 Visitor Sets Won", type: "number", hideFromTable: true },
     totalHomeSetsWon: { label: "Home Sets Won", type: "number", readOnly: true },
     totalVisitorSetsWon: { label: "Visitor Sets Won", type: "number", readOnly: true },
+    homeVerified: {
+      label: "Verified by Home",
+      type: "checkbox",
+      render: (value) => value ? <i className="fas fa-check" /> : "",
+      disabled: ({ homeCaptainId }) => profile.userId !== homeCaptainId
+    },
+    visitorVerified: {
+      label: "Verified by Visitor",
+      type: "checkbox",
+      render: (value) => value ? <i className="fas fa-check" /> : "",
+      disabled: ({ visitorCaptainId }) => profile.userId !== visitorCaptainId
+    }
   };
-
-  const { teamId } = team;
 
   const filterMatches = (list) => list.filter(
     (match) => match.homeTeamId === teamId || match.visitorTeamId === teamId
@@ -177,13 +200,35 @@ export default ({ team }) => {
     parseInt(match.doubles2VisitorSetsWon || 0)
   );
 
-  const editMatch = async (matchId, body) => {
+  const emailOtherCaptain = async (matchResult) => {
+    const {
+      homeCaptainId, visitorCaptainId, matchId, matchNumber, homeVerified, visitorVerified
+    } = matchResult;
+    const otherCaptainId = profile.userId === homeCaptainId ? visitorCaptainId : homeCaptainId;
+    const otherCaptain = allCaptains.find((captainInList) => captainInList.userId === otherCaptainId);
+    const { firstName, email: captainEmail } = otherCaptain;
+    const emailFunction = (
+      homeVerified && visitorVerified ? "sendFinalMatchResultAlert" : "requestMatchResultVerification"
+    );
+    await API.post("atl-backend", emailFunction, {
+      body: { firstName, url: window.location.origin, captainEmail, matchId, matchNumber }
+    });
+  };
+
+  const editMatch = async (id, body) => {
+    const { matchId, homeCaptainId, visitorCaptainId, homeVerified, visitorVerified } = body;
     body.totalHomeSetsWon = getTotalHomeSetsWon(body);
     body.totalVisitorSetsWon = getTotalVisitorSetsWon(body);
-    if (matchResults.find((matchResult) => matchResult.matchId === body.matchId)) {
+    if (matchResults.find((matchResult) => matchResult.matchId === matchId)) {
       await API.put("atl-backend", `update/matchResult/${matchId}`, { body });
     } else {
       await API.post("atl-backend", "create/matchResult", { body });
+    }
+    if (
+      (profile.userId === homeCaptainId && homeVerified) ||
+      (profile.userId === visitorCaptainId && visitorVerified)
+    ) {
+      await emailOtherCaptain(body);
     }
     const updatedMatchResults = await API.get("atl-backend", "list/matchResult");
     setMatchResults([...updatedMatchResults]);

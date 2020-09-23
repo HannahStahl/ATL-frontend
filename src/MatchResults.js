@@ -17,7 +17,7 @@ export default function MatchResults() {
       const matches = allMatches.map((match) => {
         const matchResult = matchResults.find((result) => result.matchId === match.matchId);
         return { ...match, ...matchResult };
-      }).filter((match) => match.totalHomeSetsWon || match.totalVisitorSetsWon);
+      }).filter((match) => match.homeVerified && match.visitorVerified);
       setMatches(matches);
       setFilteredMatches(matches);
       setWeekNumbers([...new Set(matches.map((match) => match.weekNumber))]);

@@ -34,7 +34,7 @@ export default ({ fields, original, save, isLoading, buttonText, labelsAbove }) 
 
   const renderValue = (key) => {
     const {
-      type, joiningTable, joiningTableFilter, joiningTableKey, staticField,
+      type, joiningTable, joiningTableFilter, joiningTableKey, staticField, disabled,
       joiningTableFieldNames, options, placeholder, helpText, extraNotes, step
     } = fields[key];
     return (
@@ -51,6 +51,7 @@ export default ({ fields, original, save, isLoading, buttonText, labelsAbove }) 
         )}
         {type === "checkbox" && (
           <Checkbox
+            disabled={disabled && disabled(updated)}
             checked={updated[key] || false}
             onChange={e => setUpdated({ ...updated, [key]: e.target.checked })}
           />
@@ -110,7 +111,7 @@ export default ({ fields, original, save, isLoading, buttonText, labelsAbove }) 
           {Object.keys(fields).filter(isEditable).map((key) => {
             const { label } = fields[key];
             return (
-              <FormGroup>
+              <FormGroup key={key}>
                 {label && <ControlLabel>{label}</ControlLabel>}
                 {renderValue(key)}
               </FormGroup>
