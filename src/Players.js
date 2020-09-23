@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FormControl, FormGroup, ControlLabel, PageHeader } from "react-bootstrap";
+import { FormControl, FormGroup, ControlLabel, PageHeader, Modal } from "react-bootstrap";
 import { API } from "aws-amplify";
 import Table from "./Table";
 import { useAppContext } from "./libs/contextLib";
@@ -13,6 +13,8 @@ export default () => {
   const [playerLastName, setPlayerLastName] = useState(undefined);
   const [playersWithLastName, setPlayersWithLastName] = useState([]);
   const [addingPlayer, setAddingPlayer] = useState(false);
+  const [deactivatingPlayers, setDeactivatingPlayers] = useState(false);
+  const [isDeactivating, setIsDeactivating] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -112,6 +114,27 @@ export default () => {
     setPlayersWithLastName([...playersWithLastName]);
   };
 
+  const deactivatePlayers = async () => {
+    setIsDeactivating(true);
+    const promises1 = [];
+    const promises2 = [];
+    const highestPlayerNumber = activePlayers.sort((a, b) => b.playerNumber - a.playerNumber)[0].playerNumber;
+    activePlayers.forEach((player) => {
+      const { playerId, teamId, playerNumber } = player;
+      if(teamId) {
+        delete player.teamId;
+        promises1.push(API.put("atl-backend", `update/player/${playerId}`, { body: player }));
+      }
+      if(playerNumber < (highestPlayerNumber - 268)) {
+        promises2.push(API.post("atl-backend", `deactivatePlayer/${playerId}`));
+      }
+    });
+    await Promise.all(promises1);
+    await Promise.all(promises2);
+    setIsDeactivating(false);
+    setDeactivatingPlayers(false);
+  };
+
   return (
     <div className="container">
       {addingPlayer ? (
@@ -173,7 +196,47 @@ export default () => {
                 API={API}
               />
             )}
+            <FormGroup>
+              <LoaderButton
+                block
+                bsSize="large"
+                bsStyle="danger"
+                className="danger-button"
+                onClick={() => setDeactivatingPlayers(true)}
+              >
+                Remove all players from teams
+              </LoaderButton>
+            </FormGroup>
           </form>
+          <Modal show={deactivatingPlayers} onHide={() => setDeactivatingPlayers(false)}>
+            <Modal.Header closeButton>
+              <h2>Remove Players from Teams</h2>
+            </Modal.Header>
+            <Modal.Body>
+              <p>Are you sure you want to remove all players from their teams?</p>
+              <FormGroup>
+                <LoaderButton
+                  block
+                  bsSize="large"
+                  bsStyle="primary"
+                  isLoading={isDeactivating}
+                  onClick={deactivatePlayers}
+                >
+                  Yes, remove
+                </LoaderButton>
+              </FormGroup>
+              <FormGroup>
+                <LoaderButton
+                  block
+                  bsSize="large"
+                  onClick={() => setDeactivatingPlayers(false)}
+                  className="cancel-button"
+                >
+                  Cancel
+                </LoaderButton>
+              </FormGroup>
+            </Modal.Body>
+          </Modal>
         </>
       )}
     </div>

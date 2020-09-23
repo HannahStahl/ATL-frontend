@@ -242,7 +242,7 @@ th,td:not(.key-date) {
   text-decoration: underline;
 }
 
-.btn:not(.cancel-button) {
+.btn:not(.cancel-button):not(.danger-button) {
   background-color: var(--navy);
   border-color: var(--navy);
 }
@@ -712,7 +712,7 @@ h3.welcome {
     cursor: auto;
   }
 
-  .btn:not(.cancel-button):hover {
+  .btn:not(.cancel-button):not(.danger-button):hover {
     background-color: var(--navy);
     border-color: var(--navy);
   }
