@@ -136,7 +136,17 @@ export default () => {
       totalHomeSetsWon: { label: "Home Sets Won", type: "number", readOnly: true },
       totalVisitorSetsWon: { label: "Visitor Sets Won", type: "number", readOnly: true },
       homeSetsForfeited: { label: "Home Sets Forfeited", type: "number" },
-      visitorSetsForfeited: { label: "Visitor Sets Forfeited", type: "number" }
+      visitorSetsForfeited: { label: "Visitor Sets Forfeited", type: "number" },
+      homeVerified: {
+        label: "Verified by Home",
+        type: "checkbox",
+        render: (value) => value ? <i className="fas fa-check" /> : ""
+      },
+      visitorVerified: {
+        label: "Verified by Visitor",
+        type: "checkbox",
+        render: (value) => value ? <i className="fas fa-check" /> : ""
+      }
     };
     columns = { ...columns, ...additionalColumns };
   };
