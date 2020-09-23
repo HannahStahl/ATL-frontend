@@ -64,8 +64,6 @@ export default ({ team }) => {
 
   const removePlayerFromTeam = async (playerId) => {
     const index = allPlayers.findIndex((player) => player.playerId === playerId);
-    allPlayers[index].teamId = undefined;
-    await API.put("atl-backend", `update/player/${playerId}`, { body: allPlayers[index] });
     await API.post("atl-backend", `deactivatePlayer/${playerId}`);
     allPlayers.splice(index, 1);
     setAllPlayers([...allPlayers]);

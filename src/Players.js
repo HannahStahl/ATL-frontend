@@ -108,29 +108,32 @@ export default () => {
     } else {
       const inactivePlayerIndex = inactivePlayers.findIndex((player) => player.playerId === playerId);
       await API.put("atl-backend", `update/inactivePlayer/${playerId}`, { body });
-      inactivePlayers[inactivePlayerIndex] = body;
-      setInactivePlayers([...inactivePlayers]);
+      if(body.teamId) {
+        await API.post("atl-backend", `reactivatePlayer/${playerId}`);
+        const updatedActivePlayers = await API.get("atl-backend", "list/player");
+        inactivePlayers.splice(inactivePlayerIndex, 1);
+        setInactivePlayers([...inactivePlayers]);
+        setActivePlayers([...updatedActivePlayers]);
+      } else {
+        inactivePlayers[inactivePlayerIndex] = body;
+        setInactivePlayers([...inactivePlayers]);  
+      }
     }
     setPlayersWithLastName([...playersWithLastName]);
   };
 
   const deactivatePlayers = async () => {
     setIsDeactivating(true);
-    const promises1 = [];
-    const promises2 = [];
+    const promises = [];
     const highestPlayerNumber = activePlayers.sort((a, b) => b.playerNumber - a.playerNumber)[0].playerNumber;
+    // Deactivate all players except the most recent ones looking for a team
     activePlayers.forEach((player) => {
       const { playerId, teamId, playerNumber } = player;
-      if(teamId) {
-        delete player.teamId;
-        promises1.push(API.put("atl-backend", `update/player/${playerId}`, { body: player }));
-      }
-      if(playerNumber < (highestPlayerNumber - 268)) {
-        promises2.push(API.post("atl-backend", `deactivatePlayer/${playerId}`));
+      if(teamId || playerNumber < (highestPlayerNumber - 268)) {
+        promises.push(API.post("atl-backend", `deactivatePlayer/${playerId}`));
       }
     });
-    await Promise.all(promises1);
-    await Promise.all(promises2);
+    await Promise.all(promises);
     setIsDeactivating(false);
     setDeactivatingPlayers(false);
   };
