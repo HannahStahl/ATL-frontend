@@ -209,6 +209,9 @@ export default () => {
               >
                 Remove all players from teams
               </LoaderButton>
+              <p className="link-below-button">
+                Note: You will be given the chance to confirm after clicking this button.
+              </p>
             </FormGroup>
           </form>
           <Modal show={deactivatingPlayers} onHide={() => setDeactivatingPlayers(false)}>
