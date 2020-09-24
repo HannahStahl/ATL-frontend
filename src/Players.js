@@ -129,7 +129,7 @@ export default () => {
     // Deactivate all players except the most recent ones looking for a team
     activePlayers.forEach((player) => {
       const { playerId, teamId, playerNumber } = player;
-      if(teamId || playerNumber < (highestPlayerNumber - 268)) {
+      if(teamId || playerNumber < (highestPlayerNumber - 250)) {
         promises.push(API.post("atl-backend", `deactivatePlayer/${playerId}`));
       }
     });
