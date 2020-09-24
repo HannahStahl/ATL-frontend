@@ -171,6 +171,7 @@ export default ({ columns, activePlayers, setActivePlayers, teamId, addingPlayer
 
   return (
     <Modal
+      className="add-player-modal"
       show={addingPlayer}
       onHide={() => {
         setAddingPlayer(false);
