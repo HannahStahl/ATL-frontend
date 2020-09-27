@@ -105,8 +105,10 @@ export default function Standings() {
                       .sort((a, b) => {
                         const team1 = standings.find((standing) => standing.teamId === a.teamId);
                         const team2 =  standings.find((standing) => standing.teamId === b.teamId);
-                        if (a.divisionId < b.divisionId) return -1;
-                        if (b.divisionId < a.divisionId) return 1;
+                        const aDivision = getDivisionNumber(a);
+                        const bDivision = getDivisionNumber(b);
+                        if (aDivision < bDivision) return -1;
+                        if (bDivision < aDivision) return 1;
                         if (team1 && !team2) return -1;
                         if (team2 && !team1) return 1;
                         if (team1 && team2 && team1.percentSetsWon > team2.percentSetsWon) return -1;

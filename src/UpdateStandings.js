@@ -10,7 +10,8 @@ import StandingsPDF from "./StandingsPDF";
 import PlayerResultsPDF from "./PlayerResultsPDF";
 
 export default () => {
-  const { standings, setStandings, allTeams, loadingData, seasons, matchResults } = useAppContext();
+  const { divisions, standings, setStandings, allTeams, loadingData, seasons, matchResults } = useAppContext();
+  const [sortedStandings, setSortedStandings] = useState([]);
   const [updatingStandings, setUpdatingStandings] = useState(false);
   const [updatedStandings, setUpdatedStandings] = useState(false);
   const [players, setPlayers] = useState([]);
@@ -20,6 +21,23 @@ export default () => {
   useEffect(() => {
     API.get("atl-backend", "list/player").then(setPlayers);
   }, []);
+
+  useEffect(() => {
+    if (standings && standings.length > 0 && sortedStandings.length === 0) {
+      const standingsWithDivisions = standings.map((standing) => {
+        const { divisionId } = allTeams.find(({ teamId }) => teamId === standing.teamId);
+        const { divisionNumber } = divisions.find((division) => division.divisionId === divisionId);
+        return { ...standing, divisionNumber };
+      });
+      setSortedStandings(standingsWithDivisions.sort((a, b) => {
+        if (a.divisionNumber < b.divisionNumber) return -1;
+        if (b.divisionNumber < a.divisionNumber) return 1;
+        if (a.percentSetsWon > b.percentSetsWon) return -1;
+        if (b.percentSetsWon > a.percentSetsWon) return 1;
+        return 0;
+      }));
+    }
+  }, [standings, sortedStandings, allTeams, divisions]);
 
   useEffect(() => {
     if(
@@ -70,6 +88,7 @@ export default () => {
   const currentSeason = seasons.find((season) => season.currentSeason);
 
   const columns = {
+    divisionNumber: { label: "Division" },
     teamId: {
       label: "Team Name",
       joiningTable: allTeams,
@@ -102,7 +121,7 @@ export default () => {
 
   const downloadExcel = () => {
     const headerRow = Object.keys(columns).map((key) => ({ value: columns[key].label, type: "string" }));
-    const dataRows = standings.map((team) => Object.keys(columns).map((key) => ({
+    const dataRows = sortedStandings.map((team) => Object.keys(columns).map((key) => ({
       value: getExportValue(team, key), type: "string"
     })));
     const data = [headerRow].concat(dataRows);
@@ -135,7 +154,7 @@ export default () => {
         <>
           <Table
             columns={columns}
-            rows={standings}
+            rows={sortedStandings}
             itemType="standing"
             primaryKey="teamId"
           />
@@ -171,7 +190,7 @@ export default () => {
                 document={
                   <StandingsPDF
                     columns={columns}
-                    standings={standings}
+                    standings={sortedStandings}
                     getValue={getExportValue}
                   />
                 }
