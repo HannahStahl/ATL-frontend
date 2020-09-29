@@ -105,7 +105,10 @@ function App() {
           <Navbar.Header>
             <Navbar.Brand>
               <Link to="/">
-                <img src={`${config.cloudfrontUrl}/${logoFilename}.png`} alt="ATL" />
+                <img
+                  src={`${config.cloudfrontUrl}/${logoFilename}.${window.innerWidth >= 1000 ? 'jpg' : 'png'}`}
+                  alt="ATL"
+                />
               </Link>
             </Navbar.Brand>
             <Navbar.Toggle />

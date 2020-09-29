@@ -685,6 +685,19 @@ h3.welcome {
   .App .nav a {
     font-size: 18px;
   }
+
+  .App nav ul {
+    margin-top: 15px;
+  }  
+
+  .App nav .container-fluid .navbar-brand {
+    height: 80px;
+  }
+
+  .home-section-1 {
+    margin-top: 80px;
+    padding: 80px;
+  }
 }
 
 @media all and (min-width: 768px) {
