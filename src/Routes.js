@@ -30,7 +30,6 @@ import Signup from "./Signup";
 import PortalHome from "./PortalHome";
 import Profile from "./Profile";
 import Team from "./Team";
-import UpdateStandings from "./UpdateStandings";
 import Seasons from "./Seasons";
 import Calendars from "./Calendars";
 import Teams from "./Teams";
@@ -139,9 +138,6 @@ export default function Routes() {
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/payment" isAuthenticated={isAuthenticated}>
         <Payment />
-      </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/update-standings" isAuthenticated={isAuthenticated}>
-        <UpdateStandings />
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/seasons" isAuthenticated={isAuthenticated}>
         <Seasons />

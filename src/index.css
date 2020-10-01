@@ -211,7 +211,7 @@ th,td:not(.key-date):not(.extra-notes) {
   margin-right: 5px;
 }
 
-.fa-check.updated-standings, .fa-check.updated-password {
+.fa-check.updated-password {
   margin-right: 8px;
 }
 
@@ -577,7 +577,7 @@ h3.welcome {
   margin-right: 20px;
 }
 
-.update-standings-btn, .publish-schedule-btn {
+.publish-schedule-btn {
   margin-bottom: 15px;
 }
 

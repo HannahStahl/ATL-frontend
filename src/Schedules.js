@@ -9,11 +9,13 @@ import { useAppContext } from "./libs/contextLib";
 import { onError } from "./libs/errorLib";
 import SchedulePDF from "./SchedulePDF";
 import LoaderButton from "./LoaderButton";
+import StandingsPDF from "./StandingsPDF";
+import PlayerResultsPDF from "./PlayerResultsPDF";
 
 export default () => {
   const {
-    allMatches, setAllMatches, draftMatches, setDraftMatches, divisions,
-    matchResults, setMatchResults, locations, allTeams, seasons, loadingData
+    allMatches, setAllMatches, draftMatches, setDraftMatches, divisions, standings,
+    setStandings, matchResults, setMatchResults, locations, allTeams, seasons, loadingData
   } = useAppContext();
   const [locationId, setLocationId] = useState("");
   const [allPlayers, setAllPlayers] = useState([]);
@@ -21,6 +23,9 @@ export default () => {
   const [draftView, setDraftView] = useState(false);
   const [publishing, setPublishing] = useState(false);
   const [adding, setAdding] = useState(false);
+  const [sortedStandings, setSortedStandings] = useState([]);
+  const [playerResults, setPlayerResults] = useState([]);
+  const [loadingPlayerResults, setLoadingPlayerResults] = useState(true);
   const currentSeason = seasons.find((season) => draftView ? !season.currentSeason : season.currentSeason);
   const seasonName = currentSeason ? currentSeason.seasonName : "";
 
@@ -37,6 +42,69 @@ export default () => {
   useEffect(() => {
     API.get("atl-backend", "list/player").then(setAllPlayers);
   }, []);
+
+  useEffect(() => {
+    if (standings && standings.length > 0 && sortedStandings.length === 0) {
+      const standingsWithDivisions = standings.map((standing) => {
+        const { divisionId } = allTeams.find(({ teamId }) => teamId === standing.teamId);
+        const { divisionNumber } = divisions.find((division) => division.divisionId === divisionId);
+        return { ...standing, divisionNumber };
+      });
+      setSortedStandings(standingsWithDivisions.sort((a, b) => {
+        if (a.divisionNumber < b.divisionNumber) return -1;
+        if (b.divisionNumber < a.divisionNumber) return 1;
+        if (a.percentSetsWon > b.percentSetsWon) return -1;
+        if (b.percentSetsWon > a.percentSetsWon) return 1;
+        return 0;
+      }));
+    }
+  }, [standings, sortedStandings, allTeams, divisions]);
+
+  useEffect(() => {
+    if(
+      loadingPlayerResults &&
+      allTeams.length > 0 &&
+      allPlayers.length > 0 &&
+      matchResults.length > 0 &&
+      playerResults.length === 0
+    ) {
+      let rows = [];
+      allTeams
+      .filter((team) => team.isActive && team.teamName !== "Bye")
+      .sort((a, b) => a.teamNumber - b.teamNumber)
+      .forEach((team) => {
+        const { teamId, teamNumber, teamName } = team;
+        const roster = allPlayers.filter((player) => player.teamId === teamId);
+        const rosterResults = [];
+        roster.forEach(({ playerId, firstName, lastName }) => {
+          let numSetsWon = 0;
+          let numSetsLost = 0;
+          let numMatches = 0;
+          matchResults.forEach((matchResult) => {
+            Object.keys(matchResult).forEach((key) => {
+              if (key.includes("Player") && matchResult[key] === playerId) {
+                const home = key.includes("Home");
+                const line = key.split(home ? "Home" : "Visitor")[0];
+                const setsWon = matchResult[`${line}${home ? 'Home' : 'Visitor'}SetsWon`] || 0;
+                const setsLost = matchResult[`${line}${home ? 'Visitor' : 'Home'}SetsWon`] || 0;
+                numSetsWon += parseFloat(setsWon);
+                numSetsLost += parseFloat(setsLost);
+                numMatches += 1;
+              }
+            });
+          });
+          const percentSetsWon = numMatches > 0 ? ((numSetsWon / (numSetsWon + numSetsLost)) * 100).toFixed(2) : 0;
+          rosterResults.push({
+            teamNumber, teamName, firstName, lastName, numSetsWon, numSetsLost, percentSetsWon, numMatches,
+          });
+        });
+        const sortedResults = rosterResults.sort((a, b) => b.numMatches - a.numMatches);
+        rows = rows.concat(sortedResults);
+      });
+      setPlayerResults(rows);
+      setLoadingPlayerResults(false);
+    }
+  }, [allTeams, allPlayers, matchResults, playerResults, loadingPlayerResults]);
 
   const playerColumn = (label, home) => ({
     label,
@@ -182,6 +250,58 @@ export default () => {
     parseInt(match.doubles2VisitorSetsWon || 0)
   );
 
+  const updateSortedStandings = (updatedStandings) => {
+    const standingsWithDivisions = updatedStandings.map((standing) => {
+      const { divisionId } = allTeams.find(({ teamId }) => teamId === standing.teamId);
+      const { divisionNumber } = divisions.find((division) => division.divisionId === divisionId);
+      return { ...standing, divisionNumber };
+    });
+    setSortedStandings(standingsWithDivisions.sort((a, b) => {
+      if (a.divisionNumber < b.divisionNumber) return -1;
+      if (b.divisionNumber < a.divisionNumber) return 1;
+      if (a.percentSetsWon > b.percentSetsWon) return -1;
+      if (b.percentSetsWon > a.percentSetsWon) return 1;
+      return 0;
+    }));
+  };
+
+  const updatePlayerResults = (updatedMatchResults) => {
+    let rows = [];
+    allTeams
+    .filter((team) => team.isActive && team.teamName !== "Bye")
+    .sort((a, b) => a.teamNumber - b.teamNumber)
+    .forEach((team) => {
+      const { teamId, teamNumber, teamName } = team;
+      const roster = allPlayers.filter((player) => player.teamId === teamId);
+      const rosterResults = [];
+      roster.forEach(({ playerId, firstName, lastName }) => {
+        let numSetsWon = 0;
+        let numSetsLost = 0;
+        let numMatches = 0;
+        updatedMatchResults.forEach((matchResult) => {
+          Object.keys(matchResult).forEach((key) => {
+            if (key.includes("Player") && matchResult[key] === playerId) {
+              const home = key.includes("Home");
+              const line = key.split(home ? "Home" : "Visitor")[0];
+              const setsWon = matchResult[`${line}${home ? 'Home' : 'Visitor'}SetsWon`] || 0;
+              const setsLost = matchResult[`${line}${home ? 'Visitor' : 'Home'}SetsWon`] || 0;
+              numSetsWon += parseFloat(setsWon);
+              numSetsLost += parseFloat(setsLost);
+              numMatches += 1;
+            }
+          });
+        });
+        const percentSetsWon = numMatches > 0 ? ((numSetsWon / (numSetsWon + numSetsLost)) * 100).toFixed(2) : 0;
+        rosterResults.push({
+          teamNumber, teamName, firstName, lastName, numSetsWon, numSetsLost, percentSetsWon, numMatches,
+        });
+      });
+      const sortedResults = rosterResults.sort((a, b) => b.numMatches - a.numMatches);
+      rows = rows.concat(sortedResults);
+    });
+    setPlayerResults(rows);
+  };
+
   const addMatch = async (body) => {
     if (draftView) {
       await API.post("atl-backend", "create/draftMatch", { body });
@@ -192,12 +312,16 @@ export default () => {
       body.totalVisitorSetsWon = getTotalVisitorSetsWon(body);
       const { matchId } = await API.post("atl-backend", "create/match", { body });
       await API.post("atl-backend", "create/matchResult", { body: { ...body, matchId } })
-      const [updatedMatches, updatedMatchResults] = await Promise.all([
+      const [updatedMatches, updatedMatchResults, updatedStandings] = await Promise.all([
         API.get("atl-backend", "list/match"),
-        API.get("atl-backend", "list/matchResult")
+        API.get("atl-backend", "list/matchResult"),
+        API.get("atl-backend", "list/standing")
       ]);
       setAllMatches([...updatedMatches]);
       setMatchResults([...updatedMatchResults]);
+      setStandings([...updatedStandings]);
+      updateSortedStandings(updatedStandings);
+      updatePlayerResults(updatedMatchResults);
     }
   };
 
@@ -216,12 +340,16 @@ export default () => {
         promises.push(API.post("atl-backend", "create/matchResult", { body }));
       }
       await Promise.all(promises);
-      const [updatedMatches, updatedMatchResults] = await Promise.all([
+      const [updatedMatches, updatedMatchResults, updatedStandings] = await Promise.all([
         API.get("atl-backend", "list/match"),
-        API.get("atl-backend", "list/matchResult")
+        API.get("atl-backend", "list/matchResult"),
+        API.get("atl-backend", "list/standing")
       ]);
       setAllMatches([...updatedMatches]);
       setMatchResults([...updatedMatchResults]);
+      setStandings([...updatedStandings]);
+      updateSortedStandings(updatedStandings);
+      updatePlayerResults(updatedMatchResults);
     }
   };
 
@@ -236,12 +364,16 @@ export default () => {
         promises.push(API.del("atl-backend", `delete/matchResult/${matchId}`));
       }
       await Promise.all(promises);
-      const [updatedMatches, updatedMatchResults] = await Promise.all([
+      const [updatedMatches, updatedMatchResults, updatedStandings] = await Promise.all([
         API.get("atl-backend", "list/match"),
-        API.get("atl-backend", "list/matchResult")
+        API.get("atl-backend", "list/matchResult"),
+        API.get("atl-backend", "list/standing")
       ]);
       setAllMatches([...updatedMatches]);
       setMatchResults([...updatedMatchResults]);
+      setStandings([...updatedStandings]);
+      updateSortedStandings(updatedStandings);
+      updatePlayerResults(updatedMatchResults);
     }
   }
 
@@ -301,6 +433,56 @@ export default () => {
     setAllMatches([...updatedMatches]);
     setDraftMatches([]);
     setDraftView(false);
+  };
+
+  const getExportValue = (team, key) => {
+    if (key === "teamId") return allTeams.find((teamInList) => teamInList.teamId === team.teamId).teamName;
+    if (key === "percentSetsWon") return (parseFloat(team.percentSetsWon || 0) * 100).toFixed(2);
+    else return team[key];
+  };
+
+  const playerColumns = [
+    { key: "teamNumber", label: "Team #" },
+    { key: "teamName", label: "Team Name" },
+    { key: "firstName", label: "First Name" },
+    { key: "lastName", label: "Last Name" },
+    { key: "numSetsWon", label: "Sets Won" },
+    { key: "numSetsLost", label: "Sets Lost" },
+    { key: "percentSetsWon", label: "%" },
+    { key: "numMatches", label: "Matches Played" },
+  ];
+
+  const standingsColumns = {
+    divisionNumber: { label: "Division" },
+    teamId: {
+      label: "Team Name",
+      joiningTable: allTeams,
+      joiningTableKey: "teamId",
+      joiningTableFieldNames: ["teamName"]
+    },
+    setsWon: { label: "Sets Won" },
+    setsLost: { label: "Sets Lost" },
+    setsPlayed: { label: "Total Sets" },
+    percentSetsWon: { label: "%", render: (value) => (parseFloat(value || 0) * 100).toFixed(2) },
+    setsForfeited: { label: "Sets Forfeited", type: "number" }
+  };
+
+  const downloadStandingsExcel = () => {
+    const headerRow = Object.keys(standingsColumns).map((key) => ({ value: standingsColumns[key].label, type: "string" }));
+    const dataRows = sortedStandings.map((team) => Object.keys(standingsColumns).map((key) => ({
+      value: getExportValue(team, key), type: "string"
+    })));
+    const data = [headerRow].concat(dataRows);
+    zipcelx({ filename: `ATL Standings - ${currentSeason.seasonName}`, sheet: { data } });
+  };
+
+  const downloadPlayersExcel = () => {
+    const headerRow = playerColumns.map((column) => ({ value: column.label, type: "string" }));
+    const dataRows = playerResults.map((player) => playerColumns.map((column) => ({
+      value: player[column.key], type: "string"
+    })));
+    const data = [headerRow].concat(dataRows);
+    zipcelx({ filename: `ATL Player Results - ${currentSeason.seasonName}`, sheet: { data } });
   };
 
   return (
@@ -370,6 +552,54 @@ export default () => {
               </PDFDownloadLink>
             </span>
           </p>
+          {!draftView && (
+            <p className="centered-text">
+              <b>Download standings:</b>
+              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+              <a onClick={downloadStandingsExcel} className="download-schedule-link">
+                <i className="fas fa-file-excel" />
+                Excel
+              </a>
+              <span className="download-schedule-link">
+                <PDFDownloadLink
+                  key={Math.random()}
+                  document={
+                    <StandingsPDF
+                      columns={standingsColumns}
+                      standings={sortedStandings}
+                      getValue={getExportValue}
+                    />
+                  }
+                  fileName={`ATL Standings - ${currentSeason.seasonName}.pdf`}
+                >
+                  <i className="fas fa-file-pdf" />
+                  PDF
+                </PDFDownloadLink>
+              </span>
+            </p>
+          )}
+          {!loadingPlayerResults && !draftView && (
+            <p className="centered-text">
+              <b>Download player results:</b>
+              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+              <a onClick={downloadPlayersExcel} className="download-schedule-link">
+                <i className="fas fa-file-excel" />
+                Excel
+              </a>
+              <span className="download-schedule-link">
+                <PDFDownloadLink
+                  key={Math.random()}
+                  document={
+                    <PlayerResultsPDF columns={playerColumns} playerResults={playerResults} />
+                  }
+                  fileName={`ATL Player Results - ${currentSeason.seasonName}.pdf`}
+                >
+                  <i className="fas fa-file-pdf" />
+                  PDF
+                </PDFDownloadLink>
+              </span>
+            </p>
+          )}
           {draftView && (
             <>
               <div className="centered-content">
@@ -401,8 +631,7 @@ export default () => {
               <p className="centered-text">
                 <b>NOTE:</b> Publishing this schedule will <i><b>completely replace</b></i> the website's match schedule with this one.
                 It will also clear all match results and standings currently saved on the website.
-                So be sure to do download a copy of the current season's match results
-                on <a href="/update-standings">the Standings page</a> before proceeding.
+                So be sure to download a copy of the current season's match results before you proceed.
               </p>
             </>
           )}
