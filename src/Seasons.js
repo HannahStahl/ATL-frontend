@@ -10,10 +10,25 @@ export default () => {
 
   const columns = {
     seasonName: { label: "Name", type: "text", required: true },
+    rosterDeadline: {
+      label: "Roster Deadline",
+      type: "date",
+      render: (value) => value && moment(value).format("MMM. D")
+    },
     startDate: {
       label: "League Start Date",
       type: "date",
       required: true,
+      render: (value) => value && moment(value).format("MMM. D")
+    },
+    playerAdditionsStartDate: {
+      label: "Player Additions Start Date",
+      type: "date",
+      render: (value) => value && moment(value).format("MMM. D")
+    },
+    playerAdditionsEndDate: {
+      label: "Player Additions End Date",
+      type: "date",
       render: (value) => value && moment(value).format("MMM. D")
     },
     endDate: {

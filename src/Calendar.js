@@ -11,26 +11,45 @@ export default function Calendar() {
     if (seasons.length > 0 && events.length > 0 && Object.keys(seasonEvents).length === 0) {
       seasons.forEach((season) => {
         const eventsForSeason = events.filter((event) => event.seasonId === season.seasonId);
-        let eventsWithLeagueDates = eventsForSeason.concat([
-          {
+        if (season.rosterDeadline) {
+          eventsForSeason.push({
+            eventId: "roster-deadline",
+            eventName: "Final Roster Deadline (11pm)",
+            startDate: season.rosterDeadline,
+            seasonId: season.seasonId
+          });
+        }
+        if (season.startDate) {
+          eventsForSeason.push({
             eventId: "season-start",
             eventName: "League Begins",
             startDate: season.startDate,
             seasonId: season.seasonId
-          },
-          {
+          });
+        }
+        if (season.playerAdditionsStartDate && season.playerAdditionsEndDate) {
+          eventsForSeason.push({
+            eventId: "player-additions",
+            eventName: "Player Additions (up to 2) (5pm)",
+            startDate: season.playerAdditionsStartDate,
+            endDate: season.playerAdditionsEndDate,
+            seasonId: season.seasonId
+          });
+        }
+        if (season.endDate) {
+          eventsForSeason.push({
             eventId: "season-end",
             eventName: "League Ends",
             startDate: season.endDate,
             seasonId: season.seasonId
-          }
-        ]);
-        eventsWithLeagueDates = eventsWithLeagueDates.sort((a, b) => {
+          });
+        }
+        const sortedEvents = eventsForSeason.sort((a, b) => {
           if (a.startDate < b.startDate) return -1;
           if (a.startDate > b.startDate) return 1;
           return 0;
         });
-        seasonEvents[season.seasonName] = eventsWithLeagueDates;
+        seasonEvents[season.seasonName] = sortedEvents;
         setSeasonEvents(seasonEvents);
       });
     }

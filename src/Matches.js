@@ -39,8 +39,8 @@ export default ({ team }) => {
           readOnly: (
             matchResult &&
             (
-              (teamId === homeTeam.teamId && matchResult.homeVerified) ||
-              (teamId === visitorTeam.teamId && matchResult.visitorVerified)
+              (teamId === homeTeam && homeTeam.teamId && matchResult.homeVerified) ||
+              (teamId === visitorTeam && visitorTeam.teamId && matchResult.visitorVerified)
             )
           )
         };

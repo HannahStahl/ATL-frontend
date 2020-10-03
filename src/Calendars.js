@@ -23,28 +23,49 @@ export default () => {
 
   useEffect(() => {
     if (!events.find((event) => event.eventId === "season-start")) {
-      let eventsWithLeagueDates = events.concat([
-        {
+      if (season.rosterDeadline) {
+        events.push({
+          eventId: "roster-deadline",
+          eventName: "Final Roster Deadline (11pm)",
+          startDate: season.rosterDeadline,
+          seasonId: season.seasonId,
+          readOnly: true
+        });
+      }
+      if (season.startDate) {
+        events.push({
           eventId: "season-start",
           eventName: "League Begins",
           startDate: season.startDate,
           seasonId: season.seasonId,
           readOnly: true
-        },
-        {
+        });
+      }
+      if (season.playerAdditionsStartDate && season.playerAdditionsEndDate) {
+        events.push({
+          eventId: "player-additions",
+          eventName: "Player Additions (up to 2) (5pm)",
+          startDate: season.playerAdditionsStartDate,
+          endDate: season.playerAdditionsEndDate,
+          seasonId: season.seasonId,
+          readOnly: true
+        });
+      }
+      if (season.endDate) {
+        events.push({
           eventId: "season-end",
           eventName: "League Ends",
           startDate: season.endDate,
           seasonId: season.seasonId,
           readOnly: true
-        }
-      ]);
-      eventsWithLeagueDates = eventsWithLeagueDates.sort((a, b) => {
+        });
+      }
+      const sortedEvents = events.sort((a, b) => {
         if (a.startDate < b.startDate) return -1;
         if (a.startDate > b.startDate) return 1;
         return 0;
       });
-      setEventsWithLeagueDates(eventsWithLeagueDates);
+      setEventsWithLeagueDates(sortedEvents);
     }
   }, [events, season]);
 
@@ -102,7 +123,7 @@ export default () => {
             customAddFunction={addEvent}
           />
           <div className="link-below-button">
-            <p>To edit the "League Begins" and "League Ends" events, visit the <a href="/seasons">Seasons</a> page.</p>
+            <p>To edit the read-only events on this page, visit the <a href="/seasons">Seasons</a> page.</p>
           </div>
         </>
       )}
