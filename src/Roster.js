@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import moment from "moment";
 import { API } from "aws-amplify";
 import zipcelx from "zipcelx";
 import { PDFDownloadLink } from "@react-pdf/renderer";
@@ -8,13 +9,29 @@ import AddPlayerModal from "./AddPlayerModal";
 import RosterPDF from "./RosterPDF";
 
 export default ({ team }) => {
-  const { loadingData } = useAppContext();
+  const { loadingData, seasons } = useAppContext();
   const [allPlayers, setAllPlayers] = useState([]);
   const [addingPlayer, setAddingPlayer] = useState(false);
+  const [readOnly, setReadOnly] = useState(true);
 
   useEffect(() => {
     API.get("atl-backend", "list/player").then(setAllPlayers);
   }, []);
+
+  useEffect(() => {
+    if (seasons.length > 0) {
+      const {
+        rosterDeadline, playerAdditionsStartDate, playerAdditionsEndDate
+      } = seasons.find((season) => season.currentSeason);
+      if (
+        moment().isBefore(`${rosterDeadline}T23:00:00`) ||
+        (
+          moment().isAfter(`${playerAdditionsStartDate}T00:00:00`) &&
+          moment().isBefore(`${playerAdditionsEndDate}T17:00:00`)
+        )
+      ) setReadOnly(false);
+    }
+  }, [seasons]);
 
   const columns = {
     "playerNumber": {
@@ -103,13 +120,15 @@ export default ({ team }) => {
         columns={columns}
         rows={allPlayers}
         filterRows={filterPlayers}
-        setRows={setAllPlayers}
+        setRows={!readOnly && setAllPlayers}
         getRows={() => API.get("atl-backend", "/list/player")}
         itemType="player"
         API={API}
         CustomAddComponent={AddPlayerComponent}
         customRemoveFunction={removePlayerFromTeam}
         categoryName="team"
+        createDisabled={readOnly}
+        removeDisabled={readOnly}
       />
       <p className="centered-text">
         <b>Download roster:</b>
@@ -137,7 +156,14 @@ export default ({ team }) => {
         </span>
       </p>
       <div className="centered-content">
-        <a href="/players-looking">View list of players looking for a team</a>
+        {readOnly ? (
+          <p>
+            Rosters are locked at this time. 
+            Please <a href="mailto:myanez@pharrtennis.com">email Maggie</a> if you need to make changes.
+          </p>
+        ) : (
+          <a href="/players-looking">View list of players looking for a team</a>
+        )}
       </div>
       <AddPlayerModal
         columns={columns}
