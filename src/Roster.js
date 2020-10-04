@@ -116,6 +116,14 @@ export default ({ team }) => {
     <>
       <hr className="team-details-page-break" />
       <h1 className="team-details-page-header">Roster</h1>
+      {readOnly && (
+        <div className="centered-content">
+          <p className="rosters-locked">
+            Rosters are locked at this time. 
+            Please <a href="mailto:myanez@pharrtennis.com">email Maggie</a> if you need to make changes.
+          </p>
+        </div>
+      )}
       <Table
         columns={columns}
         rows={allPlayers}
@@ -156,14 +164,7 @@ export default ({ team }) => {
         </span>
       </p>
       <div className="centered-content">
-        {readOnly ? (
-          <p>
-            Rosters are locked at this time. 
-            Please <a href="mailto:myanez@pharrtennis.com">email Maggie</a> if you need to make changes.
-          </p>
-        ) : (
-          <a href="/players-looking">View list of players looking for a team</a>
-        )}
+        <a href="/players-looking">View list of players looking for a team</a>
       </div>
       <AddPlayerModal
         columns={columns}

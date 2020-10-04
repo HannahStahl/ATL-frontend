@@ -617,6 +617,10 @@ h3.welcome {
   min-width: min(90%, 1250px);
 }
 
+.rosters-locked {
+  margin-bottom: 20px;
+}
+
 @media all and (min-width: 768px) and (max-width: 1199px) {
   .home-section-2-card {
     width: 800px;
