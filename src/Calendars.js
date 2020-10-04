@@ -22,9 +22,10 @@ export default () => {
   }, [seasons]);
 
   useEffect(() => {
-    if (!events.find((event) => event.eventId === "season-start")) {
+    if (events.length > 0) {
+      const seasonEvents = [...events];
       if (season.rosterDeadline) {
-        events.push({
+        seasonEvents.push({
           eventId: "roster-deadline",
           eventName: "Final Roster Deadline (11pm)",
           startDate: season.rosterDeadline,
@@ -33,7 +34,7 @@ export default () => {
         });
       }
       if (season.startDate) {
-        events.push({
+        seasonEvents.push({
           eventId: "season-start",
           eventName: "League Begins",
           startDate: season.startDate,
@@ -42,7 +43,7 @@ export default () => {
         });
       }
       if (season.playerAdditionsStartDate && season.playerAdditionsEndDate) {
-        events.push({
+        seasonEvents.push({
           eventId: "player-additions",
           eventName: "Player Additions (up to 2) (5pm)",
           startDate: season.playerAdditionsStartDate,
@@ -52,7 +53,7 @@ export default () => {
         });
       }
       if (season.endDate) {
-        events.push({
+        seasonEvents.push({
           eventId: "season-end",
           eventName: "League Ends",
           startDate: season.endDate,
@@ -60,7 +61,7 @@ export default () => {
           readOnly: true
         });
       }
-      const sortedEvents = events.sort((a, b) => {
+      const sortedEvents = seasonEvents.sort((a, b) => {
         if (a.startDate < b.startDate) return -1;
         if (a.startDate > b.startDate) return 1;
         return 0;
