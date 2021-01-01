@@ -205,14 +205,14 @@ export default ({ team }) => {
     const {
       homeCaptainId, visitorCaptainId, matchId, matchNumber, homeVerified, visitorVerified
     } = matchResult;
-    const otherCaptainId = profile.userId === homeCaptainId ? visitorCaptainId : homeCaptainId;
-    const otherCaptain = allCaptains.find((captainInList) => captainInList.userId === otherCaptainId);
-    const { firstName, email: captainEmail } = otherCaptain;
+    const homeCaptain = allCaptains.find((captainInList) => captainInList.userId === homeCaptainId);
+    const visitorCaptain = allCaptains.find((captainInList) => captainInList.userId === visitorCaptainId);
+    const captainEmails = [homeCaptain.email, visitorCaptain.email];
     const emailFunction = (
       homeVerified && visitorVerified ? "sendFinalMatchResultAlert" : "requestMatchResultVerification"
     );
     await API.post("atl-backend", emailFunction, {
-      body: { firstName, url: window.location.origin, captainEmail, matchId, matchNumber }
+      body: { url: window.location.origin, captainEmails, matchId, matchNumber }
     });
   };
 
