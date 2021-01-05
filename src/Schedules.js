@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
-import { PageHeader, FormGroup, FormControl } from "react-bootstrap";
+import { PageHeader, FormGroup, FormControl, Modal } from "react-bootstrap";
 import { API } from "aws-amplify";
 import zipcelx from "zipcelx";
 import { PDFDownloadLink } from "@react-pdf/renderer";
@@ -21,11 +21,12 @@ export default () => {
   const [allPlayers, setAllPlayers] = useState([]);
   const [matches, setMatches] = useState([]);
   const [draftView, setDraftView] = useState(false);
-  const [publishing, setPublishing] = useState(false);
   const [adding, setAdding] = useState(false);
+  const [clearing, setClearing] = useState(false);
   const [sortedStandings, setSortedStandings] = useState([]);
   const [playerResults, setPlayerResults] = useState([]);
   const [loadingPlayerResults, setLoadingPlayerResults] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
   const currentSeason = seasons.find((season) => draftView ? !season.currentSeason : season.currentSeason);
   const seasonName = currentSeason ? currentSeason.seasonName : "";
 
@@ -406,17 +407,6 @@ export default () => {
     });
   };
 
-  const publishSchedule = async () => {
-    setPublishing(true);
-    await API.post("atl-backend", "publishSchedule");
-    const updatedMatches = await API.get("atl-backend", "list/match");
-    setPublishing(false);
-    setAllMatches([...updatedMatches]);
-    setDraftMatches([]);
-    setMatchResults([]);
-    setDraftView(false);
-  };
-
   const addToSchedule = async () => {
     setAdding(true);
     const promises = [];
@@ -433,6 +423,17 @@ export default () => {
     setAllMatches([...updatedMatches]);
     setDraftMatches([]);
     setDraftView(false);
+  };
+
+  const clearSchedule = async () => {
+    setClearing(true);
+    await API.post("atl-backend", "clearSchedule");
+    setAllMatches([]);
+    setMatches([]);
+    setMatchResults([]);
+    setStandings([]);
+    setClearing(false);
+    setModalVisible(false);
   };
 
   const getExportValue = (team, key) => {
@@ -578,31 +579,49 @@ export default () => {
               </span>
             </p>
           )}
-          {!loadingPlayerResults && !draftView && (
-            <p className="centered-text">
-              <b>Download player results:</b>
-              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-              <a onClick={downloadPlayersExcel} className="download-schedule-link">
-                <i className="fas fa-file-excel" />
-                Excel
-              </a>
-              <span className="download-schedule-link">
-                <PDFDownloadLink
-                  key={Math.random()}
-                  document={
-                    <PlayerResultsPDF columns={playerColumns} playerResults={playerResults} />
-                  }
-                  fileName={`ATL Player Results - ${currentSeason.seasonName}.pdf`}
-                >
-                  <i className="fas fa-file-pdf" />
-                  PDF
-                </PDFDownloadLink>
-              </span>
-            </p>
-          )}
-          {draftView && (
+          {!draftView ? (
             <>
-              <div className="centered-content">
+              {!loadingPlayerResults && (
+                <>
+                  <p className="centered-text">
+                    <b>Download player results:</b>
+                    {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                    <a onClick={downloadPlayersExcel} className="download-schedule-link">
+                      <i className="fas fa-file-excel" />
+                      Excel
+                    </a>
+                    <span className="download-schedule-link">
+                      <PDFDownloadLink
+                        key={Math.random()}
+                        document={
+                          <PlayerResultsPDF columns={playerColumns} playerResults={playerResults} />
+                        }
+                        fileName={`ATL Player Results - ${currentSeason.seasonName}.pdf`}
+                      >
+                        <i className="fas fa-file-pdf" />
+                        PDF
+                      </PDFDownloadLink>
+                    </span>
+                  </p>
+                </>
+              )}
+              <div className="centered-content clear-matches">
+                <LoaderButton
+                  bsSize="large"
+                  bsStyle="primary"
+                  onClick={() => setModalVisible(true)}
+                  className="publish-schedule-btn"
+                >
+                  Clear Matches
+                </LoaderButton>
+              </div>
+              <p className="centered-text clear-matches-note">
+                <b>NOTE:</b> You will be given the chance to confirm after clicking this button.
+              </p>
+            </>
+          ) : (
+            <>
+              <div className="centered-content publish-matches">
                 <LoaderButton
                   bsSize="large"
                   bsStyle="primary"
@@ -610,33 +629,46 @@ export default () => {
                   isLoading={adding}
                   className="publish-schedule-btn"
                 >
-                  Add Matches to Live Schedule
+                  Publish Matches
                 </LoaderButton>
               </div>
-              <p className="centered-text">
-                <b>NOTE:</b> Adding matches to the live schedule will add all matches on this page to the live match schedule on the website.
-                It will not remove any of the matches currently on the website's match schedule.
-              </p>
-              <div className="centered-content">
-                <LoaderButton
-                  bsSize="large"
-                  bsStyle="primary"
-                  onClick={publishSchedule}
-                  isLoading={publishing}
-                  className="publish-schedule-btn"
-                >
-                  Publish New Schedule
-                </LoaderButton>
-              </div>
-              <p className="centered-text">
-                <b>NOTE:</b> Publishing this schedule will <i><b>completely replace</b></i> the website's match schedule with this one.
-                It will also clear all match results and standings currently saved on the website.
-                So be sure to download a copy of the current season's match results before you proceed.
+              <p className="centered-text publish-matches-note">
+                <b>NOTE:</b> Be sure to clear all matches from the previous season before publishing matches for the new season.
               </p>
             </>
           )}
         </>
       )}
+      <Modal show={modalVisible} onHide={() => setModalVisible(false)}>
+        <Modal.Header closeButton>
+          <h2>Clear Matches</h2>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Are you sure you want to delete all matches, scores, and standings currently live on the website?</p>
+          <p>Be sure that you've downloaded copies of the current season's results for your records before proceeding.</p>
+          <FormGroup>
+            <LoaderButton
+              block
+              bsSize="large"
+              bsStyle="primary"
+              isLoading={clearing}
+              onClick={clearSchedule}
+            >
+              Yes, clear matches
+            </LoaderButton>
+          </FormGroup>
+          <FormGroup>
+            <LoaderButton
+              block
+              bsSize="large"
+              onClick={() => setModalVisible(false)}
+              className="cancel-button"
+            >
+              Cancel
+            </LoaderButton>
+          </FormGroup>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }

@@ -621,6 +621,20 @@ h3.welcome {
   margin-bottom: 20px;
 }
 
+.clear-matches, .publish-matches {
+  margin-top: 20px;
+}
+
+.clear-matches-note, .publish-matches-note {
+  max-width: 650px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.publish-matches-note {
+  max-width: 400px;
+}
+
 @media all and (min-width: 768px) and (max-width: 1199px) {
   .home-section-2-card {
     width: 800px;
