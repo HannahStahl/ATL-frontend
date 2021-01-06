@@ -2,8 +2,10 @@ import React from "react";
 import { PageHeader } from "react-bootstrap";
 import { useAppContext } from "./libs/contextLib";
 
-export default function Payment({ team }) {
-  const { loadingData } = useAppContext();
+export default function Payment() {
+  const { loadingData, seasons } = useAppContext();
+  const currentSeason = seasons.find(season => season.currentSeason);
+  const seasonName = currentSeason ? currentSeason.seasonName : '';
 
   return !loadingData ? (
     <div className="container">
@@ -17,7 +19,8 @@ export default function Payment({ team }) {
           <p>Austin Tennis League<br />PO Box 300035<br />Austin, TX 78703</p>
           <h3>Option 2: Pay with PayPal</h3>
           <p className="no-margin-bottom">Please pay <b>$206.28</b> via PayPal below.</p>
-          <p>Note that you do not have to have a PayPal account to use PayPal. All you need is a credit card.</p>
+          <p className="no-margin-bottom">Note that you do not have to have a PayPal account to use PayPal. All you need is a credit card.</p>
+          <p>The current season is {seasonName}. If paying for the previous season, please note that in Comments.</p>
           <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
             <input type="hidden" name="cmd" value="_xclick" />
             <input type="hidden" name="business" value="atl@atltennis.org" />
@@ -50,6 +53,17 @@ export default function Payment({ team }) {
                 <tr>
                   <td>
                     <input type="text" name="os1" maxLength="200" />
+                  </td>
+                </tr>
+                <tr>
+                  <td className="paypal-form-label">
+                    <input type="hidden" name="on2" value="Comments" />
+                    Comments
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <input type="text" name="os2" maxLength="200" />
                   </td>
                 </tr>
               </tbody>
