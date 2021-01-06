@@ -23,6 +23,7 @@ export default function Signup() {
   const [confirmationCode, setConfirmationCode] = useState("");
   const [selectedTeams, setSelectedTeams] = useState([""]);
   const [captainOfTeams, setCaptainOfTeams] = useState([true]);
+  const [teamName, setTeamName] = useState("");
 
   function validateForm() {
     return (
@@ -87,21 +88,25 @@ export default function Signup() {
         accessCode === process.env.REACT_APP_ADMIN_ACCESS_CODE ||
         accessCode === process.env.REACT_APP_ADMIN_CAPTAIN_ACCESS_CODE
       );
-      let body = { firstName, lastName, email, phone, isCaptain, isAdmin };
-      const { userId } = await API.post("atl-backend", "create/user", { body });
-      const promises = [];
+      const userBody = { firstName, lastName, email, phone, isCaptain, isAdmin };
+      const { userId } = await API.post("atl-backend", "create/user", { body: userBody });
+      const teamPromises = [];
       selectedTeams.forEach((selectedTeam, index) => {
         if (selectedTeam.length > 0) {
-          body = allTeams.find((team) => team.teamId === selectedTeam);
-          if (captainOfTeams[index]) body.captainId = userId;
-          else body.cocaptainId = userId;
-          promises.push(API.put("atl-backend", `update/team/${selectedTeam}`, { body }));
+          const teamBody = allTeams.find((team) => team.teamId === selectedTeam);
+          if (captainOfTeams[index]) teamBody.captainId = userId;
+          else teamBody.cocaptainId = userId;
+          teamPromises.push(API.put("atl-backend", `update/team/${selectedTeam}`, { body: teamBody }));
         }
       });
-      await Promise.all(promises);
-      if (isCaptain && promises.length === 0) {
+      await Promise.all(teamPromises);
+      const needsToBeAddedToTeam = isCaptain && (
+        teamPromises.length === 0 || // They didn't select a team to add themselves to, OR
+        teamName.length > 0 // They entered a team that doesn't exist yet (needs to be created)
+      );
+      if (needsToBeAddedToTeam) {
         await API.post("atl-backend", "emailAdmin", {
-          body: { ...body, adminEmail: config.adminEmail, url: window.location.origin }
+          body: { ...userBody, teamName, adminEmail: config.adminEmail, url: window.location.origin }
         });
       }
       userHasAuthenticated(true);
@@ -308,6 +313,22 @@ export default function Signup() {
             </a>
           </div>
         )}
+        <hr />
+        <p className="centered-text">Team not in the list above? Enter your team name here:</p>
+        <table className="form-table">
+          <tbody>
+            <tr>
+              <td className="form-label">Team Name</td>
+              <td className="form-field">
+                <FormControl
+                  type="text"
+                  onChange={(e) => setTeamName(e.target.value)}
+                  value={teamName}
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
         <hr />
         <LoaderButton
           block
