@@ -46,10 +46,17 @@ export default () => {
 
   useEffect(() => {
     if (standings && standings.length > 0 && sortedStandings.length === 0) {
-      const standingsWithDivisions = standings.map((standing) => {
-        const { divisionId } = allTeams.find(({ teamId }) => teamId === standing.teamId);
-        const { divisionNumber } = divisions.find((division) => division.divisionId === divisionId);
-        return { ...standing, divisionNumber };
+      const standingsWithDivisions = [];
+      const divisionNumbersById = {};
+      divisions.forEach(({ divisionId, divisionNumber }) => {
+        divisionNumbersById[divisionId] = divisionNumber;
+      });
+      standings.forEach((standing) => {
+        const { divisionId, teamName } = allTeams.find(({ teamId }) => teamId === standing.teamId);
+        if (teamName !== "Bye" && divisionId && divisionId.length > 0) {
+          const divisionNumber = divisionNumbersById[divisionId];
+          standingsWithDivisions.push({ ...standing, divisionNumber });
+        }
       });
       setSortedStandings(standingsWithDivisions.sort((a, b) => {
         if (a.divisionNumber < b.divisionNumber) return -1;
