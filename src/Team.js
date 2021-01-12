@@ -26,7 +26,10 @@ export default function Team() {
   useEffect(() => {
     async function fetchTeam() {
       const captainTeams = allTeams.filter((teamInList) => (
-        teamInList.captainId === selectedUser.userId || teamInList.cocaptainId === selectedUser.userId
+        teamInList.isActive && (
+          teamInList.captainId === selectedUser.userId ||
+          teamInList.cocaptainId === selectedUser.userId
+        )
       ));
       setTeams(captainTeams);
       const captainTeam = captainTeams[0];
