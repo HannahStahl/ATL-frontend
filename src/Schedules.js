@@ -499,7 +499,9 @@ export default () => {
       <div className="centered-text season-toggle">
         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
         <a href="#" onClick={() => setDraftView(!draftView)}>
-          {`View ${draftView ? 'current' : 'next'} season's schedule`}
+          {draftView && <><i className="fas fa-arrow-left" />{' '}</>}
+          {`View ${draftView ? 'published' : 'unpublished'} matches`}
+          {!draftView && <>{' '}<i className="fas fa-arrow-right" /></>}
         </a>
       </div>
       <form>
