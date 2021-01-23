@@ -52,10 +52,13 @@ export default () => {
         divisionNumbersById[divisionId] = divisionNumber;
       });
       standings.forEach((standing) => {
-        const { divisionId, teamName } = allTeams.find(({ teamId }) => teamId === standing.teamId);
-        if (teamName !== "Bye" && divisionId && divisionId.length > 0) {
-          const divisionNumber = divisionNumbersById[divisionId];
-          standingsWithDivisions.push({ ...standing, divisionNumber });
+        const team = allTeams.find(({ teamId }) => teamId === standing.teamId);
+        if (team) {
+          const { divisionId, teamName } = team;
+          if (teamName !== "Bye" && divisionId && divisionId.length > 0) {
+            const divisionNumber = divisionNumbersById[divisionId];
+            standingsWithDivisions.push({ ...standing, divisionNumber });
+          }
         }
       });
       setSortedStandings(standingsWithDivisions.sort((a, b) => {
