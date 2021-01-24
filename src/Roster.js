@@ -128,7 +128,7 @@ export default ({ team }) => {
         columns={columns}
         rows={allPlayers}
         filterRows={filterPlayers}
-        setRows={!readOnly && setAllPlayers}
+        setRows={setAllPlayers}
         getRows={() => API.get("atl-backend", "/list/player")}
         itemType="player"
         API={API}
