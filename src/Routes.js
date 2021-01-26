@@ -136,9 +136,9 @@ export default function Routes() {
       <AuthenticatedRoute exact path="/players-looking" isAuthenticated={isAuthenticated}>
         <PlayersLooking />
       </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/payment" isAuthenticated={isAuthenticated}>
+      <Route exact path="/payment">
         <Payment />
-      </AuthenticatedRoute>
+      </Route>
       <AuthenticatedRoute exact path="/seasons" isAuthenticated={isAuthenticated}>
         <Seasons />
       </AuthenticatedRoute>

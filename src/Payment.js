@@ -3,11 +3,11 @@ import { PageHeader } from "react-bootstrap";
 import { useAppContext } from "./libs/contextLib";
 
 export default function Payment() {
-  const { loadingData, seasons } = useAppContext();
+  const { seasons } = useAppContext();
   const currentSeason = seasons.find(season => season.currentSeason);
   const seasonName = currentSeason ? currentSeason.seasonName : '';
 
-  return !loadingData ? (
+  return seasonName.length > 0 ? (
     <div className="container">
       <PageHeader>Payment</PageHeader>
       <div className="centered-content">

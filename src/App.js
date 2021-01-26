@@ -130,6 +130,7 @@ function App() {
                 <MenuItem eventKey={2.4} href="/leader-board">Leader Board</MenuItem>
                 <MenuItem eventKey={2.5} href="/standings">Detailed Standings</MenuItem>
                 <MenuItem eventKey={2.6} href="/match-results">Match Results</MenuItem>
+                <MenuItem eventKey={2.7} href="/payment">Payment</MenuItem>
               </NavDropdown>
               <NavDropdown eventKey={3} title="Tennis in Austin" id="basic-nav-dropdown">
                 <MenuItem eventKey={3.1} href="/locations">Court Locations</MenuItem>
