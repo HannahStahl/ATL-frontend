@@ -25,10 +25,18 @@ export default ({ team }) => {
       allCaptains.length > 0 &&
       allTeams.length > 0
     ) {
+      const teamsById = {};
+      allTeams.forEach((team) => {
+        teamsById[team.teamId] = team;
+      });
+      const matchResultsById = {};
+      matchResults.forEach((matchResult) => {
+        matchResultsById[matchResult.matchId] = matchResult;
+      });
       const matches = allMatches.map((match) => {
-        const homeTeam = allTeams.find((team) => team.teamId === match.homeTeamId);
-        const visitorTeam = allTeams.find((team) => team.teamId === match.visitorTeamId);
-        const matchResult = matchResults.find((result) => result.matchId === match.matchId);
+        const homeTeam = teamsById[match.homeTeamId];
+        const visitorTeam = teamsById[match.visitorTeamId];
+        const matchResult = matchResultsById[match.matchId];
         const homeCaptainId = homeTeam && homeTeam.captainId;
         const visitorCaptainId = visitorTeam && visitorTeam.captainId;
         return {

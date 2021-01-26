@@ -3,10 +3,11 @@ import moment from "moment";
 import { PageHeader, FormGroup, FormControl, Modal } from "react-bootstrap";
 import { API } from "aws-amplify";
 import zipcelx from "zipcelx";
-import { PDFDownloadLink } from "@react-pdf/renderer";
+import { pdf } from "@react-pdf/renderer";
 import Table from "./Table";
 import { useAppContext } from "./libs/contextLib";
 import { onError } from "./libs/errorLib";
+import { saveAs } from 'file-saver';
 import SchedulePDF from "./SchedulePDF";
 import LoaderButton from "./LoaderButton";
 import StandingsPDF from "./StandingsPDF";
@@ -27,13 +28,21 @@ export default () => {
   const [playerResults, setPlayerResults] = useState([]);
   const [loadingPlayerResults, setLoadingPlayerResults] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
+  const [teamsById, setTeamsById] = useState({});
+  const [matchResultsById, setMatchResultsById] = useState({});
+  const [divisionsById, setDivisionsById] = useState({});
   const currentSeason = seasons.find((season) => draftView ? !season.currentSeason : season.currentSeason);
   const seasonName = currentSeason ? currentSeason.seasonName : "";
 
   useEffect(() => {
     if (!loadingData && allMatches.length > 0) {
+      const newMatchResultsById = {};
+      matchResults.forEach((matchResult) => {
+        newMatchResultsById[matchResult.matchId] = matchResult;
+      });
+      setMatchResultsById(newMatchResultsById);
       const matches = allMatches.map((match) => {
-        const matchResult = matchResults.find((result) => result.matchId === match.matchId);
+        const matchResult = newMatchResultsById[match.matchId];
         return { ...match, ...matchResult };
       });
       setMatches(matches);
@@ -45,18 +54,29 @@ export default () => {
   }, []);
 
   useEffect(() => {
-    if (standings && standings.length > 0 && sortedStandings.length === 0) {
+    if (
+      standings && standings.length > 0 &&
+      sortedStandings.length === 0 &&
+      allTeams.length > 0 &&
+      divisions.length > 0
+    ) {
+    const newTeamsById = {};
+    allTeams.forEach((team) => {
+      newTeamsById[team.teamId] = team;
+    });
+    setTeamsById(newTeamsById);
+    const newDivisionsById = {};
+    divisions.forEach((division) => {
+      newDivisionsById[division.divisionId] = division;
+    });
+    setDivisionsById(newDivisionsById);
       const standingsWithDivisions = [];
-      const divisionNumbersById = {};
-      divisions.forEach(({ divisionId, divisionNumber }) => {
-        divisionNumbersById[divisionId] = divisionNumber;
-      });
       standings.forEach((standing) => {
-        const team = allTeams.find(({ teamId }) => teamId === standing.teamId);
+        const team = newTeamsById[standing.teamId];
         if (team) {
           const { divisionId, teamName } = team;
           if (teamName !== "Bye" && divisionId && divisionId.length > 0) {
-            const divisionNumber = divisionNumbersById[divisionId];
+            const { divisionNumber } = newDivisionsById[divisionId];
             standingsWithDivisions.push({ ...standing, divisionNumber });
           }
         }
@@ -263,8 +283,8 @@ export default () => {
 
   const updateSortedStandings = (updatedStandings) => {
     const standingsWithDivisions = updatedStandings.map((standing) => {
-      const { divisionId } = allTeams.find(({ teamId }) => teamId === standing.teamId);
-      const { divisionNumber } = divisions.find((division) => division.divisionId === divisionId);
+      const { divisionId } = teamsById[standing.teamId];
+      const { divisionNumber } = divisionsById[divisionId];
       return { ...standing, divisionNumber };
     });
     setSortedStandings(standingsWithDivisions.sort((a, b) => {
@@ -345,7 +365,7 @@ export default () => {
       body.totalHomeSetsWon = getTotalHomeSetsWon(body);
       body.totalVisitorSetsWon = getTotalVisitorSetsWon(body);
       const promises = [API.put("atl-backend", `update/match/${matchId}`, { body })];
-      if (matchResults.find((matchResult) => matchResult.matchId === body.matchId)) {
+      if (matchResultsById[body.matchId]) {
         promises.push(API.put("atl-backend", `update/matchResult/${matchId}`, { body }));
       } else {
         promises.push(API.post("atl-backend", "create/matchResult", { body }));
@@ -371,7 +391,7 @@ export default () => {
       setDraftMatches([...updatedMatches]);
     } else {
       const promises = [API.del("atl-backend", `delete/match/${matchId}`)];
-      if (matchResults.find((matchResult) => matchResult.matchId === matchId)) {
+      if (matchResultsById[matchId]) {
         promises.push(API.del("atl-backend", `delete/matchResult/${matchId}`));
       }
       await Promise.all(promises);
@@ -396,7 +416,7 @@ export default () => {
       const location = locations.find((locationInList) => locationInList.locationId === value);
       value = location ? (location.locationName || "") : "";
     } else if ((key === "homeTeamId" || key === "visitorTeamId") && value && value.length > 0) {
-      const team = allTeams.find((teamInList) => teamInList.teamId === value);
+      const team = teamsById[value];
       value = team ? (team.teamName || "") : "";
     }
     return value;
@@ -447,7 +467,7 @@ export default () => {
   };
 
   const getExportValue = (team, key) => {
-    if (key === "teamId") return allTeams.find((teamInList) => teamInList.teamId === team.teamId).teamName;
+    if (key === "teamId") return teamsById[team.teamId].teamName;
     if (key === "percentSetsWon") return (parseFloat(team.percentSetsWon || 0) * 100).toFixed(2);
     else return team[key];
   };
@@ -494,6 +514,39 @@ export default () => {
     })));
     const data = [headerRow].concat(dataRows);
     zipcelx({ filename: `ATL Player Results - ${currentSeason.seasonName}`, sheet: { data } });
+  };
+
+  const generateSchedulePDF = async () => {
+    const blob = await pdf(
+      <SchedulePDF
+        title={`${seasonName} Austin Tennis League`}
+        dataKeys={dataKeys}
+        columns={columns}
+        filterMatches={filterMatches}
+        allMatches={draftView ? draftMatches : allMatches}
+        getValue={getValue}
+        primaryKey={draftView ? "draftMatchId" : "matchId"}
+      />
+    ).toBlob();
+    saveAs(blob, 'ATL Match Schedule.pdf');
+  };
+
+  const generateStandingsPDF = async () => {
+    const blob = await pdf(
+      <StandingsPDF
+        columns={standingsColumns}
+        standings={sortedStandings}
+        getValue={getExportValue}
+      />
+    ).toBlob();
+    saveAs(blob, `ATL Standings - ${currentSeason.seasonName}.pdf`);
+  };
+
+  const generatePlayerResultsPDF = async () => {
+    const blob = await pdf(
+      <PlayerResultsPDF columns={playerColumns} playerResults={playerResults} />
+    ).toBlob();
+    saveAs(blob, `ATL Player Results - ${currentSeason.seasonName}.pdf`);
   };
 
   return (
@@ -544,25 +597,9 @@ export default () => {
               <i className="fas fa-file-excel" />
               Excel
             </a>
-            <span className="download-schedule-link">
-              <PDFDownloadLink
-                key={Math.random()}
-                document={
-                  <SchedulePDF
-                    title={`${seasonName} Austin Tennis League`}
-                    dataKeys={dataKeys}
-                    columns={columns}
-                    filterMatches={filterMatches}
-                    allMatches={draftView ? draftMatches : allMatches}
-                    getValue={getValue}
-                    primaryKey={draftView ? "draftMatchId" : "matchId"}
-                  />
-                }
-                fileName="ATL Match Schedule.pdf"
-              >
-                <i className="fas fa-file-pdf" />
-                PDF
-              </PDFDownloadLink>
+            <span className="download-schedule-link" onClick={generateSchedulePDF}>
+              <i className="fas fa-file-pdf" />
+              PDF
             </span>
           </p>
           {!draftView && (
@@ -573,21 +610,9 @@ export default () => {
                 <i className="fas fa-file-excel" />
                 Excel
               </a>
-              <span className="download-schedule-link">
-                <PDFDownloadLink
-                  key={Math.random()}
-                  document={
-                    <StandingsPDF
-                      columns={standingsColumns}
-                      standings={sortedStandings}
-                      getValue={getExportValue}
-                    />
-                  }
-                  fileName={`ATL Standings - ${currentSeason.seasonName}.pdf`}
-                >
-                  <i className="fas fa-file-pdf" />
-                  PDF
-                </PDFDownloadLink>
+              <span className="download-schedule-link" onClick={generateStandingsPDF}>
+                <i className="fas fa-file-pdf" />
+                PDF
               </span>
             </p>
           )}
@@ -602,17 +627,9 @@ export default () => {
                       <i className="fas fa-file-excel" />
                       Excel
                     </a>
-                    <span className="download-schedule-link">
-                      <PDFDownloadLink
-                        key={Math.random()}
-                        document={
-                          <PlayerResultsPDF columns={playerColumns} playerResults={playerResults} />
-                        }
-                        fileName={`ATL Player Results - ${currentSeason.seasonName}.pdf`}
-                      >
-                        <i className="fas fa-file-pdf" />
-                        PDF
-                      </PDFDownloadLink>
+                    <span className="download-schedule-link" onClick={generatePlayerResultsPDF}>
+                      <i className="fas fa-file-pdf" />
+                      PDF
                     </span>
                   </p>
                 </>

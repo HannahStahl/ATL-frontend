@@ -205,6 +205,7 @@ th,td:not(.key-date):not(.extra-notes) {
 
 .download-schedule-link {
   margin-left: 15px;
+  color: #337ab7;
 }
 
 .download-schedule-link i {
@@ -766,5 +767,7 @@ h3.welcome {
 
   .download-schedule-link:hover {
     cursor: pointer;
+    color: #23527c;
+    text-decoration: underline;
   }
 }
