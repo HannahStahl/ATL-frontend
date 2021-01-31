@@ -38,12 +38,16 @@ export default ({ team }) => {
         const visitorTeam = teamsById[match.visitorTeamId];
         const matchResult = matchResultsById[match.matchId];
         const homeCaptainId = homeTeam && homeTeam.captainId;
+        const homeCocaptainId = homeTeam && homeTeam.cocaptainId;
         const visitorCaptainId = visitorTeam && visitorTeam.captainId;
+        const visitorCocaptainId = visitorTeam && visitorTeam.cocaptainId;
         return {
           ...match,
           ...matchResult,
           homeCaptainId,
+          homeCocaptainId,
           visitorCaptainId,
+          visitorCocaptainId,
           readOnly: (
             matchResult &&
             (
@@ -180,13 +184,13 @@ export default ({ team }) => {
       label: "Verified by Home",
       type: "checkbox",
       render: (value) => value ? <i className="fas fa-check" /> : "",
-      disabled: ({ homeCaptainId }) => profile.userId !== homeCaptainId
+      disabled: ({ homeCaptainId, homeCocaptainId }) => !(profile.userId === homeCaptainId || (homeCocaptainId && profile.userId === homeCocaptainId))
     },
     visitorVerified: {
       label: "Verified by Visitor",
       type: "checkbox",
       render: (value) => value ? <i className="fas fa-check" /> : "",
-      disabled: ({ visitorCaptainId }) => profile.userId !== visitorCaptainId,
+      disabled: ({ visitorCaptainId, visitorCocaptainId }) => !(profile.userId === visitorCaptainId || (visitorCocaptainId && profile.userId === visitorCocaptainId)),
       extraNotes: () => "Only check your box once ALL scores have been entered. By checking the box, you are submitting the final scores and will not be able to edit them afterward. If you are only entering partial scores, leave the box unchecked and save."
     }
   };
@@ -209,13 +213,21 @@ export default ({ team }) => {
     parseInt(match.doubles2VisitorSetsWon || 0)
   );
 
-  const emailOtherCaptain = async (matchResult) => {
+  const emailCaptains = async (matchResult) => {
     const {
-      homeCaptainId, visitorCaptainId, matchId, matchNumber, homeVerified, visitorVerified
+      homeCaptainId, homeCocaptainId, visitorCaptainId, visitorCocaptainId, matchId, matchNumber, homeVerified, visitorVerified
     } = matchResult;
     const homeCaptain = allCaptains.find((captainInList) => captainInList.userId === homeCaptainId);
     const visitorCaptain = allCaptains.find((captainInList) => captainInList.userId === visitorCaptainId);
     const captainEmails = [homeCaptain.email, visitorCaptain.email];
+    if (homeCocaptainId) {
+      const homeCocaptain = allCaptains.find((captainInList) => captainInList.userId === homeCocaptainId);
+      captainEmails.push(homeCocaptain.email);
+    }
+    if (visitorCocaptainId) {
+      const visitorCocaptain = allCaptains.find((captainInList) => captainInList.userId === visitorCocaptainId);
+      captainEmails.push(visitorCocaptain.email);
+    }
     const emailFunction = (
       homeVerified && visitorVerified ? "sendFinalMatchResultAlert" : "requestMatchResultVerification"
     );
@@ -233,7 +245,7 @@ export default ({ team }) => {
     } else {
       await API.post("atl-backend", "create/matchResult", { body });
     }
-    await emailOtherCaptain(body);
+    await emailCaptains(body);
     const updatedMatchResults = await API.get("atl-backend", "list/matchResult");
     setMatchResults([...updatedMatchResults]);
   };
