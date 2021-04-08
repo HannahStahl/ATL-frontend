@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { PageHeader, Table } from "react-bootstrap";
 import { API } from "aws-amplify";
+import moment from "moment";
 
 export default () => {
   const [playersLooking, setPlayersLooking] = useState([]);
@@ -23,6 +24,7 @@ export default () => {
               <thead>
                 <tr>
                   <th>Number</th>
+                  <th>Date Submitted</th>
                   <th>Name</th>
                   <th>Phone</th>
                   <th>Email</th>
@@ -46,6 +48,7 @@ export default () => {
                   return (
                     <tr key={player.playerId}>
                       <td>{player.playerNumber || ""}</td>
+                      <td>{moment(player.createdAt).format('MMM. D, YYYY')}</td>
                       <td>{`${player.firstName || ""} ${player.lastName || ""}`}</td>
                       <td>{player.phone || ""}</td>
                       <td>{player.email || ""}</td>
