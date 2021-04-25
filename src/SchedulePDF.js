@@ -35,11 +35,9 @@ export default ({ dataKeys, columns, filterMatches, allMatches, getValue, primar
   return (
     <Document>
       <Page style={pdfStyles.body} orientation="landscape">
-        {title && (
-          <View style={pdfStyles.header}>
-            <Text>{title}</Text>
-          </View>
-        )}
+        <View style={pdfStyles.header}>
+          <Text>Austin Tennis League Match Schedule</Text>
+        </View>
         <View style={pdfStyles.table}>
           <View style={pdfStyles.tableRow}>
             {dataKeys.map((key) => (

@@ -31,8 +31,7 @@ export default () => {
   const [teamsById, setTeamsById] = useState({});
   const [matchResultsById, setMatchResultsById] = useState({});
   const [divisionsById, setDivisionsById] = useState({});
-  const currentSeason = seasons.find((season) => draftView ? !season.currentSeason : season.currentSeason);
-  const seasonName = currentSeason ? currentSeason.seasonName : "";
+  const currentSeason = seasons.find((season) => season.currentSeason);
 
   useEffect(() => {
     if (!loadingData && allMatches.length > 0) {
@@ -519,7 +518,6 @@ export default () => {
   const generateSchedulePDF = async () => {
     const blob = await pdf(
       <SchedulePDF
-        title={`${seasonName} Austin Tennis League`}
         dataKeys={dataKeys}
         columns={columns}
         filterMatches={filterMatches}

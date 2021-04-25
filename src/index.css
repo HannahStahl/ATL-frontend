@@ -199,6 +199,10 @@ th,td:not(.key-date):not(.extra-notes) {
   text-align: center;
 }
 
+.switch-current-season {
+  margin-bottom: 15px;
+}
+
 .season-toggle {
   margin-bottom: 15px;
 }
