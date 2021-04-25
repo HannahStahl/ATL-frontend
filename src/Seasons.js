@@ -64,6 +64,7 @@ export default () => {
             Current season is: <b>{currentSeason ? currentSeason.seasonName : ""}</b>
           </p>
           <p className="centered-text switch-current-season link">
+            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
             <a onClick={() => setSwitchingSeason(true)}>Switch current season</a>
           </p>
           <Table
