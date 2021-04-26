@@ -9,7 +9,7 @@ export default function Calendar() {
 
   useEffect(() => {
     if (seasons.length > 0 && events.length > 0 && Object.keys(seasonEvents).length === 0) {
-      seasons.forEach((season) => {
+      seasons.filter((season) => season.published).forEach((season) => {
         const eventsForSeason = events.filter((event) => event.seasonId === season.seasonId);
         if (season.rosterDeadline) {
           eventsForSeason.push({

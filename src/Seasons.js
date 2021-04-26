@@ -46,6 +46,11 @@ export default () => {
     seasonId: {
       label: "",
       render: (value) => <a href={`/season-calendars?seasonId=${value}`}>View Events</a>
+    },
+    published: {
+      label: "Publicly Visible",
+      type: "checkbox",
+      render: (value) => value ? <i className="fas fa-check" /> : "",
     }
   };
 

@@ -20,7 +20,11 @@ export default ({ switchingSeason, setSwitchingSeason }) => {
     setIsSaving(true);
     await Promise.all(seasons.map((season) => (
       API.put("atl-backend", `update/season/${season.seasonId}`, {
-        body: { ...season, currentSeason: season.seasonId === selectedSeasonId }
+        body: {
+          ...season,
+          currentSeason: season.seasonId === selectedSeasonId,
+          published: season.seasonId === selectedSeasonId ? true : season.published,
+        }
       })
     )));
     setIsSaving(false);
