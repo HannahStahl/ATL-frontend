@@ -381,6 +381,7 @@ th,td:not(.key-date):not(.extra-notes) {
   flex-basis: 0;
   flex-grow: 1;
   box-shadow: -5px 5px 5px 0px #ccc;
+  min-width: 300px;
 }
 
 .season-events-container h3 {
