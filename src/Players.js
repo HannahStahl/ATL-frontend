@@ -103,8 +103,16 @@ export default () => {
     const activePlayerIndex = activePlayers.findIndex((player) => player.playerId === playerId);
     if (activePlayerIndex > -1) {
       await API.put("atl-backend", `update/player/${playerId}`, { body });
-      activePlayers[activePlayerIndex] = body;
-      setActivePlayers([...activePlayers]);
+      if(!body.teamId) {
+        await API.post("atl-backend", `deactivatePlayer/${playerId}`);
+        const updatedInactivePlayers = await API.get("atl-backend", "list/inactivePlayer");
+        activePlayers.splice(activePlayerIndex, 1);
+        setActivePlayers([...activePlayers]);
+        setInactivePlayers([...updatedInactivePlayers]);
+      } else {
+        activePlayers[activePlayerIndex] = body;
+        setActivePlayers([...activePlayers]);
+      }
     } else {
       const inactivePlayerIndex = inactivePlayers.findIndex((player) => player.playerId === playerId);
       await API.put("atl-backend", `update/inactivePlayer/${playerId}`, { body });
