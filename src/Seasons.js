@@ -20,28 +20,28 @@ export default () => {
     rosterDeadline: {
       label: "Roster Deadline",
       type: "date",
-      render: (value) => value && moment(value).format("MMM. D")
+      render: (value) => value && moment(value).format("dddd, MMMM D")
     },
     startDate: {
       label: "League Start Date",
       type: "date",
       required: true,
-      render: (value) => value && moment(value).format("MMM. D")
+      render: (value) => value && moment(value).format("dddd, MMMM D")
     },
     playerAdditionsStartDate: {
       label: "Player Additions Start Date",
       type: "date",
-      render: (value) => value && moment(value).format("MMM. D")
+      render: (value) => value && moment(value).format("dddd, MMMM D")
     },
     playerAdditionsEndDate: {
       label: "Player Additions End Date",
       type: "date",
-      render: (value) => value && moment(value).format("MMM. D")
+      render: (value) => value && moment(value).format("dddd, MMMM D")
     },
     endDate: {
       label: "League End Date",
       type: "date",
-      render: (value) => value && moment(value).format("MMM. D")
+      render: (value) => value && moment(value).format("dddd, MMMM D")
     },
     seasonId: {
       label: "",

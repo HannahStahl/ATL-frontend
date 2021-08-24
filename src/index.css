@@ -350,7 +350,7 @@ th,td:not(.key-date):not(.extra-notes) {
 .key-date {
   text-align: left;
   vertical-align: top;
-  padding-top: 2px;
+  padding-top: 10px;
   padding-bottom: 2px;
 }
 

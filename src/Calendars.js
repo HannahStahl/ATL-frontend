@@ -76,12 +76,12 @@ export default () => {
       label: "Start Date",
       type: "date",
       required: true,
-      render: (value) => value && moment(value).format("MMM. D")
+      render: (value) => value && moment(value).format("dddd, MMMM D")
     },
     endDate: {
       label: "End Date",
       type: "date",
-      render: (value) => value && moment(value).format("MMM. D")
+      render: (value) => value && moment(value).format("dddd, MMMM D")
     },
   };
 

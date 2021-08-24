@@ -137,9 +137,9 @@ export default function Home() {
                         <tr key={event.eventId}>
                           <td className="key-date bold">
                             {event.endDate ? (
-                              `${moment(event.startDate).format("MMM. D")} - ${moment(event.endDate).format("MMM. D")}`
+                              `${moment(event.startDate).format("dddd, MMMM D")} - ${moment(event.endDate).format("dddd, MMMM D")}`
                             ) : (
-                              moment(event.startDate).format("MMM. D")
+                              moment(event.startDate).format("dddd, MMMM D")
                             )}
                           </td>
                           <td className="key-date key-event">{event.eventName || ""}</td>
