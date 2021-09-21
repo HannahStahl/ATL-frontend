@@ -5,8 +5,8 @@ import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 export default ({
   columns, rows, filterRows, getRows, setRows, itemType, API, categoryName, customSelect,
-  CustomAddComponent, customAddFunction, customEditFunction, customRemoveFunction, validate,
-  createDisabled, removeDisabled, primaryKey, getInactiveRows
+  CustomAddComponent, CustomEditComponent, customAddFunction, customEditFunction, customRemoveFunction,
+  validate, createDisabled, removeDisabled, primaryKey, getInactiveRows
 }) => {
   const [rowSelectedForEdit, setRowSelectedForEdit] = useState(undefined);
   const [rowSelectedForRemoval, setRowSelectedForRemoval] = useState(undefined);
@@ -95,6 +95,8 @@ export default ({
     return fields;
   };
 
+  const EditComponent = CustomEditComponent || EditForm;
+
   return (
     <>
       <div className="table-container">
@@ -171,12 +173,16 @@ export default ({
           </tbody>
         </Table>
       </div>
-      <Modal show={rowSelectedForEdit !== undefined} onHide={() => setRowSelectedForEdit(undefined)}>
+      <Modal
+        className={CustomEditComponent ? "full-width-modal" : ""}
+        show={rowSelectedForEdit !== undefined}
+        onHide={() => setRowSelectedForEdit(undefined)}
+      >
         <Modal.Header closeButton>
           <h2>{`Edit ${capitalizedItemType} Details`}</h2>
         </Modal.Header>
         <Modal.Body>
-          <EditForm
+          <EditComponent
             fields={getFormFields()}
             original={rowSelectedForEdit}
             save={editRow}

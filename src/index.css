@@ -611,11 +611,7 @@ h3.welcome {
   width: 100%;
 }
 
-.extra-notes {
-  max-width: min(100vw, 400px);
-}
-
-.add-player-modal .modal-dialog {
+.full-width-modal .modal-dialog {
   min-width: min(90%, 1250px);
 }
 

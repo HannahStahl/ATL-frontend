@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Modal } from "react-bootstrap";
 import moment from "moment";
 import { API } from "aws-amplify";
+import EditMatchResultForm from "./EditMatchResultForm";
 import Table from "./Table";
 import { useAppContext } from "./libs/contextLib";
 
@@ -262,6 +263,7 @@ export default ({ team }) => {
         getRows={() => API.get("atl-backend", "list/match")}
         itemType="match"
         API={API}
+        CustomEditComponent={EditMatchResultForm}
         customEditFunction={editMatch}
         createDisabled
         removeDisabled
