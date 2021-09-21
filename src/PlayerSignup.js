@@ -27,7 +27,7 @@ export default function PlayerSignup() {
       label: "Gender",
       type: "dropdown",
       required: true,
-      options: [{ value: "F", name: "Female" }, {value: "M", name: "Male" }],
+      options: [{ value: "F", name: "Female" }, { value: "M", name: "Male" }],
       helpText: "Your gender and age will help prospective captains know if you would be a good fit for their teams. ATL is a gender-blind league, but many ATL players also participate in other leagues that do have gender and age limits. This info will help captains in those leagues know more about you."
     },
     "birthYear": { label: "Birth Year", type: "number", required: true },

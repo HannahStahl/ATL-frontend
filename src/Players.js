@@ -59,7 +59,7 @@ export default () => {
     "gender": {
       label: "Gender",
       type: "dropdown",
-      options: [{ value: "F", name: "Female" }, {value: "M", name: "Male" }],
+      options: [{ value: "F", name: "Female" }, { value: "M", name: "Male" }],
     },
     "birthYear": { label: "Birth Year", type: "number" },
     "usta": {
