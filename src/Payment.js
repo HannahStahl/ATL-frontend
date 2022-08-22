@@ -22,7 +22,7 @@ export default function Payment() {
           <p className="no-margin-bottom">Checks can be dropped off at Pharr Tennis Center or mailed to the following address:</p>
           <p>Austin Tennis League<br />PO Box 300035<br />Austin, TX 78703</p>
           <h3>Option 3: Pay with PayPal</h3>
-          <p className="no-margin-bottom">Please pay <b>$206.28</b> via PayPal below.</p>
+          <p className="no-margin-bottom">Please pay <b>$207.74</b> via PayPal below.</p>
           <p className="no-margin-bottom">Note that you do not have to have a PayPal account to use PayPal. All you need is a credit card.</p>
           <p>The current season is {seasonName}. If paying for the previous season, please note that in Comments.</p>
           <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
