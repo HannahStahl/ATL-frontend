@@ -56,6 +56,7 @@ export default function Signup() {
               <td className="form-label">Email</td>
               <td className="form-field">
                 <FormControl
+                  autoFocus
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
