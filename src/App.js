@@ -4,7 +4,6 @@ import { Link, useHistory } from "react-router-dom";
 import { Nav, Navbar, NavItem, NavDropdown, MenuItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { AppContext } from "./libs/contextLib";
-import { onError } from "./libs/errorLib";
 import ErrorBoundary from "./ErrorBoundary";
 import Routes from "./Routes";
 import Footer from "./Footer";
@@ -64,11 +63,11 @@ function App() {
     }
     async function onLoad() {
       try {
-        await Auth.currentSession();
+        const session = await Auth.currentSession();
+        setProfile({ email: session.getIdToken().payload.email });
         userHasAuthenticated(true);
-      }
-      catch(e) {
-        if (e && e !== 'No current user') onError(e);
+      } catch(e) {
+        if (e && e !== 'No current user') console.log(e);
       }
       setIsAuthenticating(false);
       fetchPublicData();
@@ -83,11 +82,24 @@ function App() {
         setProfile(user);
       } catch(e) {
         console.log(e);
+        setLoadingData(false);
       }
+    }
+    if (!loadingPublicData) {
+      if (isAuthenticated) {
+        setLoadingData(true);
+        fetchPrivateData();
+      } else {
+        setLoadingData(false);
+      }
+    }
+  }, [isAuthenticated, loadingPublicData]);
+
+  useEffect(() => {
+    if (profile?.userId) {
       setLoadingData(false);
     }
-    if (isAuthenticated && !loadingPublicData) fetchPrivateData();
-  }, [isAuthenticated, loadingPublicData]);
+  }, [profile])
 
   async function handleLogout() {
     await Auth.signOut();
@@ -142,9 +154,9 @@ function App() {
             </Nav>
           </Navbar.Collapse>
           <Nav pullRight>
-            {isAuthenticated ? (
-              profile && profile.userId ? (
-                <>
+            {loadingData ? <></> : (
+              isAuthenticated ? (
+                profile?.userId ? (
                   <NavDropdown
                     title={(
                       <p>
@@ -168,15 +180,15 @@ function App() {
                     {profile.isAdmin && <MenuItem href="/users">Users</MenuItem>}
                     <MenuItem onClick={handleLogout}>Log out</MenuItem>
                   </NavDropdown>
-                </>
-              ) : <></>
-            ) : (
-              <LinkContainer to="/login">
-                <NavItem>
-                  {window.innerWidth > 1000 && 'Login'}
-                  <i className="fas fa-user-circle" />
-                </NavItem>
-              </LinkContainer>
+                ) : <NavItem onClick={handleLogout}>Logout</NavItem>
+              ) : (
+                <LinkContainer to="/login">
+                  <NavItem>
+                    {window.innerWidth > 1000 && 'Login'}
+                    <i className="fas fa-user-circle" />
+                  </NavItem>
+                </LinkContainer>
+              )
             )}
           </Nav>
         </Navbar>

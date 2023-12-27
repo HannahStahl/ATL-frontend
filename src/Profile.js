@@ -19,6 +19,7 @@ export default function Profile() {
     await API.put("atl-backend", `update/user/${body.userId}`, { body });
     setProfile(body);
     setEmailCodeSent(false);
+    setEmailCode("");
     setIsLoading(false);
   };
 

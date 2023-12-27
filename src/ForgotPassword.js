@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Auth } from "aws-amplify";
 import { PageHeader, FormControl, HelpBlock } from "react-bootstrap";
 import LoaderButton from "./LoaderButton";
+import PasswordInstructions from "./PasswordInstructions";
+import SignupConfirmation from "./SignupConfirmation";
 import { onError } from "./libs/errorLib";
 
 export default function ForgotPassword() {
@@ -12,15 +14,26 @@ export default function ForgotPassword() {
   const [confirmedPassword, setConfirmedPassword] = useState("");
   const [passwordReset, setPasswordReset] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [userIsUnconfirmed, setUserIsUnconfirmed] = useState(false);
+
+  async function sendResetPasswordEmail() {
+    await Auth.forgotPassword(email);
+    setCodeSent(true);
+    setUserIsUnconfirmed(false);
+  }
 
   async function handleSubmit(event) {
     event.preventDefault();
     setSubmitting(true);
     try {
-      await Auth.forgotPassword(email);
-      setCodeSent(true);
+      await sendResetPasswordEmail();
     } catch (error) {
-      onError(error);
+      if (error.code === 'InvalidParameterException') {
+        await Auth.resendSignUp(email);
+        setUserIsUnconfirmed(true);
+      } else {
+        onError(error);
+      }
     }
     setSubmitting(false);
   }
@@ -41,7 +54,12 @@ export default function ForgotPassword() {
     setSubmitting(false);
   }
 
-  return (
+  return userIsUnconfirmed ? (
+    <SignupConfirmation
+      email={email}
+      onConfirmationSuccess={sendResetPasswordEmail}
+    />
+  ) : (
     <div className="container">
       <PageHeader>Reset Password</PageHeader>
       {passwordReset ? (
@@ -81,7 +99,7 @@ export default function ForgotPassword() {
                     <HelpBlock className="no-margin-bottom">Enter the code that was emailed to you.</HelpBlock>
                   </td>
                 </tr>
-                <tr className="form-field-with-note">
+                <tr>
                   <td className="form-label">New Password</td>
                   <td className="form-field">
                     <FormControl
@@ -91,20 +109,7 @@ export default function ForgotPassword() {
                     />
                   </td>
                 </tr>
-                <tr>
-                  <td />
-                  <td>
-                    <HelpBlock className="no-margin-bottom">
-                      Password must contain all of the following:<br />
-                      - at least 8 characters<br />
-                      - at least 1 number<br />
-                      - at least 1 special character<br />
-                      - at least 1 uppercase letter<br />
-                      - at least 1 lowercase letter<br />
-                    </HelpBlock>
-                  </td>
-                </tr>
-                <tr>
+                <tr className="form-field-with-note">
                   <td className="form-label">Confirm New Password</td>
                   <td className="form-field">
                     <FormControl
@@ -114,6 +119,7 @@ export default function ForgotPassword() {
                     />
                   </td>
                 </tr>
+                <PasswordInstructions />
               </tbody>
             </table>
             <LoaderButton

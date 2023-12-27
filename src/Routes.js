@@ -2,7 +2,6 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 import AuthenticatedRoute from "./AuthenticatedRoute";
 import UnauthenticatedRoute from "./UnauthenticatedRoute";
-import { useAppContext } from "./libs/contextLib";
 import Home from "./Home";
 import LeagueHistory from "./LeagueHistory";
 import FAQ from "./FAQ";
@@ -46,7 +45,6 @@ import NotFound from "./NotFound";
 import Payment from "./Payment";
 
 export default function Routes() {
-  const { isAuthenticated } = useAppContext();
   return (
     <Switch>
       <Route exact path="/">
@@ -112,61 +110,61 @@ export default function Routes() {
       <Route exact path="/contact">
         <Contact />
       </Route>
-      <Route exact path="/player-signup" isAuthenticated={isAuthenticated}>
+      <Route exact path="/player-signup">
         <PlayerSignup />
       </Route>
-      <UnauthenticatedRoute exact path="/login" isAuthenticated={isAuthenticated}>
+      <UnauthenticatedRoute exact path="/login">
         <Login />
       </UnauthenticatedRoute>
-      <UnauthenticatedRoute exact path="/signup" isAuthenticated={isAuthenticated}>
+      <UnauthenticatedRoute exact path="/signup">
         <Signup />
       </UnauthenticatedRoute>
-      <UnauthenticatedRoute exact path="/reset-password" isAuthenticated={isAuthenticated}>
+      <UnauthenticatedRoute exact path="/reset-password">
         <ForgotPassword />
       </UnauthenticatedRoute>
-      <AuthenticatedRoute exact path="/portal" isAuthenticated={isAuthenticated}>
+      <AuthenticatedRoute exact path="/portal">
         <PortalHome />
       </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/profile" isAuthenticated={isAuthenticated}>
+      <AuthenticatedRoute exact path="/profile">
         <Profile />
       </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/team-info" isAuthenticated={isAuthenticated}>
+      <AuthenticatedRoute exact path="/team-info">
         <Team />
       </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/players-looking" isAuthenticated={isAuthenticated}>
+      <AuthenticatedRoute exact path="/players-looking">
         <PlayersLooking />
       </AuthenticatedRoute>
       <Route exact path="/payment">
         <Payment />
       </Route>
-      <AuthenticatedRoute exact path="/seasons" isAuthenticated={isAuthenticated}>
+      <AuthenticatedRoute exact path="/seasons">
         <Seasons />
       </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/season-calendars" isAuthenticated={isAuthenticated}>
+      <AuthenticatedRoute exact path="/season-calendars">
         <Calendars />
       </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/teams" isAuthenticated={isAuthenticated}>
+      <AuthenticatedRoute exact path="/teams">
         <Teams />
       </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/players" isAuthenticated={isAuthenticated}>
+      <AuthenticatedRoute exact path="/players">
         <Players />
       </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/court-locations" isAuthenticated={isAuthenticated}>
+      <AuthenticatedRoute exact path="/court-locations">
         <Locations />
       </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/associations" isAuthenticated={isAuthenticated}>
+      <AuthenticatedRoute exact path="/associations">
         <Associations />
       </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/matches" isAuthenticated={isAuthenticated}>
+      <AuthenticatedRoute exact path="/matches">
         <Schedules />
       </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/divisions" isAuthenticated={isAuthenticated}>
+      <AuthenticatedRoute exact path="/divisions">
         <Divisions />
       </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/users" isAuthenticated={isAuthenticated}>
+      <AuthenticatedRoute exact path="/users">
         <Users />
       </AuthenticatedRoute>
-      <AuthenticatedRoute exact path="/change-password" isAuthenticated={isAuthenticated}>
+      <AuthenticatedRoute exact path="/change-password">
         <ChangePassword />
       </AuthenticatedRoute>
       {/* Finally, catch all unmatched routes */}

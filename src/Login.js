@@ -4,15 +4,17 @@ import { DateUtils } from '@aws-amplify/core';
 import { useHistory } from "react-router-dom";
 import { FormControl, PageHeader } from "react-bootstrap";
 import LoaderButton from "./LoaderButton";
+import SignupConfirmation from "./SignupConfirmation";
 import { useAppContext } from "./libs/contextLib";
 import { onError } from "./libs/errorLib";
 
 export default function Login() {
   const history = useHistory();
-  const { userHasAuthenticated } = useAppContext();
+  const { setProfile, userHasAuthenticated } = useAppContext();
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [userIsUnconfirmed, setUserIsUnconfirmed] = useState(false);
 
   function validateForm() {
     return email.length > 0 && password.length > 0;
@@ -28,16 +30,28 @@ export default function Login() {
       }).then((user) => {
         DateUtils.setClockOffset(-(user.signInUserSession.clockDrift * 1000));
       });
+      setProfile({ email });
       userHasAuthenticated(true);
       history.push("/portal");
     } catch (e) {
-      onError(e);
-      setIsLoading(false);
+      if (e.code === "UserNotConfirmedException") {
+        await Auth.resendSignUp(email);
+        setUserIsUnconfirmed(true);
+      } else {
+        onError(e);
+        setIsLoading(false);
+      }
     }
   }
 
-  return (
-    <div className="container Login">
+  return userIsUnconfirmed ? (
+    <SignupConfirmation
+      email={email}
+      password={password}
+      onConfirmationSuccess={() => history.push("/portal")}
+    />
+  ) : (
+    <div className="container">
       <PageHeader>Login</PageHeader>
       <form onSubmit={handleSubmit} className="max-width-form">
         <table className="form-table">
