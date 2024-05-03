@@ -63,7 +63,7 @@ export default function Home() {
   useEffect(() => {
     const getWeather = async () => {
       const weatherJson = await fetch(config.weatherUrl).then((res) => res.json());
-      setWeather(weatherJson.hourly);
+      setWeather(weatherJson?.hourly || []);
     };
     getWeather();
   }, []);
