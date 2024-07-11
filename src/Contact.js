@@ -13,10 +13,8 @@ export default function Contact() {
           <tbody>
             <tr className="contact-item">
               <td><img src="mailbox.svg" alt="Mail" width={40} /></td>
-              <td className="contact-item-text">
+              <td>
                 <p className="no-margin-bottom"><b>Austin Tennis League</b><br />P.O. Box 300035<br />Austin, TX 78703</p>
-                <p className="no-margin-bottom contact-item-separator">- OR -</p>
-                <p className="no-margin-bottom"><b>Pharr Tennis Center</b><br />4201 Brookview Rd.<br />Austin, TX 78722</p>
               </td>
             </tr>
             <tr className="contact-item">
