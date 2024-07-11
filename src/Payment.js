@@ -19,7 +19,7 @@ export default function Payment() {
           <h3>Option 2: Pay by check</h3>
           <p className="no-margin-bottom">Please write a check for <b>$225</b>.</p>
           <p>All checks must be made out to <b>Austin Tennis League</b>.</p>
-          <p className="no-margin-bottom">Checks can be dropped off at Pharr Tennis Center or mailed to the following address:</p>
+          <p className="no-margin-bottom">Checks can be mailed to the following address:</p>
           <p>Austin Tennis League<br />PO Box 300035<br />Austin, TX 78703</p>
           <h3>Option 3: Pay with PayPal</h3>
           <p className="no-margin-bottom">Please pay <b>$233.64</b> via PayPal below.</p>
