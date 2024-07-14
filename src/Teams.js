@@ -12,6 +12,11 @@ export default () => {
 
   const columns = {
     teamNumber: { label: "Team #", type: "number" },
+    isRegistered: {
+      label: "Registered",
+      type: "checkbox",
+      render: (value) => value ? <i className="fas fa-check" /> : ""
+    },
     teamName: { label: "Team Name", type: "text", required: true },
     captainId: {
       label: "Captain",

@@ -7,24 +7,28 @@ import Roster from "./Roster";
 import Matches from "./Matches";
 import EditForm from "./EditForm";
 import Division from "./Division";
+import LoaderButton from "./LoaderButton";
+import RegisterTeamModal from "./RegisterTeamModal";
 
 export default function Team() {
   const {
-    loadingData, profile, allTeams, setAllTeams, allCaptains, locations, divisions, users,
+    loadingData, profile, allTeams, setAllTeams, allCaptains, locations, divisions, users, seasons
   } = useAppContext();
   const { isAdmin } = profile;
   const [loadingTeam, setLoadingTeam] = useState(true);
   const [team, setTeam] = useState({});
   const [teams, setTeams] = useState([]);
+  const [season, setSeason] = useState({});
   const [selectedUser, setSelectedUser] = useState(profile);
   const [isSaving, setIsSaving] = useState(false);
+  const [registrationModalVisible, setRegistrationModalVisible] = useState(false);
   
   useEffect(() => {
     setSelectedUser(profile);
   }, [profile]);
 
   useEffect(() => {
-    async function fetchTeam() {
+    async function fetchTeamAndSeason() {
       const captainTeams = allTeams.filter((teamInList) => (
         teamInList.isActive && (
           teamInList.captainId === selectedUser.userId ||
@@ -35,9 +39,11 @@ export default function Team() {
       const captainTeam = captainTeams[0];
       setTeam(captainTeam || {});
       setLoadingTeam(false);
+      const currentSeason = seasons.find((season) => season.currentSeason);
+      setSeason(currentSeason);
     }
-    if (!loadingData) fetchTeam();
-  }, [loadingData, selectedUser, allTeams]);
+    if (!loadingData) fetchTeamAndSeason();
+  }, [loadingData, selectedUser, allTeams, seasons]);
 
   const formFields = {
     divisionId: {
@@ -173,6 +179,26 @@ export default function Team() {
             <hr className="team-details-page-break" />
           </>
         )}
+        {!loadingTeam && team.teamId && !team.isRegistered && (
+          <div className="centered-content">
+            <div className="centered-content-inner">
+              <div className="team-registration">
+                <p className="centered-text">
+                  <b>You must register your team for the upcoming Austin Tennis League season.</b>
+                </p>
+                <LoaderButton
+                  block
+                  bsSize="large"
+                  bsStyle="primary"
+                  onClick={() => setRegistrationModalVisible(true)}
+                >
+                  Continue
+                </LoaderButton>
+              </div>
+              <hr className="team-details-page-break" />
+            </div>
+          </div>
+        )}
         <div className="centered-content"> 
           {loadingTeam ? <p>Loading...</p> : (
             team.teamId ? (
@@ -200,6 +226,12 @@ export default function Team() {
       {!loadingTeam && <Roster team={team} />}
       {!loadingTeam && <Matches team={team} />}
       {!loadingTeam && <Division team={team} />}
+      <RegisterTeamModal
+        registrationModalVisible={registrationModalVisible}
+        setRegistrationModalVisible={setRegistrationModalVisible}
+        seasonName={season.seasonName}
+        team={team}
+      />
     </div>
   );
 }
