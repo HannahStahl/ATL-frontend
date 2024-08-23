@@ -582,11 +582,6 @@ h3.welcome {
   flex-wrap: wrap;
 }
 
-.contact-item-separator {
-  width: 130px;
-  text-align: center;
-}
-
 .contact-item img {
   margin-right: 20px;
 }
@@ -701,11 +696,6 @@ h3.welcome {
 @media all and (max-width: 699px) {
   .contact-item-text {
     display: block;
-  }
-
-  .contact-item-separator {
-    margin-top: 10px;
-    margin-bottom: 10px;
   }
 }
 

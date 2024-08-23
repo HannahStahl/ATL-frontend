@@ -25,11 +25,7 @@ export default function Contact() {
               <td><img src="email.svg" alt="Email" width={40} /></td>
               <td className="contact-item-text">
                 <p className="no-margin-bottom">
-                  <a href="mailto:myanez@pharrtennis.com">myanez@pharrtennis.com</a>
-                </p>
-                <p className="no-margin-bottom contact-item-separator">- OR -</p>
-                <p className="no-margin-bottom">
-                  <a href="mailto:webmaster@atltennis.org">webmaster@atltennis.org</a>
+                  <a href="mailto:myanez@pharrtennis.com">myanez@pharrtennis.com</a><br />- OR -<br /><a href="mailto:webmaster@atltennis.org">webmaster@atltennis.org</a>
                 </p>
               </td>
             </tr>
