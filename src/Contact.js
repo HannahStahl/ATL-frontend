@@ -19,7 +19,7 @@ export default function Contact() {
             </tr>
             <tr className="contact-item">
               <td><img src="phone.svg" alt="Phone" width={40} /></td>
-              <td><p className="no-margin-bottom">(512) 477-7773</p></td>
+              <td><p className="no-margin-bottom">(512) 996-5681</p></td>
             </tr>
             <tr className="contact-item">
               <td><img src="email.svg" alt="Email" width={40} /></td>
