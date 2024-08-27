@@ -155,23 +155,50 @@ export default () => {
   });
 
   let columns = {
-    weekNumber: { label: "Week", type: "number", required: true },
-    matchNumber: { label: "Match #", type: "number", required: true },
+    weekNumber: {
+      label: "Week",
+      type: "number",
+      required: true,
+      sortFunction: (a, b) => parseInt(a) - parseInt(b),
+    },
+    matchNumber: {
+      label: "Match #",
+      type: "number",
+      required: true,
+      sortFunction: (a, b) => parseInt(a) - parseInt(b),
+    },
     divisionId: {
       label: "Division",
       type: "dropdown",
       joiningTable: divisions,
       joiningTableKey: "divisionId",
-      joiningTableFieldNames: ["divisionNumber"]
+      joiningTableFieldNames: ["divisionNumber"],
+      sortFunction: (a, b) => parseInt(a) - parseInt(b),
     },
-    matchDate: { label: "Date", type: "date", render: (value) => value && moment(value).format("M/D/YYYY") },
-    startTime: { label: "Time", type: "text" },
+    matchDate: {
+      label: "Date",
+      type: "date",
+      render: (value) => value && moment(value).format("M/D/YYYY"),
+      sortFunction: (a, b) => moment(a).isBefore(b) ? -1 : 1,
+    },
+    startTime: {
+      label: "Time",
+      type: "text",
+      sortFunction: (a, b) => {
+        let hour1 = parseInt(a.split('-')[0]);
+        let hour2 = parseInt(b.split('-')[0]);
+        if (hour1 <= 6) hour1 += 12; // assume PM
+        if (hour2 <= 6) hour2 += 12; // assume PM
+        return hour1 - hour2;
+      },
+    },
     locationId: {
       label: "Location",
       type: "dropdown",
       joiningTable: locations,
       joiningTableKey: "locationId",
-      joiningTableFieldNames: ["locationName"]
+      joiningTableFieldNames: ["locationName"],
+      sortFunction: (a, b) => a < b ? -1 : 1,
     },
     homeTeamId: {
       label: "Home Team",

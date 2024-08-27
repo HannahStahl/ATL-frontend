@@ -77,6 +77,22 @@ th,td:not(.key-date):not(.extra-notes) {
   width: 30px;
 }
 
+.table-header-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 31px;
+}
+
+.sort-icons {
+  display: flex;
+  flex-direction: column;
+}
+
+.sort-icons i:hover {
+  cursor: pointer;
+}
+
 .helper-text {
   margin-top: 0px;
 }

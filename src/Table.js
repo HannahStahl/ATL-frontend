@@ -8,6 +8,8 @@ export default ({
   CustomAddComponent, CustomEditComponent, customAddFunction, customEditFunction, customRemoveFunction,
   validate, createDisabled, removeDisabled, primaryKey, getInactiveRows
 }) => {
+  const [sortKey, setSortKey] = useState(undefined);
+  const [sortDirection, setSortDirection] = useState(undefined);
   const [rowSelectedForEdit, setRowSelectedForEdit] = useState(undefined);
   const [rowSelectedForRemoval, setRowSelectedForRemoval] = useState(undefined);
   const [addingRow, setAddingRow] = useState(false);
@@ -95,6 +97,26 @@ export default ({
     return fields;
   };
 
+  const getValue = (row, key) => {
+    return columns[key].children ? joinChildren(row, columns[key]) : (
+      columns[key].joiningTable ? getValueFromJoiningTable(key, columns[key], row) : row[key]
+    );
+  };
+
+  let rowsToDisplay = filterRows ? filterRows(rows) : rows;
+  if (sortKey && sortDirection) {
+    rowsToDisplay.sort((row1, row2) => {
+      const getAscendingReturnValue = () => {
+        if (!row1[sortKey]) return -1;
+        if (!row2[sortKey]) return 1;
+        const value1 = getValue(row1, sortKey);
+        const value2 = getValue(row2, sortKey);
+        return columns[sortKey].sortFunction(value1, value2);
+      }
+      return getAscendingReturnValue() * (sortDirection === 'ASC' ? 1 : -1);
+    });
+  }
+
   const EditComponent = CustomEditComponent || EditForm;
 
   return (
@@ -104,7 +126,35 @@ export default ({
           <thead>
             <tr>
               {setRows && !removeDisabled && <th />}
-              {Object.keys(columns).filter((key) => !columns[key].hideFromTable).map((key) => <th key={key}>{columns[key].label}</th>)}
+              {Object.keys(columns).filter((key) => !columns[key].hideFromTable).map((key) => (
+                <th key={key}>
+                  <div className="table-header-cell">
+                    {columns[key].label}
+                    {columns[key].sortFunction
+                      ? (
+                        <div className="sort-icons">
+                          <i
+                            className="fas fa-caret-up fa-lg"
+                            onClick={() => {
+                              setSortKey(key);
+                              setSortDirection('ASC');
+                            }}
+                          />
+                          <i
+                            className="fas fa-caret-down fa-lg"
+                            onClick={() => {
+                              setSortKey(key);
+                              setSortDirection('DESC');
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <></>
+                      )
+                    }
+                  </div>
+                </th>
+              ))}
             </tr>
           </thead>
           <tbody>
@@ -120,7 +170,7 @@ export default ({
                 )
               )}
             </tr>
-            {(filterRows ? filterRows(rows) : rows).map((row) => (
+            {rowsToDisplay.map((row) => (
               <tr
                 key={row[itemId]}
                 onClick={!row.readOnly && (setRows || customSelect) ? (e) => {
@@ -138,9 +188,7 @@ export default ({
                   </td>
                 )}
                 {Object.keys(columns).filter((key) => !columns[key].hideFromTable).map((key) => {
-                  const value = columns[key].children ? joinChildren(row, columns[key]) : (
-                    columns[key].joiningTable ? getValueFromJoiningTable(key, columns[key], row) : row[key]
-                  );
+                  const value = getValue(row, key);
                   return <td key={key}>{columns[key].render ? columns[key].render(value, row) : value}</td>;
                 })}
               </tr>
