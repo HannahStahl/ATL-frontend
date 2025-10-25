@@ -23,7 +23,7 @@ const prod = {
     APP_CLIENT_ID: "604177qindrdteu9ntkfjlnaff",
     IDENTITY_POOL_ID: "us-east-1:09e500f1-5e55-486a-aca4-a083c381d904"
   },
-  adminEmail: "myanez@pharrtennis.com"
+  adminEmail: "atl@atltennis.org"
 };
 
 // Default to dev if not set

@@ -120,7 +120,7 @@ export default ({ team }) => {
         <div className="centered-content">
           <p className="rosters-locked">
             Rosters are locked at this time. 
-            Please <a href="mailto:myanez@pharrtennis.com">email Maggie</a> if you need to make changes.
+            Please <a href="mailto:atl@atltennis.org">email Leon</a> if you need to make changes.
           </p>
         </div>
       )}

@@ -211,7 +211,7 @@ export default function Team() {
             ) : (
               selectedUser.isCaptain ? (
                 <p className="centered-text">
-                  Maggie is working on associating you with your team(s).
+                  Leon is working on associating you with your team(s).
                   You will receive an email when this process is complete.
                 </p>
               ) : (

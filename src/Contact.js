@@ -6,7 +6,7 @@ export default function Contact() {
     <div className="container">
       <PageHeader>Contact Us</PageHeader>
       <div className="centered-content">
-        <p className="contact-intro">Maggie Yanez is the League Administrator.</p>
+        <p className="contact-intro">Leon Kincy is the League Administrator.</p>
       </div>
       <div className="centered-content">
         <table>
@@ -25,7 +25,7 @@ export default function Contact() {
               <td><img src="email.svg" alt="Email" width={40} /></td>
               <td className="contact-item-text">
                 <p className="no-margin-bottom">
-                  <a href="mailto:myanez@pharrtennis.com">myanez@pharrtennis.com</a><br />- OR -<br /><a href="mailto:webmaster@atltennis.org">webmaster@atltennis.org</a>
+                  <a href="mailto:atl@atltennis.org">atl@atltennis.org</a>
                 </p>
               </td>
             </tr>
