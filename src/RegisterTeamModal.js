@@ -52,7 +52,7 @@ export default ({
                 isLoading={isLoading}
                 onClick={registerTeam}
               >
-                Continue
+                Register
               </LoaderButton>
             </FormGroup>
           </>
