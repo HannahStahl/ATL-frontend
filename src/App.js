@@ -15,6 +15,7 @@ function App() {
   const [isAuthenticated, userHasAuthenticated] = useState(false);
   const [profile, setProfile] = useState({});
   const [allTeams, setAllTeams] = useState([]);
+  const [payments, setPayments] = useState([]);
   const [users, setUsers] = useState([]);
   const [allCaptains, setAllCaptains] = useState([]);
   const [locations, setLocations] = useState([]);
@@ -32,11 +33,12 @@ function App() {
   useEffect(() => {
     async function fetchPublicData() {
       const [
-        users, teams, locations, divisions, associations, seasons, events,
+        users, teams, payments, locations, divisions, associations, seasons, events,
         standings, matches, draftMatches, matchResults
       ] = await Promise.all([
         API.get("atl-backend", "list/user"),
         API.get("atl-backend", "list/team"),
+        API.get("atl-backend", "list/payment"),
         API.get("atl-backend", "list/location"),
         API.get("atl-backend", "list/division"),
         API.get("atl-backend", "list/association"),
@@ -50,6 +52,7 @@ function App() {
       setUsers(users);
       setAllCaptains(users.filter((user) => user.isCaptain));
       setAllTeams(teams);
+      setPayments(payments);
       setLocations(locations);
       setDivisions(divisions);
       setAssociations(associations);
@@ -172,6 +175,7 @@ function App() {
                     {profile.isAdmin && <MenuItem href="/seasons">Seasons</MenuItem>}
                     {profile.isAdmin && <MenuItem href="/season-calendars">Season Calendars</MenuItem>}
                     {profile.isAdmin && <MenuItem href="/teams">Teams</MenuItem>}
+                    {profile.isAdmin && <MenuItem href="/payments">Payments</MenuItem>}
                     {profile.isAdmin && <MenuItem href="/players">Players</MenuItem>}
                     {profile.isAdmin && <MenuItem href="/matches">Matches</MenuItem>}
                     {profile.isAdmin && <MenuItem href="/court-locations">Court Locations</MenuItem>}
@@ -213,6 +217,8 @@ function App() {
             setEvents,
             allTeams,
             setAllTeams,
+            payments,
+            setPayments,
             loadingData,
             standings,
             setStandings,

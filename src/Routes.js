@@ -32,6 +32,7 @@ import Team from "./Team";
 import Seasons from "./Seasons";
 import Calendars from "./Calendars";
 import Teams from "./Teams";
+import Payments from "./Payments";
 import Players from "./Players";
 import PlayersLooking from "./PlayersLooking";
 import Locations from "./Locations";
@@ -145,6 +146,9 @@ export default function Routes() {
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/teams">
         <Teams />
+      </AuthenticatedRoute>
+      <AuthenticatedRoute exact path="/payments">
+        <Payments />
       </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/players">
         <Players />
