@@ -65,7 +65,7 @@ export default ({
 
   const getValueFromJoiningTable = (key, obj, row) => {
     const { joiningTable, joiningTableKey, joiningTableFieldNames } = obj;
-    const value = joiningTable.find((item) => item[joiningTableKey] === row[key]);
+    const value = joiningTable.find((item) => item[joiningTableKey] === row[key.split('_')[0]]);
     return value ? joinValues(value, joiningTableFieldNames) : '';
   };
 

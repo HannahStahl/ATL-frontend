@@ -25,12 +25,26 @@ export default () => {
       joiningTableKey: "userId",
       joiningTableFieldNames: ["firstName", "lastName"]
     },
+    captainId_email: {
+      label: "Captain Email",
+      joiningTable: allCaptains,
+      joiningTableKey: "userId",
+      joiningTableFieldNames: ["email"],
+      readOnly: true
+    },
     cocaptainId: {
       label: "Co-Captain",
       type: "dropdown",
       joiningTable: allCaptains,
       joiningTableKey: "userId",
       joiningTableFieldNames: ["firstName", "lastName"]
+    },
+    cocaptainId_email: {
+      label: "Co-Captain Email",
+      joiningTable: allCaptains,
+      joiningTableKey: "userId",
+      joiningTableFieldNames: ["email"],
+      readOnly: true
     },
     divisionId: {
       label: "Division",
