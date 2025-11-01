@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { PageHeader } from "react-bootstrap";
 import { API } from "aws-amplify";
 import Table from "./Table";
@@ -9,6 +9,28 @@ export default () => {
   const {
     allTeams, setAllTeams, allCaptains, divisions, locations, loadingData,
   } = useAppContext();
+  const [teams, setTeams] = useState([]);
+  
+  useEffect(() => {
+    if (
+      !loadingData &&
+      allCaptains.length > 0 &&
+      allTeams.length > 0
+    ) {
+      const captainsById = {};
+      allCaptains.forEach((captain) => {
+        captainsById[captain.userId] = captain;
+      });
+      const teams = allTeams.map((team) => {
+        const captain = captainsById[team.captainId];
+        const cocaptain = captainsById[team.cocaptainId];
+        const captainEmail = captain && captain.email;
+        const cocaptainEmail = cocaptain && cocaptain.email;
+        return { ...team, captainEmail, cocaptainEmail };
+      });
+      setTeams(teams);
+    }
+  }, [loadingData, allTeams, allCaptains]);
 
   const columns = {
     teamNumber: { label: "Team #", type: "number" },
@@ -25,11 +47,8 @@ export default () => {
       joiningTableKey: "userId",
       joiningTableFieldNames: ["firstName", "lastName"]
     },
-    captainId_email: {
+    captainEmail: {
       label: "Captain Email",
-      joiningTable: allCaptains,
-      joiningTableKey: "userId",
-      joiningTableFieldNames: ["email"],
       readOnly: true
     },
     cocaptainId: {
@@ -39,11 +58,8 @@ export default () => {
       joiningTableKey: "userId",
       joiningTableFieldNames: ["firstName", "lastName"]
     },
-    cocaptainId_email: {
+    cocaptainEmail: {
       label: "Co-Captain Email",
-      joiningTable: allCaptains,
-      joiningTableKey: "userId",
-      joiningTableFieldNames: ["email"],
       readOnly: true
     },
     divisionId: {
@@ -132,7 +148,7 @@ export default () => {
         <>
           <Table
             columns={columns}
-            rows={allTeams}
+            rows={teams}
             filterRows={(list) => list.filter((row) => row.isActive)}
             getInactiveRows={(list) => list.filter((row) => !row.isActive)}
             setRows={setAllTeams}

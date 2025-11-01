@@ -26,6 +26,7 @@ function App() {
   const [standings, setStandings] = useState([]);
   const [allMatches, setAllMatches] = useState([]);
   const [draftMatches, setDraftMatches] = useState([]);
+  const [makeupMatches, setMakeupMatches] = useState([]);
   const [matchResults, setMatchResults] = useState([]);
   const [loadingPublicData, setLoadingPublicData] = useState(true);
   const [loadingData, setLoadingData] = useState(true);
@@ -34,7 +35,7 @@ function App() {
     async function fetchPublicData() {
       const [
         users, teams, payments, locations, divisions, associations, seasons, events,
-        standings, matches, draftMatches, matchResults
+        standings, matches, draftMatches, makeupMatches, matchResults
       ] = await Promise.all([
         API.get("atl-backend", "list/user"),
         API.get("atl-backend", "list/team"),
@@ -47,6 +48,7 @@ function App() {
         API.get("atl-backend", "list/standing"),
         API.get("atl-backend", "list/match"),
         API.get("atl-backend", "list/draftMatch"),
+        API.get("atl-backend", "list/makeupMatch"),
         API.get("atl-backend", "list/matchResult")
       ]);
       setUsers(users);
@@ -61,6 +63,7 @@ function App() {
       setStandings(standings);
       setAllMatches(matches);
       setDraftMatches(draftMatches);
+      setMakeupMatches(makeupMatches);
       setMatchResults(matchResults);
       setLoadingPublicData(false);
     }
@@ -172,6 +175,7 @@ function App() {
                     <MenuItem href="/profile">My Profile</MenuItem>
                     <MenuItem href="/team-info">My Team Info</MenuItem>
                     <MenuItem href="/payment">Payment</MenuItem>
+                    <MenuItem href="/makeup-matches">AHS Make-Up Matches</MenuItem>
                     {profile.isAdmin && <MenuItem href="/seasons">Seasons</MenuItem>}
                     {profile.isAdmin && <MenuItem href="/season-calendars">Season Calendars</MenuItem>}
                     {profile.isAdmin && <MenuItem href="/teams">Teams</MenuItem>}
@@ -226,6 +230,8 @@ function App() {
             setAllMatches,
             draftMatches,
             setDraftMatches,
+            makeupMatches,
+            setMakeupMatches,
             matchResults,
             setMatchResults
           }}>

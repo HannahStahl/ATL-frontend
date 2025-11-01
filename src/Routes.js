@@ -44,6 +44,7 @@ import ForgotPassword from "./ForgotPassword";
 import ChangePassword from "./ChangePassword";
 import NotFound from "./NotFound";
 import Payment from "./Payment";
+import MakeupMatches from "./MakeupMatches";
 
 export default function Routes() {
   return (
@@ -138,6 +139,9 @@ export default function Routes() {
       <Route exact path="/payment">
         <Payment />
       </Route>
+      <AuthenticatedRoute exact path="/makeup-matches">
+        <MakeupMatches />
+      </AuthenticatedRoute>
       <AuthenticatedRoute exact path="/seasons">
         <Seasons />
       </AuthenticatedRoute>

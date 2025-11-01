@@ -4,7 +4,7 @@ import EditForm from './EditForm';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 export default ({
-  columns, rows, filterRows, getRows, setRows, itemType, API, categoryName, customSelect,
+  columns, rows, filterRows, getRows, setRows, itemType, displayType, API, categoryName, customSelect,
   CustomAddComponent, CustomEditComponent, customAddFunction, customEditFunction, customRemoveFunction,
   validate, createDisabled, removeDisabled, primaryKey, getInactiveRows
 }) => {
@@ -59,13 +59,14 @@ export default ({
     setRowSelectedForRemoval(undefined);
   };
 
-  const capitalizedItemType = itemType.charAt(0).toUpperCase() + itemType.slice(1);
+  const displayItemType = displayType || itemType;
+  const capitalizedItemType = displayItemType.replace(/(^|\s|-)(\S)/g, (_, p1, p2) => `${p1}${p2.toUpperCase()}`);
 
   const joinValues = (obj, keys) => keys.map((key) => obj[key]).join(' ');
 
   const getValueFromJoiningTable = (key, obj, row) => {
     const { joiningTable, joiningTableKey, joiningTableFieldNames } = obj;
-    const value = joiningTable.find((item) => item[joiningTableKey] === row[key.split('_')[0]]);
+    const value = joiningTable.find((item) => item[joiningTableKey] === row[key]);
     return value ? joinValues(value, joiningTableFieldNames) : '';
   };
 
@@ -165,7 +166,7 @@ export default ({
                     colSpan={Object.keys(columns).filter((key) => !columns[key].hideFromTable).length + (removeDisabled ? 0 : 1)}
                     onClick={() => setAddingRow(true)}
                   >
-                    {`+ Add new ${itemType}`}
+                    {`+ Add new ${displayItemType}`}
                   </td>
                 )
               )}
@@ -255,7 +256,7 @@ export default ({
         setRowSelectedForRemoval={setRowSelectedForRemoval}
         removeRow={removeRow}
         isLoading={isLoading}
-        itemType={itemType}
+        itemType={displayItemType}
         capitalizedItemType={capitalizedItemType}
         categoryName={categoryName}
       />
