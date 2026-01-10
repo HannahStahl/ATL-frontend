@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { PageHeader } from "react-bootstrap";
 import { API } from "aws-amplify";
+import { saveAs } from "file-saver";
+import zipcelx from "zipcelx";
+import { pdf } from "@react-pdf/renderer";
 import Table from "./Table";
+import TeamsPDF from "./TeamsPDF";
 import { useAppContext } from "./libs/contextLib";
 import { onError } from "./libs/errorLib";
 
@@ -141,6 +145,52 @@ export default () => {
     return true;
   };
 
+  const filterTeams = (list) => list.filter((team) => team.isActive);
+
+  const dataKeys = ["teamNumber", "teamName", "captainId", "cocaptainId", "divisionId", "locationId", "courtTime"];
+
+  const getValue = (team, key) => {
+    let value = team[key] || "";
+    if ((key === "captainId" || key === "cocaptainId") && value.length > 0) {
+      const captain = allCaptains.find((captainInList) => captainInList.userId === value);
+      value = captain ? `${captain.firstName || ""} ${captain.lastName || ""}` : "";
+    } else if (key === "divisionId" && value.length > 0) {
+      const division = divisions.find((divisionInList) => divisionInList.divisionId === value);
+      value = division ? (division.divisionNumber || "") : "";
+    } else if (key === "locationId" && value.length > 0) {
+      const location = locations.find((locationInList) => locationInList.locationId === value);
+      value = location ? (location.locationName || "") : "";
+    }
+    return value;
+  };
+
+  const downloadExcel = () => {
+    const activeTeams = filterTeams(teams);
+    const headerRow = dataKeys.map((key) => ({
+      value: columns[key].label, type: "string"
+    }));
+    const dataRows = activeTeams.map((team) => dataKeys.map((key) => {
+      return ({ value: getValue(team, key), type: "string" });
+    }));
+    const data = [headerRow].concat(dataRows);
+    zipcelx({
+      filename: "ATL - Active Teams",
+      sheet: { data }
+    });
+  };
+
+  const generatePDF = async () => {
+    const blob = await pdf(
+      <TeamsPDF
+        columns={columns}
+        exportFields={dataKeys}
+        teams={filterTeams(teams)}
+        getValue={getValue}
+      />
+    ).toBlob();
+    saveAs(blob, 'ATL - Active Teams.pdf');
+  };
+
   return (
     <div className="container">
       <PageHeader>Teams</PageHeader>
@@ -149,7 +199,7 @@ export default () => {
           <Table
             columns={columns}
             rows={teams}
-            filterRows={(list) => list.filter((row) => row.isActive)}
+            filterRows={filterTeams}
             getInactiveRows={(list) => list.filter((row) => !row.isActive)}
             setRows={setAllTeams}
             getRows={() => API.get("atl-backend", "list/team")}
@@ -161,6 +211,18 @@ export default () => {
           />
         </>
       )}
+      <p className="centered-text">
+        <b>Download list of active teams:</b>
+        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+        <a onClick={downloadExcel} className="download-schedule-link">
+          <i className="fas fa-file-excel" />
+          Excel
+        </a>
+        <span className="download-schedule-link" onClick={generatePDF}>
+          <i className="fas fa-file-pdf" />
+          PDF
+        </span>
+      </p>
     </div>
   );
 }
