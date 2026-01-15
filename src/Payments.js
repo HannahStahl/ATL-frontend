@@ -42,7 +42,8 @@ export default () => {
 
   const getPayments = () => API.get("atl-backend", "list/payment");
 
-  const createOrUpdatePayment = async (paymentId, body) => {
+  const createOrUpdatePayment = async (teamId, body) => {
+    const { paymentId } = body;
     if (paymentId) {
       await API.put("atl-backend", `update/payment/${paymentId}`, { body });
     } else {
@@ -96,6 +97,7 @@ export default () => {
           setRows={setPayments}
           itemType="payment"
           API={API}
+          primaryKey="teamId"
           createDisabled
           removeDisabled
           customEditFunction={createOrUpdatePayment}
