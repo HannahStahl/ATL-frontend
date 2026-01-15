@@ -10,7 +10,7 @@ export default () => {
   const [teamsWithPayments, setTeamsWithPayments] = useState([]);
 
   useEffect(() => {
-    const activeTeams = allTeams.filter((team) => team.isActive);
+    const activeTeams = allTeams.filter((team) => team.isActive && team.teamName !== "Bye");
     setTeamsWithPayments(activeTeams.map((team) => {
       const teamPayment = payments.find((payment) => payment.teamId === team.teamId);
       return { ...team, ...(teamPayment || {})};
