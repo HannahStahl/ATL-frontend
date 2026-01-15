@@ -14,6 +14,11 @@ export default () => {
     setTeamsWithPayments(activeTeams.map((team) => {
       const teamPayment = payments.find((payment) => payment.teamId === team.teamId);
       return { ...team, ...(teamPayment || {})};
+    }).sort((a, b) => {
+      if (a.amountPaid && b.amountPaid) return a.createdAt - b.createdAt;
+      if (a.amountPaid) return 1;
+      if (b.amountPaid) return -1;
+      return a.teamNumber - b.teamNumber;
     }));
   }, [allTeams, payments]);
 
