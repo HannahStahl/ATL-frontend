@@ -209,20 +209,20 @@ export default () => {
             customEditFunction={editTeam}
             validate={validate}
           />
+          <p className="centered-text">
+            <b>Download list of active teams:</b>
+            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+            <a onClick={downloadExcel} className="download-schedule-link">
+              <i className="fas fa-file-excel" />
+              Excel
+            </a>
+            <span className="download-schedule-link" onClick={generatePDF}>
+              <i className="fas fa-file-pdf" />
+              PDF
+            </span>
+          </p>
         </>
       )}
-      <p className="centered-text">
-        <b>Download list of active teams:</b>
-        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-        <a onClick={downloadExcel} className="download-schedule-link">
-          <i className="fas fa-file-excel" />
-          Excel
-        </a>
-        <span className="download-schedule-link" onClick={generatePDF}>
-          <i className="fas fa-file-pdf" />
-          PDF
-        </span>
-      </p>
     </div>
   );
 }
