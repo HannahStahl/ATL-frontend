@@ -3,6 +3,7 @@ import moment from "moment";
 import { PageHeader, FormGroup, FormControl, Modal } from "react-bootstrap";
 import { API } from "aws-amplify";
 import zipcelx from "zipcelx";
+import * as XLSX from "xlsx";
 import { pdf } from "@react-pdf/renderer";
 import Table from "./Table";
 import { useAppContext } from "./libs/contextLib";
@@ -574,6 +575,17 @@ export default () => {
     saveAs(blob, `ATL Player Results - ${currentSeason.seasonName}.pdf`);
   };
 
+  const onExcelUploaded = (event) => {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const workbook = XLSX.read(event.target.result);
+      const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+      const json = XLSX.utils.sheet_to_json(worksheet, { raw: false });
+      console.log(json);
+    };
+    reader.readAsArrayBuffer(event.target.files[0]);
+  };
+
   return (
     <div className="container">
       <PageHeader>Matches</PageHeader>
@@ -615,6 +627,12 @@ export default () => {
             customEditFunction={editMatch}
             customRemoveFunction={deleteMatch}
           />
+          {draftView && (
+            <div className="file-upload-wrapper">
+              <b>Import matches from Excel:</b>
+              <input type="file" accept=".xlsx" onChange={onExcelUploaded} />
+            </div>
+          )}
           <p className="centered-text">
             <b>Download schedule:</b>
             {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
