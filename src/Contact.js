@@ -18,10 +18,6 @@ export default function Contact() {
               </td>
             </tr>
             <tr className="contact-item">
-              <td><img src="phone.svg" alt="Phone" width={40} /></td>
-              <td><p className="no-margin-bottom">(512) 996-5681</p></td>
-            </tr>
-            <tr className="contact-item">
               <td><img src="email.svg" alt="Email" width={40} /></td>
               <td className="contact-item-text">
                 <p className="no-margin-bottom">
