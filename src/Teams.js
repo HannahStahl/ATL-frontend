@@ -147,7 +147,7 @@ export default () => {
 
   const filterTeams = (list) => list.filter((team) => team.isActive);
 
-  const dataKeys = ["teamNumber", "teamName", "captainId", "cocaptainId", "divisionId", "locationId", "courtTime"];
+  const dataKeys = ["teamNumber", "teamName", "captainId", "captainEmail", "cocaptainId", "cocaptainEmail", "divisionId", "locationId", "courtTime"];
 
   const getValue = (team, key) => {
     let value = team[key] || "";
@@ -183,7 +183,7 @@ export default () => {
     const blob = await pdf(
       <TeamsPDF
         columns={columns}
-        exportFields={dataKeys}
+        exportFields={dataKeys.filter((key) => !["captainEmail", "cocaptainEmail"].includes(key))}
         teams={filterTeams(teams)}
         getValue={getValue}
       />
