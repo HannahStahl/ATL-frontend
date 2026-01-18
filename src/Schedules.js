@@ -5,6 +5,7 @@ import { API } from "aws-amplify";
 import zipcelx from "zipcelx";
 import * as XLSX from "xlsx";
 import { pdf } from "@react-pdf/renderer";
+import { uniq } from "lodash";
 import Table from "./Table";
 import { useAppContext } from "./libs/contextLib";
 import { onError } from "./libs/errorLib";
@@ -582,30 +583,67 @@ export default () => {
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
       const json = XLSX.utils.sheet_to_json(worksheet, { raw: false });
       console.log(json);
-      const matches = [];
-      const validationErrors = [];
+      let matches = [];
+      let validationErrors = [];
       let weekNumber = 0;
       let matchDate;
       for (const row of json) {
         if (row.date && /[a-zA-Z]/.test(row.date)) {
           weekNumber++;
           matchDate = moment(row.date, 'D-MMM').format('YYYY-MM-DD');
-          console.log(`weekNumber: ${weekNumber}`);
-          console.log(`matchDate: ${matchDate}`);
-          console.log(` `);
         }
         const matchTime = row.time;
-        console.log(`-- matchTime: ${matchTime}`);
-        console.log(` `);
         const cells = Object.entries(row).filter(([key]) => !['date', 'time'].includes(key));
         for (const cell of cells) {
+          let cellValidationErrors = [];
+          const matchDetails = {};
           const [locationName, teams] = cell;
-          console.log(`---- locationName: ${locationName}`);
-          console.log(`---- teams: ${teams}`);
-          console.log(` `);
-          // TODO add to matches (or validationErrors) array
+          const location = locations.find((location) => (
+            location.locationName.toLowerCase().includes(locationName.trim().toLowerCase())
+          ));
+          if (location) {
+            matchDetails.locationId = location.locationId;
+          } else {
+            cellValidationErrors.push(`Location "${locationName}" not found - ensure name exactly matches what's on Locations page`);
+          }
+          const regexMatch = teams.trim().match(/^(\d{3})\s+(.+)$/);
+          if (regexMatch) {
+            matchDetails.matchNumber = parseInt(regexMatch[1]);
+            const division = divisions.find((division) => division.divisionNumber === regexMatch[1][0]);
+            if (division) {
+              matchDetails.divisionId = division.divisionId;
+            } else {
+              cellValidationErrors.push(`First digit of match # ${matchDetails.matchNumber} does not correspond to a division`);
+            }
+            if (matches.find((match) => match.matchNumber === matchDetails.matchNumber)) {
+              cellValidationErrors.push(`Match # ${matchDetails.matchNumber} appears twice in spreadsheet`);
+            }
+            if (draftMatches.find((match) => match.matchNumber === matchDetails.matchNumber)) {
+              cellValidationErrors.push(`Match # ${matchDetails.matchNumber} already in use by existing draft match`);
+            }
+            const teamNames = regexMatch[2].trim();
+            console.log(teamNames);
+            // TODO make sure home team != visiting team
+          } else {
+            cellValidationErrors.push(`Match # missing for "${teams}"`);
+          }
+          if (cellValidationErrors.length > 0) {
+            validationErrors.push(...cellValidationErrors);
+          } else {
+            matches.push({
+              weekNumber,
+              matchDate,
+              // startTime, // TODO use value after 2nd team name if defined, otherwise matchTime if defined, otherwise validation error ("Match time missing for ...")
+              // homeTeamId, // TODO use team name before @ in teamNames; if no @, validation error ("@ missing from ...")
+              // visitorTeamId, // TODO use team name after @ in teamNames; if no @, validation error ("@ missing from ...")
+              ...matchDetails // matchNumber, divisionId, locationId
+            })
+          }
         }
       }
+      validationErrors = uniq(validationErrors);
+      console.log(validationErrors);
+      // TODO if validation errors, show them in alert; otherwise, create draft matches
     };
     reader.readAsArrayBuffer(event.target.files[0]);
   };
