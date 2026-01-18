@@ -582,6 +582,30 @@ export default () => {
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
       const json = XLSX.utils.sheet_to_json(worksheet, { raw: false });
       console.log(json);
+      const matches = [];
+      const validationErrors = [];
+      let weekNumber = 0;
+      let matchDate;
+      for (const row of json) {
+        if (row.date && /[a-zA-Z]/.test(row.date)) {
+          weekNumber++;
+          matchDate = moment(row.date, 'D-MMM').format('YYYY-MM-DD');
+          console.log(`weekNumber: ${weekNumber}`);
+          console.log(`matchDate: ${matchDate}`);
+          console.log(` `);
+        }
+        const matchTime = row.time;
+        console.log(`-- matchTime: ${matchTime}`);
+        console.log(` `);
+        const cells = Object.entries(row).filter(([key]) => !['date', 'time'].includes(key));
+        for (const cell of cells) {
+          const [locationName, teams] = cell;
+          console.log(`---- locationName: ${locationName}`);
+          console.log(`---- teams: ${teams}`);
+          console.log(` `);
+          // TODO add to matches (or validationErrors) array
+        }
+      }
     };
     reader.readAsArrayBuffer(event.target.files[0]);
   };
