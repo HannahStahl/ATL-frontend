@@ -630,7 +630,7 @@ export default () => {
             } else {
               matchBody.matchNumber = parseInt(cellRegexMatch[1]);
 
-              const division = divisions.find((division) => division.divisionNumber === cellRegexMatch[1][0]);
+              const division = divisions.find((division) => parseInt(division.divisionNumber) === parseInt(cellRegexMatch[1][0]));
               matchBody.divisionId = division && division.divisionId;
               if (!matchBody.divisionId) {
                 cellValidationErrors.push(`First digit of match # ${matchBody.matchNumber} does not correspond to a division`);
