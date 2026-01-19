@@ -595,79 +595,89 @@ export default () => {
       let weekNumber = 0;
       let matchDate;
 
-      for (const row of json) {
-        if (row.date && /[a-zA-Z]/.test(row.date)) {
-          weekNumber++;
-          matchDate = moment(row.date, 'D-MMM').format('YYYY-MM-DD');
-        }
+      const headerRow = XLSX.utils.sheet_to_json(worksheet, { raw: false, header: 1 })[0];
+      if (headerRow[0] !== "date") {
+        validationErrors.push(`Expected header of 1st column to be "date"`);
+      }
+      if (headerRow[1] !== "time") {
+        validationErrors.push(`Expected header of 2nd column to be "time"`);
+      }
 
-        for (const [locationName, cellContent] of Object.entries(row).filter(([key]) => !['date', 'time'].includes(key))) {
-          if (cellContent.trim().length === 0 || locationName.startsWith('__EMPTY')) {
-            continue;
+      if (validationErrors.length === 0) {
+        for (const row of json) {
+          if (row.date && /[a-zA-Z]/.test(row.date)) {
+            weekNumber++;
+            matchDate = moment(row.date, 'D-MMM').format('YYYY-MM-DD');
           }
 
-          const cellValidationErrors = [];
-          const matchBody = {};
-
-          const location = findInList(locations, 'locationName', locationName);
-          matchBody.locationId = location && location.locationId;
-          if (!matchBody.locationId) {
-            cellValidationErrors.push(`Could not find location named "${locationName}" - ensure name exactly matches what's on Locations page`);
-          }
-
-          const cellRegexMatch = cellContent.trim().match(/^(\d{3})\s+(.+)$/);
-          if (!cellRegexMatch) {
-            cellValidationErrors.push(`Match # missing for "${cellContent}"`);
-          } else {
-            matchBody.matchNumber = parseInt(cellRegexMatch[1]);
-
-            const division = divisions.find((division) => division.divisionNumber === cellRegexMatch[1][0]);
-            matchBody.divisionId = division && division.divisionId;
-            if (!matchBody.divisionId) {
-              cellValidationErrors.push(`First digit of match # ${matchBody.matchNumber} does not correspond to a division`);
-            }
-            
-            if (matches.find((match) => match.matchNumber === matchBody.matchNumber)) {
-              cellValidationErrors.push(`Match # ${matchBody.matchNumber} appears twice in spreadsheet`);
+          for (const [locationName, cellContent] of Object.entries(row).filter(([key]) => !['date', 'time'].includes(key))) {
+            if (cellContent.trim().length === 0 || locationName.startsWith('__EMPTY')) {
+              continue;
             }
 
-            if (draftMatches.find((match) => match.matchNumber === matchBody.matchNumber)) {
-              cellValidationErrors.push(`Match # ${matchBody.matchNumber} already in use by existing draft match`);
+            const cellValidationErrors = [];
+            const matchBody = {};
+
+            const location = findInList(locations, 'locationName', locationName);
+            matchBody.locationId = location && location.locationId;
+            if (!matchBody.locationId) {
+              cellValidationErrors.push(`Could not find location named "${locationName}" - ensure name exactly matches what's on Locations page`);
             }
 
-            const [visitorTeamName, homeTeamNameAndMatchTime] = cellRegexMatch[2].trim().split(/\s*@\s*/);
-
-            const visitorTeam = findInList(filterTeams(), 'teamName', visitorTeamName);
-            matchBody.visitorTeamId = visitorTeam && visitorTeam.teamId;
-            if (!matchBody.visitorTeamId) {
-              cellValidationErrors.push(`Could not find active team named "${visitorTeamName}" - ensure name exactly matches what's on Teams page`);
-            }
-
-            if (!homeTeamNameAndMatchTime) {
-              cellValidationErrors.push(`Missing home team for "${cellContent}"`);
+            const cellRegexMatch = cellContent.trim().match(/^(\d{3})\s+(.+)$/);
+            if (!cellRegexMatch) {
+              cellValidationErrors.push(`Match # missing for "${cellContent}"`);
             } else {
-              const cellEndRegexMatch = homeTeamNameAndMatchTime.match(/^(.*?)(?:\s+(\d+-\d+))?$/);
+              matchBody.matchNumber = parseInt(cellRegexMatch[1]);
 
-              const homeTeamName = cellEndRegexMatch[1].trim();
-              const homeTeam = findInList(filterTeams(), 'teamName', homeTeamName);
-              matchBody.homeTeamId = homeTeam && homeTeam.teamId;
-              if (!matchBody.homeTeamId) {
-                cellValidationErrors.push(`Could not find active team named "${visitorTeamName}" - ensure name exactly matches what's on Teams page`);
-              } else if (matchBody.homeTeamId === matchBody.visitorTeamId) {
-                cellValidationErrors.push(`Home team cannot be same as visiting team ("${cellContent}")`)
+              const division = divisions.find((division) => division.divisionNumber === cellRegexMatch[1][0]);
+              matchBody.divisionId = division && division.divisionId;
+              if (!matchBody.divisionId) {
+                cellValidationErrors.push(`First digit of match # ${matchBody.matchNumber} does not correspond to a division`);
               }
               
-              matchBody.startTime = (cellEndRegexMatch[2] && cellEndRegexMatch[2].trim()) || row.time;
-              if (!matchBody.startTime) {
-                cellValidationErrors.push(`Missing match time for "${cellContent}"`);
+              if (matches.find((match) => match.matchNumber === matchBody.matchNumber)) {
+                cellValidationErrors.push(`Match # ${matchBody.matchNumber} appears twice in spreadsheet`);
+              }
+
+              if (draftMatches.find((match) => match.matchNumber === matchBody.matchNumber)) {
+                cellValidationErrors.push(`Match # ${matchBody.matchNumber} already in use by existing draft match`);
+              }
+
+              const [visitorTeamName, homeTeamNameAndMatchTime] = cellRegexMatch[2].trim().split(/\s*@\s*/);
+
+              const visitorTeam = findInList(filterTeams(), 'teamName', visitorTeamName);
+              matchBody.visitorTeamId = visitorTeam && visitorTeam.teamId;
+              if (!matchBody.visitorTeamId) {
+                cellValidationErrors.push(`Could not find active team named "${visitorTeamName}" - ensure name exactly matches what's on Teams page`);
+              }
+
+              if (!homeTeamNameAndMatchTime) {
+                cellValidationErrors.push(`Missing home team for "${cellContent}"`);
+              } else {
+                const cellEndRegexMatch = homeTeamNameAndMatchTime.match(/^(.*?)(?:\s+(\d+-\d+))?$/);
+
+                const homeTeamName = cellEndRegexMatch[1].trim();
+                const homeTeam = findInList(filterTeams(), 'teamName', homeTeamName);
+                matchBody.homeTeamId = homeTeam && homeTeam.teamId;
+                if (!matchBody.homeTeamId) {
+                  cellValidationErrors.push(`Could not find active team named "${visitorTeamName}" - ensure name exactly matches what's on Teams page`);
+                } else if (matchBody.homeTeamId === matchBody.visitorTeamId) {
+                  cellValidationErrors.push(`Home team cannot be same as visiting team ("${cellContent}")`)
+                }
+                
+                matchBody.startTime = (cellEndRegexMatch[2] && cellEndRegexMatch[2].trim()) || row.time;
+                if (!matchBody.startTime) {
+                  cellValidationErrors.push(`Missing match time for "${cellContent}"`);
+                }
               }
             }
-          }
 
-          if (cellValidationErrors.length > 0) {
-            validationErrors.push(...cellValidationErrors);
-          } else {
-            matches.push({ weekNumber, matchDate, ...matchBody })
+            if (cellValidationErrors.length > 0) {
+              validationErrors.push(...cellValidationErrors);
+            } else {
+              matches.push({ weekNumber, matchDate, ...matchBody })
+            }
           }
         }
       }
