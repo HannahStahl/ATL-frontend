@@ -585,7 +585,7 @@ export default () => {
   const onExcelUploaded = (event) => {
     const reader = new FileReader();
 
-    reader.onload = (event) => {
+    reader.onload = async (event) => {
       const workbook = XLSX.read(event.target.result);
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
       const json = XLSX.utils.sheet_to_json(worksheet, { raw: false });
@@ -602,19 +602,17 @@ export default () => {
         }
 
         for (const [locationName, cellContent] of Object.entries(row).filter(([key]) => !['date', 'time'].includes(key))) {
-          if (cellContent.trim().length === 0) {
+          if (cellContent.trim().length === 0 || locationName.startsWith('__EMPTY')) {
             continue;
           }
 
           const cellValidationErrors = [];
           const matchBody = {};
 
-          if (!locationName.startsWith('__EMPTY')) {
-            const location = findInList(locations, 'locationName', locationName);
-            matchBody.locationId = location && location.locationId;
-            if (!matchBody.locationId) {
-              cellValidationErrors.push(`Could not find location named "${locationName}" - ensure name exactly matches what's on Locations page`);
-            }
+          const location = findInList(locations, 'locationName', locationName);
+          matchBody.locationId = location && location.locationId;
+          if (!matchBody.locationId) {
+            cellValidationErrors.push(`Could not find location named "${locationName}" - ensure name exactly matches what's on Locations page`);
           }
 
           const cellRegexMatch = cellContent.trim().match(/^(\d{3})\s+(.+)$/);
@@ -637,7 +635,7 @@ export default () => {
               cellValidationErrors.push(`Match # ${matchBody.matchNumber} already in use by existing draft match`);
             }
 
-            const [homeTeamName, visitingTeamNameAndMatchTime] = cellRegexMatch[2].trim().split(/\s*@\s*/);
+            const [homeTeamName, visitorTeamNameAndMatchTime] = cellRegexMatch[2].trim().split(/\s*@\s*/);
 
             const homeTeam = findInList(filterTeams(), 'teamName', homeTeamName);
             matchBody.homeTeamId = homeTeam && homeTeam.teamId;
@@ -645,17 +643,17 @@ export default () => {
               cellValidationErrors.push(`Could not find active team named "${homeTeamName}" - ensure name exactly matches what's on Teams page`);
             }
 
-            if (!visitingTeamNameAndMatchTime) {
+            if (!visitorTeamNameAndMatchTime) {
               cellValidationErrors.push(`Missing visiting team for "${cellContent}"`);
             } else {
-              const cellEndRegexMatch = visitingTeamNameAndMatchTime.match(/^(.*?)(?:\s+(\d+-\d+))?$/);
+              const cellEndRegexMatch = visitorTeamNameAndMatchTime.match(/^(.*?)(?:\s+(\d+-\d+))?$/);
 
-              const visitingTeamName = cellEndRegexMatch[1].trim();
-              const visitingTeam = findInList(filterTeams(), 'teamName', visitingTeamName);
-              matchBody.visitingTeamId = visitingTeam && visitingTeam.teamId;
-              if (!matchBody.visitingTeamId) {
-                cellValidationErrors.push(`Could not find active team named "${visitingTeamName}" - ensure name exactly matches what's on Teams page`);
-              } else if (matchBody.visitingTeamId === matchBody.homeTeamId) {
+              const visitorTeamName = cellEndRegexMatch[1].trim();
+              const visitorTeam = findInList(filterTeams(), 'teamName', visitorTeamName);
+              matchBody.visitorTeamId = visitorTeam && visitorTeam.teamId;
+              if (!matchBody.visitorTeamId) {
+                cellValidationErrors.push(`Could not find active team named "${visitorTeamName}" - ensure name exactly matches what's on Teams page`);
+              } else if (matchBody.visitorTeamId === matchBody.homeTeamId) {
                 cellValidationErrors.push(`Home team cannot be same as visiting team ("${cellContent}")`)
               }
               
@@ -678,10 +676,11 @@ export default () => {
       if (validationErrors.length > 0) {
         onError(`Could not create matches due to validation errors:\n${validationErrors.map((error) => `- ${error}`).join('\n')}`);
       } else {
-        // TODO create draft matches
+        await Promise.all(matches.map(addMatch));
       }
 
-      document.getElementById("fileInput").value = ""; // Reset file input, so user can upload file again if needed
+      // Reset file input, so user can upload file again if needed
+      document.getElementById("fileInput").value = "";
     };
 
     reader.readAsArrayBuffer(event.target.files[0]);
