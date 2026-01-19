@@ -635,25 +635,25 @@ export default () => {
               cellValidationErrors.push(`Match # ${matchBody.matchNumber} already in use by existing draft match`);
             }
 
-            const [homeTeamName, visitorTeamNameAndMatchTime] = cellRegexMatch[2].trim().split(/\s*@\s*/);
+            const [visitorTeamName, homeTeamNameAndMatchTime] = cellRegexMatch[2].trim().split(/\s*@\s*/);
 
-            const homeTeam = findInList(filterTeams(), 'teamName', homeTeamName);
-            matchBody.homeTeamId = homeTeam && homeTeam.teamId;
-            if (!matchBody.homeTeamId) {
-              cellValidationErrors.push(`Could not find active team named "${homeTeamName}" - ensure name exactly matches what's on Teams page`);
+            const visitorTeam = findInList(filterTeams(), 'teamName', visitorTeamName);
+            matchBody.visitorTeamId = visitorTeam && visitorTeam.teamId;
+            if (!matchBody.visitorTeamId) {
+              cellValidationErrors.push(`Could not find active team named "${visitorTeamName}" - ensure name exactly matches what's on Teams page`);
             }
 
-            if (!visitorTeamNameAndMatchTime) {
-              cellValidationErrors.push(`Missing visiting team for "${cellContent}"`);
+            if (!homeTeamNameAndMatchTime) {
+              cellValidationErrors.push(`Missing home team for "${cellContent}"`);
             } else {
-              const cellEndRegexMatch = visitorTeamNameAndMatchTime.match(/^(.*?)(?:\s+(\d+-\d+))?$/);
+              const cellEndRegexMatch = homeTeamNameAndMatchTime.match(/^(.*?)(?:\s+(\d+-\d+))?$/);
 
-              const visitorTeamName = cellEndRegexMatch[1].trim();
-              const visitorTeam = findInList(filterTeams(), 'teamName', visitorTeamName);
-              matchBody.visitorTeamId = visitorTeam && visitorTeam.teamId;
-              if (!matchBody.visitorTeamId) {
+              const homeTeamName = cellEndRegexMatch[1].trim();
+              const homeTeam = findInList(filterTeams(), 'teamName', homeTeamName);
+              matchBody.homeTeamId = homeTeam && homeTeam.teamId;
+              if (!matchBody.homeTeamId) {
                 cellValidationErrors.push(`Could not find active team named "${visitorTeamName}" - ensure name exactly matches what's on Teams page`);
-              } else if (matchBody.visitorTeamId === matchBody.homeTeamId) {
+              } else if (matchBody.homeTeamId === matchBody.visitorTeamId) {
                 cellValidationErrors.push(`Home team cannot be same as visiting team ("${cellContent}")`)
               }
               
