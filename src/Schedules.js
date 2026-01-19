@@ -661,7 +661,7 @@ export default () => {
                 const homeTeam = findInList(filterTeams(), 'teamName', homeTeamName);
                 matchBody.homeTeamId = homeTeam && homeTeam.teamId;
                 if (!matchBody.homeTeamId) {
-                  cellValidationErrors.push(`Could not find active team named "${visitorTeamName}" - ensure name exactly matches what's on Teams page`);
+                  cellValidationErrors.push(`Could not find active team named "${homeTeamName}" - ensure name exactly matches what's on Teams page`);
                 } else if (matchBody.homeTeamId === matchBody.visitorTeamId) {
                   cellValidationErrors.push(`Home team cannot be same as visiting team ("${cellContent}")`)
                 }
