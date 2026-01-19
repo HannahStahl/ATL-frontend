@@ -582,7 +582,6 @@ export default () => {
       const workbook = XLSX.read(event.target.result);
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
       const json = XLSX.utils.sheet_to_json(worksheet, { raw: false });
-      console.log(json);
       let matches = [];
       let validationErrors = [];
       let weekNumber = 0;
@@ -592,7 +591,7 @@ export default () => {
           weekNumber++;
           matchDate = moment(row.date, 'D-MMM').format('YYYY-MM-DD');
         }
-        const matchTime = row.time;
+        const defaultMatchTime = row.time;
         const cells = Object.entries(row).filter(([key]) => !['date', 'time'].includes(key));
         for (const cell of cells) {
           let cellValidationErrors = [];
@@ -603,13 +602,13 @@ export default () => {
           ));
           if (location) {
             matchDetails.locationId = location.locationId;
-          } else {
-            cellValidationErrors.push(`Location "${locationName}" not found - ensure name exactly matches what's on Locations page`);
+          } else if (!locationName.startsWith('__EMPTY')) {
+            cellValidationErrors.push(`Could not find location named "${locationName}" - ensure name exactly matches what's on Locations page`);
           }
-          const regexMatch = teams.trim().match(/^(\d{3})\s+(.+)$/);
-          if (regexMatch) {
-            matchDetails.matchNumber = parseInt(regexMatch[1]);
-            const division = divisions.find((division) => division.divisionNumber === regexMatch[1][0]);
+          const teamsRegexMatch = teams.trim().match(/^(\d{3})\s+(.+)$/);
+          if (teamsRegexMatch) {
+            matchDetails.matchNumber = parseInt(teamsRegexMatch[1]);
+            const division = divisions.find((division) => division.divisionNumber === teamsRegexMatch[1][0]);
             if (division) {
               matchDetails.divisionId = division.divisionId;
             } else {
@@ -621,29 +620,48 @@ export default () => {
             if (draftMatches.find((match) => match.matchNumber === matchDetails.matchNumber)) {
               cellValidationErrors.push(`Match # ${matchDetails.matchNumber} already in use by existing draft match`);
             }
-            const teamNames = regexMatch[2].trim();
-            console.log(teamNames);
-            // TODO make sure home team != visiting team
+            const teamNames = teamsRegexMatch[2].trim();
+            const [homeTeamName, visitingTeamNameAndMatchTime] = teamNames.split('@');
+            const homeTeam = allTeams.find((team) => team.isActive && team.teamName.toLowerCase().includes(homeTeamName.trim().toLowerCase()));
+            if (homeTeam) {
+              matchDetails.homeTeamId = homeTeam.teamId;
+            } else {
+              cellValidationErrors.push(`Could not find active team named "${homeTeamName.trim()}" - ensure name exactly matches what's on Teams page`);
+            }
+            if (visitingTeamNameAndMatchTime) {
+              const visitorRegexMatch = visitingTeamNameAndMatchTime.trim().match(/^(.*?)(?:\s+(\d+-\d+))?$/);
+              const visitingTeamName = visitorRegexMatch[1].trim();
+              const visitingTeam = allTeams.find((team) => team.isActive && team.teamName.toLowerCase().includes(visitingTeamName.trim().toLowerCase()));
+              if (visitingTeam) {
+                matchDetails.visitingTeamId = visitingTeam.teamId;
+              if (matchDetails.visitingTeamId === matchDetails.homeTeamId) {
+                cellValidationErrors.push(`Home team cannot be same as visiting team ("${teams}")`)
+              }
+              }
+              matchDetails.startTime = (visitorRegexMatch[2] && visitorRegexMatch[2].trim()) || defaultMatchTime;
+              if (!matchDetails.startTime) {
+                cellValidationErrors.push(`Missing match time for "${teams}"`);
+              }
+            } else {
+              cellValidationErrors.push(`Missing visiting team for "${teams}"`);
+            }
           } else {
             cellValidationErrors.push(`Match # missing for "${teams}"`);
           }
           if (cellValidationErrors.length > 0) {
             validationErrors.push(...cellValidationErrors);
           } else {
-            matches.push({
-              weekNumber,
-              matchDate,
-              // startTime, // TODO use value after 2nd team name if defined, otherwise matchTime if defined, otherwise validation error ("Match time missing for ...")
-              // homeTeamId, // TODO use team name before @ in teamNames; if no @, validation error ("@ missing from ...")
-              // visitorTeamId, // TODO use team name after @ in teamNames; if no @, validation error ("@ missing from ...")
-              ...matchDetails // matchNumber, divisionId, locationId
-            })
+            matches.push({ weekNumber, matchDate, ...matchDetails })
           }
         }
       }
       validationErrors = uniq(validationErrors);
-      console.log(validationErrors);
-      // TODO if validation errors, show them in alert; otherwise, create draft matches
+      if (validationErrors.length > 0) {
+        onError(`Could not create matches due to validation errors:\n${validationErrors.map((error) => `- ${error}`).join('\n')}`);
+      } else {
+        // TODO create draft matches
+      }
+      document.getElementById("fileInput").value = ""; // Reset file input, so user can upload file again if needed
     };
     reader.readAsArrayBuffer(event.target.files[0]);
   };
@@ -692,7 +710,7 @@ export default () => {
           {draftView && (
             <div className="file-upload-wrapper">
               <b>Import matches from Excel:</b>
-              <input type="file" accept=".xlsx" onChange={onExcelUploaded} />
+              <input id="fileInput" type="file" accept=".xlsx" onChange={onExcelUploaded} />
             </div>
           )}
           <p className="centered-text">
