@@ -649,6 +649,8 @@ export default () => {
               const visitorTeam = findInList(filterTeams(), 'teamName', visitorTeamName);
               matchBody.visitorTeamId = visitorTeam && visitorTeam.teamId;
               if (!matchBody.visitorTeamId) {
+                console.log(`visitorTeamName: ${visitorTeamName}`);
+                console.log(`filteredTeams: ${filterTeams().map((team) => team.teamName)}`);
                 cellValidationErrors.push(`Could not find active team named "${visitorTeamName}" - ensure name exactly matches what's on Teams page`);
               }
 
@@ -661,6 +663,8 @@ export default () => {
                 const homeTeam = findInList(filterTeams(), 'teamName', homeTeamName);
                 matchBody.homeTeamId = homeTeam && homeTeam.teamId;
                 if (!matchBody.homeTeamId) {
+                  console.log(`homeTeamName: ${homeTeamName}`);
+                  console.log(`filteredTeams: ${filterTeams().map((team) => team.teamName)}`);
                   cellValidationErrors.push(`Could not find active team named "${homeTeamName}" - ensure name exactly matches what's on Teams page`);
                 } else if (matchBody.homeTeamId === matchBody.visitorTeamId) {
                   cellValidationErrors.push(`Home team cannot be same as visiting team ("${cellContent}")`)
